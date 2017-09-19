@@ -5,13 +5,32 @@ from setuptools import setup, find_packages
 
 
 setup(
-    # Publication Metadata:
-    version='0.1.3',
-    name='datapunt_authz_admin',
-    description="User Role Management Service",
-    # long_description="",
-    url='https://github.com/DatapuntAmsterdam/authz_admin',
-    author='Amsterdam Datapunt',
+
+
+    # ┏━━━━━━━━━━━━━━━━━━━━━━┓
+    # ┃ Publication Metadata ┃
+    # ┗━━━━━━━━━━━━━━━━━━━━━━┛
+    version='0.1.0',
+    name='aiohttp_openapi_haljson',
+    description="Stack for developing HTTP web services in Python",
+    long_description="""
+        This package integrates:
+
+        -   HAL+JSON rendering of resources
+        -   an asynchronous JSON encoder
+        -   some extras for aiohttp (an asynchronous HTTP client and server) to
+            facilitate building ReSTful services:
+
+            -   ETags and conditional request handling
+        -   OpenAPI definition parsing
+        -   enforcing OpenAPI security requirements, including OAuth2
+            authorization
+        -   loading and validation of configuration data from multiple
+            predefined paths
+
+    """,
+    url='https://github.com/Amsterdam/aiohttp_openapi_haljson/',
+    author='Amsterdam City Data',
     author_email='datapunt@amsterdam.nl',
     license='Mozilla Public License Version 2.0',
     classifiers=[
@@ -21,46 +40,36 @@ setup(
     ],
 
 
-    # Entry points:
-    entry_points={
-        'console_scripts': [
-            'authz_admin = authz_admin.main:main',
-            # 'authn_service = oauth2.authn_service.main:main',
-            # 'authz_service = oauth2.authz_service.main:start',
-            # 'client_admin_service = oauth2.client_admin_service.server:start',
-            # 'dummy_authz_service = oauth2.dummy_authz_service.main:main',
-        ],
-    },
-
-
-    # Packages and Package Data:
+    # ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+    # ┃ Packages and package data ┃
+    # ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
     package_dir={'': 'src'},
     packages=find_packages('src'),
-    package_data={
-        'authz_admin': ['config_schema*.json', 'openapi*.json', 'openapi.yml']
-    },
+    # package_data={
+    #     'authz_admin': ['config_schema*.json', 'openapi.yml']
+    # },
 
 
-    # Requirements:
+    # ┏━━━━━━━━━━━━━━┓
+    # ┃ Requirements ┃
+    # ┗━━━━━━━━━━━━━━┛
     # setup_requires=[
-    #     'setuptools_git',
-    #     # Nice if you like setuptools integration for PyTest:
-    #     #'pytest-runner',
+    #     'setuptools_git'
     # ],
     install_requires=[
-        'aiodns', # Recommended by aiohttp docs
         'aiohttp',
         'aiohttp-jinja2',
         'aiopg',
-        'cchardet', # Recommended by aiohttp docs
-        'docutils',
         'jsonschema',
-        'mimeparse',
         'PyYaml',
         'PyJWT',
         'SQLAlchemy',
         'swagger-parser',
-        'uvloop', # Recommended by aiohttp docs
+
+        # Recommended by aiohttp docs:
+        'aiodns',   # optional asynchronous DNS client
+        'cchardet', # optional fast character handling in C
+        'uvloop',   # optional fast eventloop for asyncio
     ],
     extras_require={
         'docs': [
@@ -71,15 +80,12 @@ setup(
             'sphinx_rtd_theme',
         ],
         'test': [
-            'alembic',
             'pytest',
             'pytest-cov',
             'pytest-aiohttp'
         ],
         'dev': [
             'aiohttp-devtools',
-            'alembic',
-            'jupyter',
-        ]
+        ],
     },
 )

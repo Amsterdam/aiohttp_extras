@@ -44,10 +44,10 @@ source_suffix = '.rst'
 master_doc='index'
 
 # General information about the project.
-project = 'Datapunt OAuth2'
+project = 'aiohttp_openapi_haljson'
 # noinspection PyShadowingBuiltins
 copyright = '2017, Gemeente Amsterdam'
-author = 'Datapunt'
+author = 'Amsterdam City Data'
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
@@ -68,7 +68,7 @@ language = 'en'
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
 # This patterns also effect to html_static_path and html_extra_path
-exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
+exclude_patterns = ['Thumbs.db', '.DS_Store']
 
 # The name of the Pygments (syntax highlighting) style to use.
 pygments_style = 'sphinx'
@@ -82,6 +82,10 @@ default_role = 'py:obj'
 
 # nitpicky = False
 
+# This value contains a list of modules to be mocked up. This is useful when
+# some external dependencies are not met at build time and break the building
+# process. You may only specify the root package of the dependencies themselves
+# and ommit the sub-modules:
 autodoc_mock_imports = ['aiohttp.web_exceptions']
 
 
@@ -115,8 +119,8 @@ for inventory in intersphinx_mapping:
 autodoc_default_flags = [
     'members',
     'private-members',
-    # 'special-members',
-    # 'undoc-members',
+    #'special-members',
+    #'undoc-members',
     'show-inheritance'
 ]
 
@@ -167,17 +171,17 @@ html_theme_path = [sphinx_rtd_theme.get_html_theme_path()]
 
 # Sphinx RTD theme:
 html_theme_options = {
-    # 'typekit_id': 'hiw1hhg',
-    # 'analytics_id': None,
-    # 'sticky_navigation': False,
-    # 'logo_only': None,
-    # 'collapse_navigation': True,
+    #'typekit_id': 'hiw1hhg',
+    #'analytics_id': None,
+    #'sticky_navigation': False,
+    #'logo_only': None,
+    #'collapse_navigation': True,
     'collapse_navigation': False,
-    # 'display_version': True,
+    #'display_version': True,
     'display_version': False,
-    # 'navigation_depth': 4,
-    # 'prev_next_buttons_location': 'bottom',
-    # 'canonical_url': None,
+    #'navigation_depth': 4,
+    #'prev_next_buttons_location': 'bottom',
+    'canonical_url': 'https://amsterdam.github.io/aiohttp_openapi_haljson/',
 }
 
 html_static_path = ['_static']

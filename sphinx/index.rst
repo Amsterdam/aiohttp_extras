@@ -6,7 +6,6 @@
     :hidden:
 
     api_docs
-    config_options
     sphinx_101
     todo_list
     glossary
