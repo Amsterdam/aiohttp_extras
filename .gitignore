@@ -62,7 +62,7 @@ instance/
 .scrapy
 
 # Sphinx documentation
-/sphinx/_build/
+/sphinx/.doctrees
 /sphinx/*.inv
 /sphinx/*.inv.txt
 

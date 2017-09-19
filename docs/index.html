@@ -1,0 +1,387 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Datapunt OAuth2 Services &mdash; aiohttp_openapi_haljson 0.1 documentation</title>
+  
+
+  
+  
+  
+  
+    <link rel="canonical" href="https://amsterdam.github.io/aiohttp_openapi_haljson/index.html"/>
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="_static/theme_overrides.css" type="text/css" />
+  
+
+  
+        <link rel="index" title="Index"
+              href="genindex.html"/>
+        <link rel="search" title="Search" href="search.html"/>
+    <link rel="top" title="aiohttp_openapi_haljson 0.1 documentation" href="#"/>
+        <link rel="next" title="API Docs" href="api_docs.html"/> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="#" class="icon icon-home"> aiohttp_openapi_haljson
+          
+
+          
+          </a>
+
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="api_docs.html">API Docs</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="api/config_loader.html">Config Loader</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/rest_utils.html">Rest Utils</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="sphinx_101.html">Sphinx 101</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="sphinx_101.html#rest-formatting">ReST formatting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sphinx_101.html#roles-added-by-sphinx">Roles added by Sphinx</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sphinx_101.html#directives">Directives</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sphinx_101.html#autodoc">Autodoc</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sphinx_101.html#intersphinx">Intersphinx</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="todo_list.html">Todo list</a></li>
+<li class="toctree-l1"><a class="reference internal" href="glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="license.html">License</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="license.html#definitions">1. Definitions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="license.html#contributor">1.1. “Contributor”</a></li>
+<li class="toctree-l3"><a class="reference internal" href="license.html#contributor-version">1.2. “Contributor Version”</a></li>
+<li class="toctree-l3"><a class="reference internal" href="license.html#contribution">1.3. “Contribution”</a></li>
+<li class="toctree-l3"><a class="reference internal" href="license.html#covered-software">1.4. “Covered Software”</a></li>
+<li class="toctree-l3"><a class="reference internal" href="license.html#incompatible-with-secondary-licenses">1.5. “Incompatible With Secondary Licenses”</a></li>
+<li class="toctree-l3"><a class="reference internal" href="license.html#executable-form">1.6. “Executable Form”</a></li>
+<li class="toctree-l3"><a class="reference internal" href="license.html#id1">1.8. “License”</a></li>
+<li class="toctree-l3"><a class="reference internal" href="license.html#licensable">1.9. “Licensable”</a></li>
+<li class="toctree-l3"><a class="reference internal" href="license.html#modifications">1.10. “Modifications”</a></li>
+<li class="toctree-l3"><a class="reference internal" href="license.html#patent-claims-of-a-contributor">1.11. “Patent Claims” of a Contributor</a></li>
+<li class="toctree-l3"><a class="reference internal" href="license.html#secondary-license">1.12. “Secondary License”</a></li>
+<li class="toctree-l3"><a class="reference internal" href="license.html#source-code-form">1.13. “Source Code Form”</a></li>
+<li class="toctree-l3"><a class="reference internal" href="license.html#you-or-your">1.14. “You” (or “Your”)</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="license.html#license-grants-and-conditions">2. License Grants and Conditions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="license.html#grants">2.1. Grants</a></li>
+<li class="toctree-l3"><a class="reference internal" href="license.html#effective-date">2.2. Effective Date</a></li>
+<li class="toctree-l3"><a class="reference internal" href="license.html#limitations-on-grant-scope">2.3. Limitations on Grant Scope</a></li>
+<li class="toctree-l3"><a class="reference internal" href="license.html#subsequent-licenses">2.4. Subsequent Licenses</a></li>
+<li class="toctree-l3"><a class="reference internal" href="license.html#representation">2.5. Representation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="license.html#fair-use">2.6. Fair Use</a></li>
+<li class="toctree-l3"><a class="reference internal" href="license.html#conditions">2.7. Conditions</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="license.html#responsibilities">3. Responsibilities</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="license.html#distribution-of-source-form">3.1. Distribution of Source Form</a></li>
+<li class="toctree-l3"><a class="reference internal" href="license.html#distribution-of-executable-form">3.2. Distribution of Executable Form</a></li>
+<li class="toctree-l3"><a class="reference internal" href="license.html#distribution-of-a-larger-work">3.3. Distribution of a Larger Work</a></li>
+<li class="toctree-l3"><a class="reference internal" href="license.html#notices">3.4. Notices</a></li>
+<li class="toctree-l3"><a class="reference internal" href="license.html#application-of-additional-terms">3.5. Application of Additional Terms</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="license.html#inability-to-comply-due-to-statute-or-regulation">4. Inability to Comply Due to Statute or Regulation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="license.html#termination">5. Termination</a></li>
+<li class="toctree-l2"><a class="reference internal" href="license.html#disclaimer-of-warranty">6. Disclaimer of Warranty</a></li>
+<li class="toctree-l2"><a class="reference internal" href="license.html#limitation-of-liability">7. Limitation of Liability</a></li>
+<li class="toctree-l2"><a class="reference internal" href="license.html#litigation">8. Litigation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="license.html#miscellaneous">9. Miscellaneous</a></li>
+<li class="toctree-l2"><a class="reference internal" href="license.html#versions-of-the-license">10. Versions of the License</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="license.html#new-versions">10.1. New Versions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="license.html#effect-of-new-versions">10.2. Effect of New Versions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="license.html#modified-versions">10.3. Modified Versions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="license.html#distributing-source-code-form-that-is-incompatible-with-secondary-licenses">10.4. Distributing Source Code Form that is Incompatible With Secondary Licenses</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="license.html#exhibit-a-source-code-form-license-notice">Exhibit A - Source Code Form License Notice</a></li>
+<li class="toctree-l2"><a class="reference internal" href="license.html#exhibit-b-incompatible-with-secondary-licenses-notice">Exhibit B - “Incompatible With Secondary Licenses” Notice</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="genindex.html">Index</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="#">aiohttp_openapi_haljson</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="#">Docs</a> &raquo;</li>
+        
+      <li>Datapunt OAuth2 Services</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/index.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <span class="target" id="index"></span><div class="section" id="datapunt-oauth2-services">
+<h1>Datapunt OAuth2 Services<a class="headerlink" href="#datapunt-oauth2-services" title="Permalink to this headline">¶</a></h1>
+<a class="reference external image-reference" href="https://www.python.org/"><img alt="https://img.shields.io/badge/python-3.6-blue.svg" src="https://img.shields.io/badge/python-3.6-blue.svg" /></a>
+<a class="reference external image-reference" href="https://www.mozilla.org/en-US/MPL/2.0/"><img alt="https://img.shields.io/badge/license-MPLv2.0-blue.svg" src="https://img.shields.io/badge/license-MPLv2.0-blue.svg" /></a>
+<p>The latest published documentation for this project can be found <em>here</em>.</p>
+<div class="admonition-todo admonition" id="index-0">
+<p class="first admonition-title">Todo</p>
+<p class="last">Publish the documentation somewhere (ReadTheDocs?) and insert a link in the
+sentence above.</p>
+</div>
+</div>
+<div class="section" id="conventions">
+<h1>Conventions<a class="headerlink" href="#conventions" title="Permalink to this headline">¶</a></h1>
+<ul>
+<li><p class="first">The project top-level directory is also the source root.</p>
+</li>
+<li><p class="first">We use PyTest for tests.</p>
+</li>
+<li><p class="first">PyTest can be integrated with SetupTools (see
+<a class="reference external" href="https://docs.pytest.org/en/latest/goodpractices.html">https://docs.pytest.org/en/latest/goodpractices.html</a>). We don’t do this.</p>
+</li>
+<li><p class="first">Common commands for builds, distributing, packaging, documentation etcetera
+are in <code class="file docutils literal"><span class="pre">Makefile</span></code> and <code class="file docutils literal"><span class="pre">docs/Makefile</span></code>.</p>
+</li>
+<li><p class="first">RST-files and -docstrings are indented with 4 spaces.</p>
+</li>
+<li><p class="first">Globals must be immutable.</p>
+</li>
+<li><p class="first">Docstrings are formatted like this:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="sd">&quot;&quot;&quot;This is a one-line docstring.&quot;&quot;&quot;</span>
+<span class="sd">&quot;&quot;&quot;One line description, terminated with a period.</span>
+
+<span class="sd">More info, with a trailing empty line.</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</div>
+<div class="section" id="getting-started">
+<h1>Getting Started<a class="headerlink" href="#getting-started" title="Permalink to this headline">¶</a></h1>
+<div class="highlight-bash"><div class="highlight"><pre><span></span><span class="c1"># Clone the repository:</span>
+git clone git@github.com:DatapuntAmsterdam/oauth2.git
+<span class="nb">cd</span> oauth2
+<span class="c1"># Create a virtual environment:</span>
+python3.6 -m venv --copies --prompt oauth2 .venv
+pip install -e .<span class="o">[</span>docs,test<span class="o">]</span>
+<span class="c1"># Start a database server (required for all sub-services):</span>
+docker-compose up -d database
+
+<span class="c1"># To start a documentation server:</span>
+make -C docs server
+</pre></div>
+</div>
+<div class="section" id="starting-the-services">
+<h2>Starting the services<a class="headerlink" href="#starting-the-services" title="Permalink to this headline">¶</a></h2>
+<p>To be able to start up the services, you’ll need to set some environment
+variables. The services will complain if they’re missing.</p>
+<p>This repository hosts 3 distinct services:</p>
+<ul class="simple">
+<li><code class="xref py py-obj docutils literal"><span class="pre">oauth2.authz_service</span></code></li>
+<li><code class="xref py py-obj docutils literal"><span class="pre">oauth2.authz_admin</span></code></li>
+<li><code class="xref py py-obj docutils literal"><span class="pre">oauth2.client_admin_service</span></code></li>
+</ul>
+<p>Each of these services can be started in at least 3 ways:</p>
+<ol class="arabic">
+<li><p class="first">Directly, like this:</p>
+<div class="highlight-shell"><div class="highlight"><pre><span></span>python -m oauth2.authz_admin.main
+</pre></div>
+</div>
+</li>
+<li><p class="first">Through setuptools console script. This is functionally identical to the
+previous method, and only provided as a shortcut:</p>
+<div class="highlight-shell"><div class="highlight"><pre><span></span>authz_admin
+</pre></div>
+</div>
+</li>
+<li><p class="first">Through the aiohttp command line client:</p>
+<div class="highlight-shell"><div class="highlight"><pre><span></span>python -m aiohttp.web -H localhost -P <span class="m">8080</span> oauth2.authz_admin.main:application
+</pre></div>
+</div>
+</li>
+</ol>
+</div>
+</div>
+<div class="section" id="about-scopes">
+<h1>About Scopes<a class="headerlink" href="#about-scopes" title="Permalink to this headline">¶</a></h1>
+<div class="admonition-todo admonition" id="index-1">
+<p class="first admonition-title">Todo</p>
+<p class="last">write about the semantics of scopes in our implementation.</p>
+</div>
+<div class="toctree-wrapper compound">
+</div>
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="api_docs.html" class="btn btn-neutral float-right" title="API Docs" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017, Gemeente Amsterdam.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'0.1',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

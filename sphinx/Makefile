@@ -1,9 +1,9 @@
 RM            = rm -rf
-SPHINXOPTS    =
+SPHINXOPTS    = -d .doctrees
 SPHINXBUILD   = sphinx-build
 AUTOBUILD     = sphinx-autobuild
 SOURCEDIR     = .
-BUILDDIR      = _build
+BUILDDIR      = ../docs
 
 
 html:
