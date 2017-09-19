@@ -389,9 +389,19 @@ their special directives.</p>
 </div>
 <div class="section" id="intersphinx">
 <h2>Intersphinx<a class="headerlink" href="#intersphinx" title="Permalink to this headline">¶</a></h2>
-<p>Intersphinx is configured for <strong>python</strong> and <strong>sphinx</strong> itself. To know the
-exact name of link targets, run <code class="docutils literal"><span class="pre">make</span> <span class="pre">-C</span> <span class="pre">docs</span> <span class="pre">inv</span></code>. This will download and
-deflate the inventory files to <code class="file docutils literal"><span class="pre">docs/</span><em><span class="pre">docset</span></em><span class="pre">.inv</span></code>.</p>
+<p>Intersphinx is configured with the following mappings:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">intersphinx_mapping</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;python&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;https://docs.python.org/3.6/&#39;</span><span class="p">,</span> <span class="s1">&#39;python.inv&#39;</span><span class="p">),</span>
+    <span class="s1">&#39;sphinx&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;http://www.sphinx-doc.org/en/stable/&#39;</span><span class="p">,</span> <span class="s1">&#39;sphinx.inv&#39;</span><span class="p">),</span>
+    <span class="s1">&#39;aiohttp&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;http://aiohttp.readthedocs.io/en/stable/&#39;</span><span class="p">,</span> <span class="s1">&#39;aiohttp.inv&#39;</span><span class="p">),</span>
+    <span class="s1">&#39;aiopg&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;https://aiopg.readthedocs.io/en/stable/&#39;</span><span class="p">,</span> <span class="s1">&#39;aiopg.inv&#39;</span><span class="p">),</span>
+    <span class="s1">&#39;jwt&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;https://pyjwt.readthedocs.io/en/latest/&#39;</span><span class="p">,</span> <span class="s1">&#39;jwt.inv&#39;</span><span class="p">),</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>For each of these external packages, a full list of available reference targets
+can be found in the corresponding <code class="file docutils literal"><span class="pre">*.inv.txt</span></code> file in the <code class="file docutils literal"><span class="pre">sphinx/</span></code>
+directory.</p>
 </div>
 </div>
 

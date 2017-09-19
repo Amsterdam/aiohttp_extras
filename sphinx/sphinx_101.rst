@@ -175,7 +175,16 @@ Three ways of documenting *module data members* and *class attributes*::
 Intersphinx
 -----------
 
-Intersphinx is configured for **python** and **sphinx** itself. To know the
-exact name of link targets, run ``make -C docs inv``. This will download and
-deflate the inventory files to :file:`docs/{docset}.inv`.
+Intersphinx is configured with the following mappings::
 
+    intersphinx_mapping = {
+        'python': ('https://docs.python.org/3.6/', 'python.inv'),
+        'sphinx': ('http://www.sphinx-doc.org/en/stable/', 'sphinx.inv'),
+        'aiohttp': ('http://aiohttp.readthedocs.io/en/stable/', 'aiohttp.inv'),
+        'aiopg': ('https://aiopg.readthedocs.io/en/stable/', 'aiopg.inv'),
+        'jwt': ('https://pyjwt.readthedocs.io/en/latest/', 'jwt.inv'),
+    }
+
+For each of these external packages, a full list of available reference targets
+can be found in the corresponding :file:`*.inv.txt` files in the :file:`sphinx/`
+directory.
