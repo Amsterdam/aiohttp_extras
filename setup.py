@@ -3,6 +3,11 @@
 """
 from setuptools import setup, find_packages
 
+tests_require = [
+    'pytest',
+    'pytest-cov',
+    'pytest-aiohttp',
+]
 
 setup(
 
@@ -11,7 +16,7 @@ setup(
     # ┃ Publication Metadata ┃
     # ┗━━━━━━━━━━━━━━━━━━━━━━┛
     version='0.1.0',
-    name='aiohttp_openapi_haljson',
+    name='aiohttp_rest',
     description="Stack for developing HTTP web services in Python",
     long_description="""
         This package integrates:
@@ -29,7 +34,7 @@ setup(
             predefined paths
 
     """,
-    url='https://github.com/Amsterdam/aiohttp_openapi_haljson/',
+    url='https://github.com/Amsterdam/aiohttp_rest',
     author='Amsterdam City Data',
     author_email='datapunt@amsterdam.nl',
     license='Mozilla Public License Version 2.0',
@@ -53,23 +58,15 @@ setup(
     # ┏━━━━━━━━━━━━━━┓
     # ┃ Requirements ┃
     # ┗━━━━━━━━━━━━━━┛
-    # setup_requires=[
-    #     'setuptools_git'
-    # ],
+    python_requires='~=3.6',
+    setup_requires=[
+        'pytest-runner'
+    ],
     install_requires=[
         'aiohttp',
-        'aiohttp-jinja2',
-        'aiopg',
-        'jsonschema',
         'PyYaml',
         'PyJWT',
-        'SQLAlchemy',
         'swagger-parser',
-
-        # Recommended by aiohttp docs:
-        'aiodns',   # optional asynchronous DNS client
-        'cchardet', # optional fast character handling in C
-        'uvloop',   # optional fast eventloop for asyncio
     ],
     extras_require={
         'docs': [
@@ -79,13 +76,15 @@ setup(
             'sphinx-autodoc-typehints',
             'sphinx_rtd_theme',
         ],
-        'test': [
-            'pytest',
-            'pytest-cov',
-            'pytest-aiohttp'
-        ],
+        'test': tests_require,
         'dev': [
             'aiohttp-devtools',
+
+            # Recommended by aiohttp docs:
+            'aiodns',   # optional asynchronous DNS client
+            'cchardet', # optional fast character handling in C
+            'uvloop',   # optional fast eventloop for asyncio
         ],
     },
+    tests_require=tests_require,
 )

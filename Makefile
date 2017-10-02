@@ -1,4 +1,4 @@
-.PHONY: run test jenkinstest cov testclean distclean clean
+.PHONY: test testcov release dist clean
 
 RM = rm -rf
 
@@ -6,70 +6,41 @@ RM = rm -rf
 # add the current working directory to sys.path. We don't want that; we want
 # to test against the _installed_ package(s), not against any python sources
 # that are (accidentally) in our CWD.
-PYTEST = pytest
+PYTEST = python setup.py test --verbose
 
 # The ?= operator below assigns only if the variable isn't defined yet. This
-# allows the caller to override them::
+# allows the caller to override them:
 #
 #     TESTS=other_tests make test
 #
-#PYTEST_OPTS ?= --loop uvloop -p no:cacheprovider --verbose --exitfirst --capture=no --cov=src --cov-report=term --no-cov-on-fail
-PYTEST_OPTS ?= --loop uvloop -p no:cacheprovider --verbose --exitfirst
-PYTEST_COV_OPTS ?= --loop uvloop -p no:cacheprovider --verbose --cov=src --cov-report=term --no-cov-on-fail
+#PYTEST_OPTS    ?= -p no:cacheprovider --exitfirst --capture=no
+PYTEST_OPTS     ?= -p no:cacheprovider --exitfirst
+PYTEST_OPTS_COV ?= -p no:cacheprovider --exitfirst --cov=src --cov-report=term --no-cov-on-fail
 TESTS ?= tests
 
 
-run:
-	cp -af src/authz_admin/openapi-$(DATAPUNT_ENVIRONMENT).json \
-	       swagger-ui/dist/openapi.json && \
-	authz_admin
+PYTHON = python3
+RM = rm -rf
+
+dist: test clean
+	$(PYTHON) setup.py sdist
 
 
-schema schema_jenkins schema_acc:
-	$(MAKE) -C alembic $@
+release: test clean
+	$(PYTHON) setup.py sdist upload
 
 
-test: schema
-	$(PYTEST) $(PYTEST_OPTS) $(TESTS)
+test:
+	$(PYTEST) --addopts "$(PYTEST_OPTS) $(TESTS)"
 
 
-jenkinstest: schema_jenkins
-	$(PYTEST) $(PYTEST_OPTS) $(TESTS)
+testcov:
+	$(PYTEST) --addopts "$(PYTEST_OPTS_COV) $(TESTS)"
 
 
-cov:
-	$(PYTEST) $(PYTEST_COV_OPTS) $(TESTS)
-
-
-testclean:
-	@$(RM) .cache .coverage
-
-
-# @evert waar komt dit eigenlijk vandaan? [--PvB]
-distclean:
-	@$(RM) \
-		dist/ \
-		bin/ \
-		develop-eggs/ \
-		eggs/ \
-		parts/ \
-		MANIFEST \
-		htmlcov/ \
-		.installed.cfg
-
-clean: testclean distclean
-	@$(RM) build *.egg-info .eggs dist
-	@find . -not -path "./.venv/*" -and \( \
-		-name "*.pyc" -or \
-		-name "__pycache__" -or \
-		-name "*.pyo" -or \
-		-name "*.so" -or \
-		-name "*.o" -or \
-		-name "*~" -or \
-		-name "._*" -or \
-		-name "*.swp" -or \
-		-name "Desktop.ini" -or \
-		-name "Thumbs.db" -or \
-		-name "__MACOSX__" -or \
-		-name ".DS_Store" \
+clean:
+	@$(RM) .eggs src/datapunt_config_loader.egg-info dist .coverage
+	@find . \( \
+		    -iname "*~" \
+		-or -iname "__pycache__" \
 	\) -delete
