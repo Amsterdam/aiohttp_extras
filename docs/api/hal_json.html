@@ -8,14 +8,14 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Rest Utils &mdash; aiohttp_openapi_haljson 0.1 documentation</title>
+  <title>HAL+JSON &mdash; aiohttp_extras 0.1 documentation</title>
   
 
   
   
   
   
-    <link rel="canonical" href="https://amsterdam.github.io/aiohttp_openapi_haljson/api/rest_utils.html"/>
+    <link rel="canonical" href="https://amsterdam.github.io/aiohttp_openapi_haljson/api/hal_json.html"/>
   
 
   
@@ -39,10 +39,10 @@
         <link rel="index" title="Index"
               href="../genindex.html"/>
         <link rel="search" title="Search" href="../search.html"/>
-    <link rel="top" title="aiohttp_openapi_haljson 0.1 documentation" href="../index.html"/>
+    <link rel="top" title="aiohttp_extras 0.1 documentation" href="../index.html"/>
         <link rel="up" title="API Docs" href="../api_docs.html"/>
-        <link rel="next" title="Sphinx 101" href="../sphinx_101.html"/>
-        <link rel="prev" title="Config Loader" href="config_loader.html"/> 
+        <link rel="next" title="View" href="view.html"/>
+        <link rel="prev" title="ETags" href="etags.html"/> 
 
   
   <script src="../_static/js/modernizr.min.js"></script>
@@ -61,12 +61,19 @@
           
 
           
-            <a href="../index.html" class="icon icon-home"> aiohttp_openapi_haljson
+            <a href="../index.html" class="icon icon-home"> aiohttp_extras
           
 
           
           </a>
 
+          
+            
+            
+              <div class="version">
+                0.1
+              </div>
+            
           
 
           
@@ -90,20 +97,22 @@
             
               <ul class="current">
 <li class="toctree-l1 current"><a class="reference internal" href="../api_docs.html">API Docs</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="config_loader.html">Config Loader</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">Rest Utils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="content_negotiation.html">Content Negotiation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="etags.html">ETags</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">HAL+JSON</a></li>
+<li class="toctree-l2"><a class="reference internal" href="view.html">View</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../sphinx_101.html">Sphinx 101</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../sphinx_101.html#rest-formatting">ReST formatting</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../sphinx_101.html#roles-added-by-sphinx">Roles added by Sphinx</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../sphinx_101.html#directives">Directives</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../sphinx_101.html#google-style-docstrings">Google-style docstrings</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../sphinx_101.html#autodoc">Autodoc</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../sphinx_101.html#intersphinx">Intersphinx</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../todo_list.html">Todo list</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../glossary.html">Glossary</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../license.html">License</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../license.html#definitions">1. Definitions</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="../license.html#contributor">1.1. “Contributor”</a></li>
@@ -171,7 +180,7 @@
       <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
         
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="../index.html">aiohttp_openapi_haljson</a>
+          <a href="../index.html">aiohttp_extras</a>
         
       </nav>
 
@@ -203,13 +212,13 @@
         
           <li><a href="../api_docs.html">API Docs</a> &raquo;</li>
         
-      <li>Rest Utils</li>
+      <li>HAL+JSON</li>
     
     
       <li class="wy-breadcrumbs-aside">
         
             
-            <a href="../_sources/api/rest_utils.rst.txt" rel="nofollow"> View page source</a>
+            <a href="../_sources/api/hal_json.rst.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -222,8 +231,35 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="rest-utils">
-<span id="id1"></span><h1>Rest Utils<a class="headerlink" href="#rest-utils" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="module-aiohttp_extras._hal_json">
+<span id="hal-json"></span><span id="haljson"></span><h1>HAL+JSON<a class="headerlink" href="#module-aiohttp_extras._hal_json" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="aiohttp_extras._hal_json.HALJSONMixin">
+<em class="property">class </em><code class="descname">HALJSONMixin</code><a class="reference internal" href="../_modules/aiohttp_extras/_hal_json.html#HALJSONMixin"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aiohttp_extras._hal_json.HALJSONMixin" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3.6/library/functions.html#object" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
+<div class="admonition-todo admonition" id="index-0">
+<p class="first admonition-title">Todo</p>
+<p class="last">Documentation</p>
+</div>
+<dl class="method">
+<dt id="aiohttp_extras._hal_json.HALJSONMixin.attributes">
+<code class="descname">attributes</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aiohttp_extras/_hal_json.html#HALJSONMixin.attributes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aiohttp_extras._hal_json.HALJSONMixin.attributes" title="Permalink to this definition">¶</a></dt>
+<dd><p>This default implementation returns <em>no</em> attributes, ie. an empty
+<a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#dict" title="(in Python v3.6)"><code class="xref py py-obj docutils literal"><span class="pre">dict</span></code></a>.</p>
+<p>Most subclasses should override this default implementation.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="aiohttp_extras._hal_json.HALJSONMixin.to_dict">
+<code class="descname">to_dict</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aiohttp_extras/_hal_json.html#HALJSONMixin.to_dict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aiohttp_extras._hal_json.HALJSONMixin.to_dict" title="Permalink to this definition">¶</a></dt>
+<dd><div class="admonition-todo admonition" id="index-1">
+<p class="first admonition-title">Todo</p>
+<p class="last">Implementation. This method is not yet finished.</p>
+</div>
+</dd></dl>
+
+</dd></dl>
+
 </div>
 
 
@@ -236,10 +272,10 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../sphinx_101.html" class="btn btn-neutral float-right" title="Sphinx 101" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="view.html" class="btn btn-neutral float-right" title="View" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="config_loader.html" class="btn btn-neutral" title="Config Loader" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="etags.html" class="btn btn-neutral" title="ETags" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

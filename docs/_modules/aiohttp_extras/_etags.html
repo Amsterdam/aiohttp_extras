@@ -1,0 +1,762 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>aiohttp_extras._etags &mdash; aiohttp_extras 0.1 documentation</title>
+  
+
+  
+  
+  
+  
+    <link rel="canonical" href="https://amsterdam.github.io/aiohttp_openapi_haljson/_modules/aiohttp_extras/_etags.html"/>
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="../../_static/theme_overrides.css" type="text/css" />
+  
+
+  
+        <link rel="index" title="Index"
+              href="../../genindex.html"/>
+        <link rel="search" title="Search" href="../../search.html"/>
+    <link rel="top" title="aiohttp_extras 0.1 documentation" href="../../index.html"/>
+        <link rel="up" title="Module code" href="../index.html"/> 
+
+  
+  <script src="../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> aiohttp_extras
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../api_docs.html">API Docs</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../api/content_negotiation.html">Content Negotiation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/conditional.html">Conditional Requests</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../api/conditional.html#overview">Overview</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../api/conditional.html#etagmixin">ETagMixin</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/conditional.html#helpers-for-etag-creation">Helpers for ETag creation</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../api/conditional.html#api-documentation">API documentation</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/hal_json.html">HAL+JSON</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/json.html">Async Streaming JSON</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../api/json.html#introduction">Introduction</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../api/json.html#streaming">1. Streaming</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/json.html#asynchronous-streaming">2. Asynchronous Streaming</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/json.html#take-home-message">3. Take home message</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../api/json.html#api-documentation">API documentation</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/view.html">View</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../sphinx_101.html">Sphinx 101</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../sphinx_101.html#rest-formatting">ReST formatting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../sphinx_101.html#roles-added-by-sphinx">Roles added by Sphinx</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../sphinx_101.html#directives">Directives</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../sphinx_101.html#google-style-docstrings">Google-style docstrings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../sphinx_101.html#autodoc">Autodoc</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../sphinx_101.html#intersphinx">Intersphinx</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../todo_list.html">Todo list</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../license.html">License</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../license.html#definitions">1. Definitions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../license.html#contributor">1.1. “Contributor”</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../license.html#contributor-version">1.2. “Contributor Version”</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../license.html#contribution">1.3. “Contribution”</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../license.html#covered-software">1.4. “Covered Software”</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../license.html#incompatible-with-secondary-licenses">1.5. “Incompatible With Secondary Licenses”</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../license.html#executable-form">1.6. “Executable Form”</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../license.html#id1">1.8. “License”</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../license.html#licensable">1.9. “Licensable”</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../license.html#modifications">1.10. “Modifications”</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../license.html#patent-claims-of-a-contributor">1.11. “Patent Claims” of a Contributor</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../license.html#secondary-license">1.12. “Secondary License”</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../license.html#source-code-form">1.13. “Source Code Form”</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../license.html#you-or-your">1.14. “You” (or “Your”)</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../license.html#license-grants-and-conditions">2. License Grants and Conditions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../license.html#grants">2.1. Grants</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../license.html#effective-date">2.2. Effective Date</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../license.html#limitations-on-grant-scope">2.3. Limitations on Grant Scope</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../license.html#subsequent-licenses">2.4. Subsequent Licenses</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../license.html#representation">2.5. Representation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../license.html#fair-use">2.6. Fair Use</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../license.html#conditions">2.7. Conditions</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../license.html#responsibilities">3. Responsibilities</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../license.html#distribution-of-source-form">3.1. Distribution of Source Form</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../license.html#distribution-of-executable-form">3.2. Distribution of Executable Form</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../license.html#distribution-of-a-larger-work">3.3. Distribution of a Larger Work</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../license.html#notices">3.4. Notices</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../license.html#application-of-additional-terms">3.5. Application of Additional Terms</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../license.html#inability-to-comply-due-to-statute-or-regulation">4. Inability to Comply Due to Statute or Regulation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../license.html#termination">5. Termination</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../license.html#disclaimer-of-warranty">6. Disclaimer of Warranty</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../license.html#limitation-of-liability">7. Limitation of Liability</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../license.html#litigation">8. Litigation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../license.html#miscellaneous">9. Miscellaneous</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../license.html#versions-of-the-license">10. Versions of the License</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../license.html#new-versions">10.1. New Versions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../license.html#effect-of-new-versions">10.2. Effect of New Versions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../license.html#modified-versions">10.3. Modified Versions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../license.html#distributing-source-code-form-that-is-incompatible-with-secondary-licenses">10.4. Distributing Source Code Form that is Incompatible With Secondary Licenses</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../license.html#exhibit-a-source-code-form-license-notice">Exhibit A - Source Code Form License Notice</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../license.html#exhibit-b-incompatible-with-secondary-licenses-notice">Exhibit B - “Incompatible With Secondary Licenses” Notice</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../genindex.html">Index</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">aiohttp_extras</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+        
+      <li>aiohttp_extras._etags</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for aiohttp_extras._etags</h1><div class="highlight"><pre>
+<span></span><span class="c1"># language=rst</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">This module provides support for conditional request handling based on ETags, as</span>
+<span class="sd">defined in :rfc:`7232`.</span>
+
+<span class="sd">There are two use cases for conditional requests:</span>
+
+<span class="sd">1.  For safe methods (ie. ``OPTIONS``, ``GET``, and ``HEAD``), conditional</span>
+<span class="sd">    requests can be used by caching clients — including caching forward proxies</span>
+<span class="sd">    — to download the resource representation only if it has changed since the</span>
+<span class="sd">    cached version.  In this case, the client adds an ``If-None-Match:`` header</span>
+<span class="sd">    and includes the ETag(s) of the cached representation(s).</span>
+<span class="sd">2.  For unsafe methods (ie. ``DELETE``, ``PATCH``, ``POST``, and ``PUT``),</span>
+<span class="sd">    conditional requests can be used to avoid *lost updates*.  For this use</span>
+<span class="sd">    case, there are two scenarios:</span>
+
+<span class="sd">    a.  When performing an unsafe request, the client adds an ``If-Match:``</span>
+<span class="sd">        header with the ETag of the resource as last seen by the client.  This</span>
+<span class="sd">        guarantees that the client doesn&#39;t accidentally delete or overwrite a</span>
+<span class="sd">        newer version of the resource.</span>
+<span class="sd">    b.  When performing a ``PUT`` request with the intention of creating a new</span>
+<span class="sd">        resource, the client adds an ``If-None-Match: *`` header to assert that</span>
+<span class="sd">        no resource yet exists at the given request URI.</span>
+
+<span class="sd">Todo:</span>
+<span class="sd">    Add support for conditional request handling based on the ``Last-Modified:``</span>
+
+
+<span class="sd">Helpers for ETag creation</span>
+<span class="sd">-------------------------</span>
+
+<span class="sd">To facilitate the creation of valid ETags for your resources, this library provides the following helpers:</span>
+
+<span class="sd">-   :func:`etaggify`: converts a string to a syntactically valid ETag.</span>
+<span class="sd">-   :func:`etag_from_int` and :func:`etag_from_float` converts integers and</span>
+<span class="sd">    floating point values to very compact ETags.</span>
+<span class="sd">-   :class:`ETagGenerator` can create a unique ETag from any (complex) value,</span>
+<span class="sd">    using canonical JSON encoding and SHA3_224 hashing.</span>
+
+
+<span class="sd">ETagMixin</span>
+<span class="sd">---------</span>
+
+<span class="sd">If you want conditional request handling for one of your</span>
+
+
+<span class="sd">API documentation</span>
+<span class="sd">-----------------</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">abc</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">typing</span> <span class="k">as</span> <span class="nn">T</span>
+<span class="kn">import</span> <span class="nn">re</span>
+<span class="kn">import</span> <span class="nn">base64</span>
+<span class="kn">import</span> <span class="nn">struct</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">hashlib</span>
+<span class="kn">from</span> <span class="nn">collections.abc</span> <span class="k">import</span> <span class="n">Mapping</span>
+
+<span class="kn">from</span> <span class="nn">aiohttp</span> <span class="k">import</span> <span class="n">web</span>
+
+<span class="n">_logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
+<span class="n">_ETAGS_PATTERN</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span>
+    <span class="sa">r</span><span class="s1">&#39;\s*(?:W/)?&quot;[\x21\x23-\x7e\x80-\xff]+&quot;(?:\s*,\s*(?:W/)?&quot;[\x21\x23-\x7e\x80-\xff]+&quot;)*&#39;</span>
+<span class="p">)</span>
+<span class="n">_ETAG_ITER_PATTERN</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span>
+    <span class="sa">r</span><span class="s1">&#39;((?:W/)?&quot;[\x21\x23-\x7e\x80-\xff]+&quot;)&#39;</span>
+<span class="p">)</span>
+<span class="n">_STAR</span> <span class="o">=</span> <span class="s1">&#39;*&#39;</span>
+<span class="n">_STAR_TYPE</span> <span class="o">=</span> <span class="nb">str</span>
+<span class="n">_HTTP_UNSAFE_METHODS</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;DELETE&#39;</span><span class="p">,</span> <span class="s1">&#39;PATCH&#39;</span><span class="p">,</span> <span class="s1">&#39;POST&#39;</span><span class="p">,</span> <span class="s1">&#39;PUT&#39;</span><span class="p">}</span>
+<span class="n">_VALID_ETAG_CHARS</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;[\x21\x23-\x7e\x80-\xff]+&#39;</span><span class="p">)</span>
+<span class="n">_IF_MATCH</span> <span class="o">=</span> <span class="s1">&#39;If-Match&#39;</span>
+<span class="n">_IF_NONE_MATCH</span> <span class="o">=</span> <span class="s1">&#39;If-None-Match&#39;</span>
+
+
+<div class="viewcode-block" id="_parse_if_header"><a class="viewcode-back" href="../../api/conditional.html#aiohttp_extras._etags._parse_if_header">[docs]</a><span class="k">def</span> <span class="nf">_parse_if_header</span><span class="p">(</span><span class="n">request</span><span class="p">:</span> <span class="n">web</span><span class="o">.</span><span class="n">Request</span><span class="p">,</span> <span class="n">header_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">T</span><span class="o">.</span><span class="n">Union</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="n">T</span><span class="o">.</span><span class="n">Set</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">_STAR_TYPE</span><span class="p">]:</span>
+    <span class="c1"># language=rst</span>
+    <span class="sd">&quot;&quot;&quot;Parses ``If-(None-)Match:`` request headers.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        request:</span>
+<span class="sd">        header_name:  either ``&#39;If-Match&#39;`` or ``&#39;If-None-Match&#39;``</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        T.Union[None, T.Set, _STAR_TYPE]: ``None`` if the header is not present</span>
+<span class="sd">        in the request.  Otherwise a `set` of ETags or string literal</span>
+<span class="sd">        ``&quot;*&quot;`` as found in the request header.</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">        web.HTTPBadRequest: If the request header is malformed.</span>
+
+<span class="sd">    Warning:</span>
+<span class="sd">        This parser allows an ``If-(None-)Match:`` request header with an empty</span>
+<span class="sd">        value.  This is not :rfc:`7232` compliant, and a work-around for a bug</span>
+<span class="sd">        in Swagger-UI.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">header_name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">request</span><span class="o">.</span><span class="n">headers</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">None</span>
+    <span class="n">header</span> <span class="o">=</span> <span class="s1">&#39;,&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">headers</span><span class="o">.</span><span class="n">getall</span><span class="p">(</span><span class="n">header_name</span><span class="p">))</span>
+    <span class="k">if</span> <span class="n">header</span> <span class="o">==</span> <span class="s1">&#39;&#39;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">None</span>
+    <span class="k">if</span> <span class="n">header</span> <span class="o">==</span> <span class="n">_STAR</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">_STAR</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">_ETAGS_PATTERN</span><span class="o">.</span><span class="n">fullmatch</span><span class="p">(</span><span class="n">header</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="n">web</span><span class="o">.</span><span class="n">HTTPBadRequest</span><span class="p">(</span>
+            <span class="n">text</span><span class="o">=</span><span class="s2">&quot;Syntax error in request header If-Match: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">header</span>
+        <span class="p">)</span>
+    <span class="k">return</span> <span class="nb">set</span><span class="p">({</span>
+        <span class="n">match</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">match</span> <span class="ow">in</span> <span class="n">_ETAG_ITER_PATTERN</span><span class="o">.</span><span class="n">finditer</span><span class="p">(</span><span class="n">header</span><span class="p">)</span>
+    <span class="p">})</span></div>
+
+
+<span class="k">def</span> <span class="nf">_match_etags</span><span class="p">(</span><span class="n">etag</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">etags</span><span class="p">:</span> <span class="n">T</span><span class="o">.</span><span class="n">Iterable</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">allow_weak</span><span class="p">:</span> <span class="nb">bool</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">allow_weak</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Weak ETag comparison not yet implemented.&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="n">etag</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;&quot;&#39;</span> <span class="ow">and</span> <span class="n">etag</span> <span class="ow">in</span> <span class="n">etags</span>
+
+
+<div class="viewcode-block" id="_assert_if_match"><a class="viewcode-back" href="../../api/conditional.html#aiohttp_extras._etags._assert_if_match">[docs]</a><span class="k">def</span> <span class="nf">_assert_if_match</span><span class="p">(</span><span class="n">request</span><span class="p">:</span> <span class="n">web</span><span class="o">.</span><span class="n">Request</span><span class="p">,</span>
+                     <span class="n">etag</span><span class="p">:</span> <span class="n">T</span><span class="o">.</span><span class="n">Union</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="nb">bool</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span>
+                     <span class="n">require</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
+                     <span class="n">deny_star</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
+                     <span class="n">allow_weak</span><span class="p">:</span> <span class="nb">bool</span><span class="p">):</span>
+    <span class="c1"># language=rst</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">        web.HTTPPreconditionRequired:</span>
+<span class="sd">            If parameter `require` is ``True`` and no precondition was provided</span>
+<span class="sd">            by the client.</span>
+<span class="sd">        web.HTTPBadRequest: Either</span>
+
+<span class="sd">            -   the request header is syntactically incorrect, or</span>
+<span class="sd">            -   parameter `deny_star` is ``True`` and the client provided an</span>
+<span class="sd">                asterisk instead of a valid ETag.</span>
+<span class="sd">        web.HTTPPreconditionFailed:</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">etags</span> <span class="o">=</span> <span class="n">_parse_if_header</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">_IF_MATCH</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">etags</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">require</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">web</span><span class="o">.</span><span class="n">HTTPPreconditionRequired</span><span class="p">(</span>
+                <span class="n">text</span><span class="o">=</span><span class="n">_IF_MATCH</span>
+            <span class="p">)</span>
+        <span class="k">return</span>
+    <span class="k">if</span> <span class="n">etags</span> <span class="ow">is</span> <span class="n">_STAR</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">deny_star</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">web</span><span class="o">.</span><span class="n">HTTPBadRequest</span><span class="p">(</span>
+                <span class="n">text</span><span class="o">=</span><span class="s1">&#39;If-Match: requires a valid ETag for this request.&#39;</span>
+            <span class="p">)</span>
+        <span class="k">if</span> <span class="n">etag</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">etag</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">web</span><span class="o">.</span><span class="n">HTTPPreconditionFailed</span><span class="p">(</span><span class="n">text</span><span class="o">=</span><span class="n">_IF_MATCH</span><span class="p">)</span>
+        <span class="k">return</span>
+    <span class="c1"># From here on, `etags` can only be a set().</span>
+    <span class="k">if</span> <span class="n">etag</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">web</span><span class="o">.</span><span class="n">HTTPPreconditionFailed</span><span class="p">(</span>
+            <span class="n">text</span><span class="o">=</span><span class="s2">&quot;Resource doesn&#39;t have an ETag.&quot;</span>
+        <span class="p">)</span>
+    <span class="k">if</span> <span class="p">(</span>
+        <span class="n">etag</span> <span class="ow">is</span> <span class="kc">True</span>          <span class="c1"># the resource exists, but doesn&#39;t have a specific ETag</span>
+        <span class="ow">or</span> <span class="n">etag</span> <span class="ow">is</span> <span class="kc">False</span>      <span class="c1"># the resource doesn&#39;t exist</span>
+        <span class="ow">or</span> <span class="n">etag</span> <span class="ow">is</span> <span class="kc">None</span>       <span class="c1"># the resource doesn&#39;t exist</span>
+        <span class="c1"># the resource has a different ETag:</span>
+        <span class="ow">or</span> <span class="ow">not</span> <span class="n">_match_etags</span><span class="p">(</span><span class="n">etag</span><span class="p">,</span> <span class="n">etags</span><span class="p">,</span> <span class="n">allow_weak</span><span class="p">)</span>
+    <span class="p">):</span>
+        <span class="k">raise</span> <span class="n">web</span><span class="o">.</span><span class="n">HTTPPreconditionFailed</span><span class="p">(</span><span class="n">text</span><span class="o">=</span><span class="n">_IF_MATCH</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="_assert_if_none_match"><a class="viewcode-back" href="../../api/conditional.html#aiohttp_extras._etags._assert_if_none_match">[docs]</a><span class="k">def</span> <span class="nf">_assert_if_none_match</span><span class="p">(</span><span class="n">request</span><span class="p">:</span> <span class="n">web</span><span class="o">.</span><span class="n">Request</span><span class="p">,</span>
+                          <span class="n">etag</span><span class="p">:</span> <span class="n">T</span><span class="o">.</span><span class="n">Union</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="nb">bool</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span>
+                          <span class="n">require</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
+                          <span class="n">allow_weak</span><span class="p">:</span> <span class="nb">bool</span><span class="p">):</span>
+    <span class="c1"># language=rst</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">    The If-None-Match: header is used in two scenarios:</span>
+
+<span class="sd">    1.   GET requests by a caching client. In this case, the client will</span>
+<span class="sd">         normally provide a list of (cached) ETags.</span>
+<span class="sd">    2.   PUT requests, where the client intends to create a new resource and</span>
+<span class="sd">         wants to avoid overwriting an existing resource. In this case, the</span>
+<span class="sd">         client will normally provide only the asterisk &quot;*&quot; character.</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">        web.HTTPBadRequest:</span>
+<span class="sd">            If the request header is syntactically incorrect.</span>
+<span class="sd">        web.HTTPPreconditionRequired:</span>
+<span class="sd">            If parameter `require` is ``True`` and no precondition was provided</span>
+<span class="sd">            by the client.</span>
+<span class="sd">        web.HTTPPreconditionFailed:</span>
+<span class="sd">            If the precondition failed and the request is *unsafe*.</span>
+<span class="sd">        web.HTTPNotModified:</span>
+<span class="sd">            If the precondition failed and the request is *safe*.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">etags</span> <span class="o">=</span> <span class="n">_parse_if_header</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">_IF_NONE_MATCH</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">require</span> <span class="ow">and</span> <span class="n">etags</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">web</span><span class="o">.</span><span class="n">HTTPPreconditionRequired</span><span class="p">(</span><span class="n">text</span><span class="o">=</span><span class="n">_IF_NONE_MATCH</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">etags</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">etag</span> <span class="ow">is</span> <span class="kc">False</span> <span class="ow">or</span> <span class="n">etag</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span>
+    <span class="k">if</span> <span class="n">etags</span> <span class="ow">is</span> <span class="n">_STAR</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">web</span><span class="o">.</span><span class="n">HTTPPreconditionFailed</span><span class="p">(</span><span class="n">text</span><span class="o">=</span><span class="n">_IF_NONE_MATCH</span><span class="p">)</span>
+    <span class="c1"># From here on, we know that etags is a set of strings.</span>
+    <span class="k">if</span> <span class="n">etag</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">web</span><span class="o">.</span><span class="n">HTTPPreconditionFailed</span><span class="p">(</span>
+            <span class="n">text</span><span class="o">=</span><span class="s2">&quot;Resource doesn&#39;t have an ETag.&quot;</span>
+        <span class="p">)</span>
+    <span class="c1"># From here on, we know that etag is a string:</span>
+    <span class="k">if</span> <span class="n">_match_etags</span><span class="p">(</span><span class="n">etag</span><span class="p">,</span> <span class="n">etags</span><span class="p">,</span> <span class="n">allow_weak</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="ow">in</span> <span class="p">{</span><span class="s1">&#39;GET&#39;</span><span class="p">,</span> <span class="s1">&#39;HEAD&#39;</span><span class="p">}:</span>
+            <span class="k">raise</span> <span class="n">web</span><span class="o">.</span><span class="n">HTTPNotModified</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">web</span><span class="o">.</span><span class="n">HTTPPreconditionFailed</span><span class="p">(</span><span class="n">text</span><span class="o">=</span><span class="n">_IF_NONE_MATCH</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="assert_preconditions"><a class="viewcode-back" href="../../api/conditional.html#aiohttp_extras._etags.assert_preconditions">[docs]</a><span class="k">def</span> <span class="nf">assert_preconditions</span><span class="p">(</span><span class="n">request</span><span class="p">:</span> <span class="n">web</span><span class="o">.</span><span class="n">Request</span><span class="p">,</span>
+                         <span class="n">etag</span><span class="p">:</span> <span class="n">T</span><span class="o">.</span><span class="n">Union</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="nb">bool</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span>
+                         <span class="n">require_if_match</span><span class="p">:</span>      <span class="nb">bool</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                         <span class="n">deny_if_match_star</span><span class="p">:</span>    <span class="nb">bool</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                         <span class="n">require_if_none_match</span><span class="p">:</span> <span class="nb">bool</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                         <span class="n">allow_weak</span><span class="p">:</span>            <span class="nb">bool</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="c1"># language=rst</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">        request:</span>
+<span class="sd">            the current HTTP request</span>
+<span class="sd">        etag:</span>
+<span class="sd">            any value produced by :meth:`ETagMixin.etag`</span>
+<span class="sd">        require_if_match:</span>
+<span class="sd">            set ``True`` to assert the presence of an ``If-Match:`` request</span>
+<span class="sd">            header</span>
+<span class="sd">        deny_if_match_star:</span>
+<span class="sd">            if ``True``, raises :exc:`web.HTTPBadRequest` if the client sends an</span>
+<span class="sd">            ``If-Match: *`` request header.  This forces the client to send a</span>
+<span class="sd">            specific valid ETag.</span>
+<span class="sd">        require_if_none_match:</span>
+<span class="sd">            set ``True`` to assert the presence of an ``If-None-Match:`` request</span>
+<span class="sd">            header</span>
+<span class="sd">        allow_weak:</span>
+<span class="sd">            set ``True`` to allow weak ETag comporisons.</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">        see :func:`_assert_if_match` and :func:`_assert_if_none_match`</span>
+
+<span class="sd">    Warning:</span>
+<span class="sd">        Parameter `allow_weak` is not yet implemented.  If set to ``True``, a</span>
+<span class="sd">        :exc:`ValueError` is raised.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">_assert_if_match</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">etag</span><span class="p">,</span> <span class="n">require_if_match</span><span class="p">,</span> <span class="n">deny_if_match_star</span><span class="p">,</span> <span class="n">allow_weak</span><span class="p">)</span>
+    <span class="n">_assert_if_none_match</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">etag</span><span class="p">,</span> <span class="n">require_if_none_match</span><span class="p">,</span> <span class="n">allow_weak</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="etaggify"><a class="viewcode-back" href="../../api/conditional.html#aiohttp_extras._etags.etaggify">[docs]</a><span class="k">def</span> <span class="nf">etaggify</span><span class="p">(</span><span class="n">v</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">weak</span><span class="p">:</span> <span class="nb">bool</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="c1"># language=rst</span>
+    <span class="sd">&quot;&quot;&quot;Generates a syntactically valid ETag.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        v: The string to use inside the ETag.</span>
+<span class="sd">        weak: if ``True``, a weak ETag is created, ie. an ETag that starts with</span>
+<span class="sd">            ``W/``.</span>
+
+<span class="sd">    &gt;&gt;&gt; etaggify(&#39;foo&#39;)</span>
+<span class="sd">    &#39;&quot;foo&quot;&#39;</span>
+<span class="sd">    &gt;&gt;&gt; etaggify(&#39;bar&#39;, weak=True)</span>
+<span class="sd">    &#39;W/&quot;bar&quot;&#39;</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">assert</span> <span class="n">_VALID_ETAG_CHARS</span><span class="o">.</span><span class="n">fullmatch</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+    <span class="n">weak</span> <span class="o">=</span> <span class="s1">&#39;W/&#39;</span> <span class="k">if</span> <span class="n">weak</span> <span class="k">else</span> <span class="s1">&#39;&#39;</span>
+    <span class="k">return</span> <span class="n">weak</span> <span class="o">+</span> <span class="s1">&#39;&quot;&#39;</span> <span class="o">+</span> <span class="n">v</span> <span class="o">+</span> <span class="s1">&#39;&quot;&#39;</span></div>
+
+
+<div class="viewcode-block" id="etag_from_int"><a class="viewcode-back" href="../../api/conditional.html#aiohttp_extras._etags.etag_from_int">[docs]</a><span class="k">def</span> <span class="nf">etag_from_int</span><span class="p">(</span><span class="n">value</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">weak</span><span class="p">:</span> <span class="nb">bool</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="c1"># language=rst</span>
+    <span class="sd">&quot;&quot;&quot;Translates an integer to an ETag string.&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="o">-</span><span class="mh">0x80</span> <span class="o">&lt;=</span> <span class="n">value</span> <span class="o">&lt;</span> <span class="mh">0x80</span><span class="p">:</span>
+        <span class="nb">format</span> <span class="o">=</span> <span class="s1">&#39;b&#39;</span>
+    <span class="k">elif</span> <span class="o">-</span><span class="mh">0x8000</span> <span class="o">&lt;=</span> <span class="n">value</span> <span class="o">&lt;</span> <span class="mh">0x8000</span><span class="p">:</span>
+        <span class="nb">format</span> <span class="o">=</span> <span class="s1">&#39;h&#39;</span>
+    <span class="k">elif</span> <span class="o">-</span><span class="mh">0x80000000</span> <span class="o">&lt;=</span> <span class="n">value</span> <span class="o">&lt;</span> <span class="mh">0x80000000</span><span class="p">:</span>
+        <span class="nb">format</span> <span class="o">=</span> <span class="s1">&#39;l&#39;</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="nb">format</span> <span class="o">=</span> <span class="s1">&#39;q&#39;</span>
+    <span class="k">return</span> <span class="n">etaggify</span><span class="p">(</span>
+        <span class="n">base64</span><span class="o">.</span><span class="n">urlsafe_b64encode</span><span class="p">(</span><span class="n">struct</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="nb">format</span><span class="p">,</span> <span class="n">value</span><span class="p">))</span><span class="o">.</span><span class="n">decode</span><span class="p">(),</span>
+        <span class="n">weak</span>
+    <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="etag_from_float"><a class="viewcode-back" href="../../api/conditional.html#aiohttp_extras._etags.etag_from_float">[docs]</a><span class="k">def</span> <span class="nf">etag_from_float</span><span class="p">(</span><span class="n">value</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">weak</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="c1"># language=rst</span>
+    <span class="sd">&quot;&quot;&quot;Translates a float to an ETag string.&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">etaggify</span><span class="p">(</span>
+        <span class="n">base64</span><span class="o">.</span><span class="n">urlsafe_b64encode</span><span class="p">(</span><span class="n">struct</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="s1">&#39;d&#39;</span><span class="p">,</span> <span class="n">value</span><span class="p">))</span><span class="o">.</span><span class="n">decode</span><span class="p">(),</span>
+        <span class="n">weak</span>
+    <span class="p">)</span></div>
+
+
+<span class="k">def</span> <span class="nf">_json_dumps_default</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">Mapping</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+    <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">()</span>
+
+
+<div class="viewcode-block" id="ETagGenerator"><a class="viewcode-back" href="../../api/conditional.html#aiohttp_extras._etags.ETagGenerator">[docs]</a><span class="k">class</span> <span class="nc">ETagGenerator</span><span class="p">:</span>
+    <span class="c1"># language=rst</span>
+    <span class="sd">&quot;&quot;&quot;Helper class to facilitate creation of ETags.</span>
+
+<span class="sd">    Example::</span>
+
+<span class="sd">        some_internal_state = ...</span>
+<span class="sd">        some_other_internal_state = ...</span>
+
+<span class="sd">        etag_generator = ETagGenerator()</span>
+<span class="sd">        etag_generator.update(some_internal_state)</span>
+<span class="sd">        etag_generator.update(some_other_internal_state)</span>
+
+<span class="sd">        etag = etag_generator.etag</span>
+
+<span class="sd">    The same, but shorter:</span>
+
+<span class="sd">        some_internal_state = ...</span>
+<span class="sd">        some_other_internal_state = ...</span>
+<span class="sd">        etag = ETagGenerator(some_internal_state, some_other_internal_state).etag</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_hash</span> <span class="o">=</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">sha3_224</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">arg</span> <span class="ow">in</span> <span class="n">args</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">arg</span><span class="p">)</span>
+
+<div class="viewcode-block" id="ETagGenerator.update"><a class="viewcode-back" href="../../api/conditional.html#aiohttp_extras._etags.ETagGenerator.update">[docs]</a>    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">v</span><span class="p">:</span> <span class="n">T</span><span class="o">.</span><span class="n">Any</span><span class="p">):</span>
+        <span class="c1"># language=rst</span>
+        <span class="sd">&quot;&quot;&quot;Incrementally feeds state to this etag generator.</span>
+
+<span class="sd">        Parameters:</span>
+<span class="sd">            v: any value that can be serialized to JSON with Python&#39;s default json encoder.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            ETagGenerator: self</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_hash</span><span class="o">.</span><span class="n">update</span><span class="p">(</span>
+            <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">ensure_ascii</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">sort_keys</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="n">_json_dumps_default</span><span class="p">)</span><span class="o">.</span><span class="n">encode</span><span class="p">()</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span></div>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">etag</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">weak</span><span class="p">:</span> <span class="nb">bool</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="c1"># language=rst</span>
+        <span class="sd">&quot;&quot;&quot;Returns an ETag, based on the state fed to :meth:`update`.</span>
+
+<span class="sd">        Parameters:</span>
+<span class="sd">            weak: indicates if a weak ETag should be returned.  See :rfc:`2616`.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            str: A valid ETag, that can be put into an ``ETag:`` header.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">etaggify</span><span class="p">(</span>
+            <span class="n">base64</span><span class="o">.</span><span class="n">urlsafe_b64encode</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_hash</span><span class="o">.</span><span class="n">digest</span><span class="p">())</span><span class="o">.</span><span class="n">decode</span><span class="p">(),</span>
+            <span class="n">weak</span>
+        <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="ETagMixin"><a class="viewcode-back" href="../../api/conditional.html#aiohttp_extras._etags.ETagMixin">[docs]</a><span class="k">class</span> <span class="nc">ETagMixin</span><span class="p">(</span><span class="n">abc</span><span class="o">.</span><span class="n">ABC</span><span class="p">):</span>
+    <span class="c1"># language=rst</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">    This View mixin provides support for conditional request handling based on ETags.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="ETagMixin.etag"><a class="viewcode-back" href="../../api/conditional.html#aiohttp_extras._etags.ETagMixin.etag">[docs]</a>    <span class="nd">@abc</span><span class="o">.</span><span class="n">abstractmethod</span>
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">etag</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">T</span><span class="o">.</span><span class="n">Union</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="nb">bool</span><span class="p">,</span> <span class="nb">str</span><span class="p">]:</span>
+        <span class="c1"># language=rst</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">        Return values have the following semantics:</span>
+
+<span class="sd">        ``True``</span>
+<span class="sd">            Resource exists but doesn&#39;t support ETags</span>
+<span class="sd">        ``False``</span>
+<span class="sd">            Resource doesn&#39;t exist and doesn&#39;t support ETags</span>
+<span class="sd">        ``None``</span>
+<span class="sd">            Resource doesn&#39;t exist and supports ETags.</span>
+<span class="sd">        a valid ETag string</span>
+<span class="sd">            Resource exists and supports ETags.</span>
+
+<span class="sd">        See Also:</span>
+<span class="sd">            -   Class :class:`ETagGenerator` can help you generate unique ETags.</span>
+<span class="sd">            -   Function :func:`etaggify` can help you generate syntactically</span>
+<span class="sd">                valid ETags.</span>
+<span class="sd">        &quot;&quot;&quot;</span></div>
+
+<div class="viewcode-block" id="ETagMixin.assert_preconditions"><a class="viewcode-back" href="../../api/conditional.html#aiohttp_extras._etags.ETagMixin.assert_preconditions">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">assert_preconditions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                                   <span class="n">require_if_match</span><span class="p">:</span>      <span class="nb">bool</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                                   <span class="n">deny_if_match_star</span><span class="p">:</span>    <span class="nb">bool</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                                   <span class="n">require_if_none_match</span><span class="p">:</span> <span class="nb">bool</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                                   <span class="n">allow_weak</span><span class="p">:</span>            <span class="nb">bool</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="c1"># language=rst</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">        Parameters:</span>
+<span class="sd">            require_if_match:</span>
+<span class="sd">                set ``True`` to assert the presence of an ``If-Match:`` request</span>
+<span class="sd">                header</span>
+<span class="sd">            deny_if_match_star:</span>
+<span class="sd">                if ``True``, raises :exc:`web.HTTPBadRequest` if the client sends an</span>
+<span class="sd">                ``If-Match: *`` request header.  This forces the client to send a</span>
+<span class="sd">                specific valid ETag.</span>
+<span class="sd">            require_if_none_match:</span>
+<span class="sd">                set ``True`` to assert the presence of an ``If-None-Match:`` request</span>
+<span class="sd">                header</span>
+<span class="sd">            allow_weak:</span>
+<span class="sd">                set ``True`` to allow weak ETag comporisons.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            see :func:`_assert_if_match` and :func:`_assert_if_none_match`</span>
+
+<span class="sd">        Warning:</span>
+<span class="sd">            Parameter `allow_weak` is not yet implemented.  If set to ``True``, a</span>
+<span class="sd">            :exc:`ValueError` is raised.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">etag</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">etag</span><span class="p">()</span>
+        <span class="n">_assert_if_match</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">request</span><span class="p">,</span>
+            <span class="n">etag</span><span class="p">,</span>
+            <span class="n">require_if_match</span><span class="p">,</span>
+            <span class="n">deny_if_match_star</span><span class="p">,</span>
+            <span class="n">allow_weak</span>
+        <span class="p">)</span>
+        <span class="n">_assert_if_none_match</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">request</span><span class="p">,</span>
+            <span class="n">etag</span><span class="p">,</span>
+            <span class="n">require_if_none_match</span><span class="p">,</span>
+            <span class="n">allow_weak</span>
+        <span class="p">)</span></div></div>
+</pre></div>
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017, Gemeente Amsterdam.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../',
+            VERSION:'0.1',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

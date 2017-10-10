@@ -10,7 +10,7 @@ import swagger_parser
 import uvloop
 from aiohttp import web
 
-import rest_utils
+import aiohttp_extras
 from . import handlers, database, config, authorization
 
 _logger = logging.getLogger(__name__)
@@ -58,14 +58,14 @@ def build_application(loop=None):
     # Build the application
     app = web.Application(
         middlewares=[
-            rest_utils.middleware,
+            aiohttp_extras.middleware,
             web.normalize_path_middleware(),
             authorization.middleware
         ],
         loop=loop
     )
     app['config'] = config.load()
-    app['etag'] = rest_utils.ETagGenerator().update(app['config']['authz_admin']).etag()
+    app['etag'] = aiohttp_extras.ETagGenerator().update(app['config']['authz_admin']).etag
     swagger_path = os.path.join(os.path.dirname(__file__), 'openapi.yml')
     _logger.info("Loading swagger file '%s'", swagger_path)
     app['swagger'] = swagger_parser.SwaggerParser(

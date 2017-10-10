@@ -8,9 +8,8 @@ from aiohttp import web
 from multidict import MultiDict
 
 from . import _json
-from ._middleware import BEST_CONTENT_TYPE, ASSERT_PRECONDITIONS
 from ._parse_embed import parse_embed
-from ._etags import assert_preconditions
+from . import _conditional
 
 _logger = logging.getLogger(__name__)
 
@@ -21,6 +20,13 @@ def _slashify(s):
 
 
 class View(web.View):
+    """
+
+    Todo:
+        Documentation
+
+
+    """
 
     SEGMENT_RE = re.compile(r'([^/{}]+)/?$')
     PATHS = {}
@@ -145,7 +151,7 @@ class View(web.View):
             if match_dict is not None:
                 if hasattr(resource, 'rest_utils_class'):
                     return resource.rest_utils_class(request, rel_url)
-                _logger.error("Path %s doesn't resolve to rest_utils.Resource.", str(rel_url))
+                _logger.error("Path %s doesn't resolve to aiohttp_extras.Resource.", str(rel_url))
                 return None
         return None
 
@@ -305,22 +311,20 @@ class View(web.View):
         assert 'GET_IN_PROGRESS' not in self.request
         self.request['GET_IN_PROGRESS'] = True
 
-        etag = await self.etag()
-        if not etag:
-            raise web.HTTPNotFound()
-        assert_preconditions(self.request, etag)
+        if isinstance(self, _conditional.ETagMixin):
+            await self.assert_preconditions()
         if self.request.method == 'GET':
             data = await self.to_dict()
         response = web.StreamResponse()
         if isinstance(await self.etag(), str):
             response.headers.add('ETag', await self.etag())
-        response.content_type = self.request[BEST_CONTENT_TYPE]
+        response.content_type = self.best_content_type
         response.enable_compression()
         if str(self.canonical_rel_url) != str(self.request.rel_url):
             response.headers.add('Content-Location', str(self.canonical_rel_url))
         await response.prepare(self.request)
         if self.request.method == 'GET':
-            async for chunk in _json.json_encode(data):
+            async for chunk in _json.encode(data):
                 response.write(chunk)
         response.write_eof()
         del self.request['GET_IN_PROGRESS']

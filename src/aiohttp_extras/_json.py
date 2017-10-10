@@ -1,6 +1,115 @@
-"""Asynchronous JSON serializer.
+# language=rst
+"""
 
-This module defines a method `encode`.
+Introduction
+============
+
+
+1. Streaming
+------------
+
+Out of the box, aiohttp already facilitates JSON response bodies, using the
+:func:`aiohttp.web.json_response`.  Unfortunately, aiohttp's built-in JSON
+support requires that *all* the data to be serialized is held in memory, for as
+long as data is being sent to the client.  When serving large datasets to
+multiple clients over slow connections, this can be prohibitively resource
+intensive.
+
+This module provides a **streaming** JSON serializer, which can serialize
+everything that can be serialized by :func:`json.dumps`. Additionally, it can
+serialize :term:`generators <generator>` (*asynchronous* generators, to be
+precise; more on that below). As a result, not all data needs to be in memory
+right from the start; it can be, well, *generated* "on-the-fly", for example
+while reading data from large files or large SQL-query result sets.
+
+The :func:`encode` function will serialize a generator as a JSON *array*. So how
+to produce a large JSON *object* without holding it in memory? The Python
+language itself has no such thing as a *dict generator* (for reasons beyond the
+scope of this document). The solution here is to use a *generator* that yields
+object :const:`IM_A_DICT` as its first item, followed by zero or more key→value
+pairs in the form of any 2-item :term:`iterable`, with each key being a unique
+string.
+
+Knowing all this, you might expect the following code to work::
+
+    ##############################
+    # DON'T COPY THIS EXAMPLE!!! #
+    #   instructional use only   #
+    ##############################
+    def read_lines_from_file(file):
+        yield IM_A_DICT
+        line_number, line = 1, file.readline()
+        while len(line):
+            yield tuple(str(line_number), line)
+            line_number, line = line_number + 1, file.readline()
+
+    async def my_aiohttp_handler(request):
+        response = web.StreamResponse()
+        ...
+        for part in encode(read_lines_from_file(some_file)):
+            await response.write(part)
+
+Unfortunately, this leaves a problem to be fixed: Python's :meth:`readline
+<io.TextIOBase.readline>` method is blocking, which means our whole aiohttp
+server is blocked for the entire duration of the file processing.
+
+Enter *asynchronous generators*...
+
+
+2. Asynchronous Streaming
+-------------------------
+
+To solve this, function :func:`encode` is implemented as an :term:`asynchronous
+generator`, and the generators you feed it must also be *asynchronous*.
+(Asynchronous generators, defined in :pep:`525`, were introduced in Python
+version 3.6.)
+
+A real-world example could look like this::
+
+    async def read_lines_from_file(file):
+        yield IM_A_DICT
+        line_number, line = 1, await file.readline()
+        while len(line):
+            yield tuple(str(line_number), line)
+            line_number, line = line_number + 1, await file.readline()
+
+    async def my_aiohttp_handler(request):
+        response = web.StreamResponse()
+        ...
+        async for part in encode(read_lines_from_file(some_file)):
+            await response.write(part)
+
+Which could produce the following JSON body:
+
+.. code-block:: json
+
+    {
+        "1": "Hello\\n",
+        "2": "World!"
+    }
+
+
+3. Take home message
+--------------------
+
+If you use one of the built-in representations, you'll probably never call the
+:func:`encode` function yourself.  But in order to create asynchronous,
+streaming endpoints, you'll still have to understand, and provide:
+
+-   *asynchronous generators* in order to stream *JSON arrays*, and
+-   understand how to stream *JSON objects* by yielding :const:`IM_A_DICT`
+    followed by ``(key, value)`` pairs.
+
+
+API documentation
+=================
+
+The public interface of this module consists of:
+
+-   :func:`encode`
+-   :const:`IM_A_DICT`
+
+----
 
 """
 
@@ -9,6 +118,7 @@ import logging
 import inspect
 import collections
 import collections.abc
+import typing as T
 
 from yarl import URL
 from aiohttp import web
@@ -18,8 +128,35 @@ from . import _view
 _logger = logging.getLogger(__name__)
 
 
-JSON_DEFAULT_CHUNK_SIZE = 1024 * 1024
 IM_A_DICT = {}
+# language=rst
+"""First item to yield from a "dict generator".
+
+In general, :func:`encode` serializes a generator as a JSON *array*. To produce
+a JSON *object* from a generator, yield :const:`IM_A_DICT` as the first item,
+followed by zero or more ``(key, value)`` pairs in the form of a 2-item
+:term:`iterable`, with each key being a unique string::
+
+    from aiohttp_extras import IM_A_DICT
+    
+This would be serialized as ``{"Hello":"world!"}``
+
+Warning:
+    Although ``IM_A_DICT`` is initialized with an empty `dict` object, it is
+    essential that your generator returns the object referenced by
+    ``IM_A_DICT``, and not some other random empty dictionary object.  Function
+    :func:`encode` checks *object identity*, not *object value equality*.  This
+    to allow a generator to produce a JSON array with an empty object as its
+    first item.  That is::
+    
+        async def my_buggy_dict_generator():
+            yield {}
+            yield "Hello", "world!"
+    
+    would be serialized as ``[ {}, ["Hello", "world!"] ]``.
+    
+"""
+_JSON_DEFAULT_CHUNK_SIZE = 1024 * 1024
 _INFINITY = float('inf')
 
 _ESCAPE = re.compile(r'[\x00-\x1f\\"\b\f\n\r\t]')
@@ -147,13 +284,7 @@ async def _encode_dict(obj, stack):
         stack.remove(id(obj))
 
 
-async def _encode(obj, stack):
-    """
-
-    :param any obj:
-    :param set stack:
-
-    """
+async def _encode(obj: T.Any, stack: T.Set) -> T.Union[str, T.Any]:
     if isinstance(obj, URL):
         yield _encode_string(str(obj))
     elif isinstance(obj, _view.View):
@@ -162,7 +293,7 @@ async def _encode(obj, stack):
         except web.HTTPException as e:
             _logger.error("Unexpected exception", exc_info=e, stack_info=True)
             obj = {
-                '_links': {'self': {'href': 'http://error.com/'}},
+                '_links': {'self': {'href': obj.canonical_rel_url}},
                 '_status': e.status_code
             }
             if e.text is not None:
@@ -202,14 +333,9 @@ async def _encode(obj, stack):
         yield 'null'
 
 
-async def json_encode(obj, chunk_size=JSON_DEFAULT_CHUNK_SIZE):
-    """Asynchronous JSON serializer.
-
-    :param any obj:
-    :param int chunk_size: The size of chunks to be yielded.
-    :rtype: collections.AsyncIterable
-
-    """
+async def encode(obj, chunk_size=_JSON_DEFAULT_CHUNK_SIZE):
+    # language=rst
+    """Asynchronous JSON serializer."""
     buffer = bytearray()
     async for b in _encode(obj, set()):
         buffer += b.encode()

@@ -16,7 +16,7 @@ setup(
     # ┃ Publication Metadata ┃
     # ┗━━━━━━━━━━━━━━━━━━━━━━┛
     version='0.1.0',
-    name='aiohttp_rest',
+    name='datapunt_aiohttp_extras',
     description="Stack for developing HTTP web services in Python",
     long_description="""
         This package integrates:
@@ -34,7 +34,7 @@ setup(
             predefined paths
 
     """,
-    url='https://github.com/Amsterdam/aiohttp_rest',
+    url='https://github.com/Amsterdam/aiohttp_extras',
     author='Amsterdam City Data',
     author_email='datapunt@amsterdam.nl',
     license='Mozilla Public License Version 2.0',

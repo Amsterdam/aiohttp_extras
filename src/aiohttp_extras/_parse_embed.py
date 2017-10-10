@@ -19,9 +19,9 @@ MAX_QUERY_DEPTH = 3
 
 To mitigate DoS-attack potential, the maximum embedding depth is limited.  You can change the maximum embedding depth from your code::
 
-    import rest_utils
+    import aiohttp_extras
     
-    rest_utils.MAX_QUERY_DEPTH = 5
+    aiohttp_extras.MAX_QUERY_DEPTH = 5
     
 """
 

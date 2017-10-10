@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Todo list &mdash; aiohttp_openapi_haljson 0.1 documentation</title>
+  <title>Todo list &mdash; aiohttp_extras 0.1 documentation</title>
   
 
   
@@ -39,8 +39,8 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="aiohttp_openapi_haljson 0.1 documentation" href="index.html"/>
-        <link rel="next" title="Glossary" href="glossary.html"/>
+    <link rel="top" title="aiohttp_extras 0.1 documentation" href="index.html"/>
+        <link rel="next" title="Mozilla Public License Version 2.0" href="license.html"/>
         <link rel="prev" title="Sphinx 101" href="sphinx_101.html"/> 
 
   
@@ -60,12 +60,19 @@
           
 
           
-            <a href="index.html" class="icon icon-home"> aiohttp_openapi_haljson
+            <a href="index.html" class="icon icon-home"> aiohttp_extras
           
 
           
           </a>
 
+          
+            
+            
+              <div class="version">
+                0.1
+              </div>
+            
           
 
           
@@ -89,20 +96,22 @@
             
               <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="api_docs.html">API Docs</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="api/config_loader.html">Config Loader</a></li>
-<li class="toctree-l2"><a class="reference internal" href="api/rest_utils.html">Rest Utils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/content_negotiation.html">Content Negotiation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/etags.html">ETags</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/hal_json.html">HAL+JSON</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/view.html">View</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="sphinx_101.html">Sphinx 101</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="sphinx_101.html#rest-formatting">ReST formatting</a></li>
 <li class="toctree-l2"><a class="reference internal" href="sphinx_101.html#roles-added-by-sphinx">Roles added by Sphinx</a></li>
 <li class="toctree-l2"><a class="reference internal" href="sphinx_101.html#directives">Directives</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sphinx_101.html#google-style-docstrings">Google-style docstrings</a></li>
 <li class="toctree-l2"><a class="reference internal" href="sphinx_101.html#autodoc">Autodoc</a></li>
 <li class="toctree-l2"><a class="reference internal" href="sphinx_101.html#intersphinx">Intersphinx</a></li>
 </ul>
 </li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Todo list</a></li>
-<li class="toctree-l1"><a class="reference internal" href="glossary.html">Glossary</a></li>
 <li class="toctree-l1"><a class="reference internal" href="license.html">License</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="license.html#definitions">1. Definitions</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="license.html#contributor">1.1. “Contributor”</a></li>
@@ -170,7 +179,7 @@
       <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
         
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="index.html">aiohttp_openapi_haljson</a>
+          <a href="index.html">aiohttp_extras</a>
         
       </nav>
 
@@ -223,6 +232,32 @@
 <h1>Todo list<a class="headerlink" href="#todo-list" title="Permalink to this headline">¶</a></h1>
 <div class="admonition-todo admonition">
 <p class="first admonition-title">Todo</p>
+<p class="last">Add support for conditional request handling based on the <code class="docutils literal"><span class="pre">Last-Modified:</span></code></p>
+</div>
+<p class="todo-source">(The <a class="reference internal" href="api/etags.html#index-1"><em>original entry</em></a> is located in /Users/pieterb/020/aiohttp_extras/src/aiohttp_extras/_etags.py:docstring of aiohttp_extras._etags, line 21.)</p>
+<div class="admonition-todo admonition">
+<p class="first admonition-title">Todo</p>
+<p class="last">Investigate what the semantics of Weak ETags are.  Maybe there’s a
+sensible default value for parameter <code class="docutils literal"><span class="pre">weak</span></code>.</p>
+</div>
+<p class="todo-source">(The <a class="reference internal" href="api/etags.html#index-3"><em>original entry</em></a> is located in /Users/pieterb/020/aiohttp_extras/src/aiohttp_extras/_etags.py:docstring of aiohttp_extras._etags.etaggify, line 8.)</p>
+<div class="admonition-todo admonition">
+<p class="first admonition-title">Todo</p>
+<p class="last">Documentation</p>
+</div>
+<p class="todo-source">(The <a class="reference internal" href="api/hal_json.html#index-0"><em>original entry</em></a> is located in /Users/pieterb/020/aiohttp_extras/src/aiohttp_extras/_hal_json.py:docstring of aiohttp_extras._hal_json.HALJSONMixin, line 1.)</p>
+<div class="admonition-todo admonition">
+<p class="first admonition-title">Todo</p>
+<p class="last">Implementation. This method is not yet finished.</p>
+</div>
+<p class="todo-source">(The <a class="reference internal" href="api/hal_json.html#index-1"><em>original entry</em></a> is located in /Users/pieterb/020/aiohttp_extras/src/aiohttp_extras/_hal_json.py:docstring of aiohttp_extras._hal_json.HALJSONMixin.to_dict, line 1.)</p>
+<div class="admonition-todo admonition">
+<p class="first admonition-title">Todo</p>
+<p class="last">Documentation</p>
+</div>
+<p class="todo-source">(The <a class="reference internal" href="api/view.html#index-0"><em>original entry</em></a> is located in /Users/pieterb/020/aiohttp_extras/src/aiohttp_extras/_view.py:docstring of aiohttp_extras._view.View, line 1.)</p>
+<div class="admonition-todo admonition">
+<p class="first admonition-title">Todo</p>
 <p class="last">Publish the documentation somewhere (ReadTheDocs?) and insert a link in the
 sentence above.</p>
 </div>
@@ -244,7 +279,7 @@ sentence above.</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="glossary.html" class="btn btn-neutral float-right" title="Glossary" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="license.html" class="btn btn-neutral float-right" title="Mozilla Public License Version 2.0" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="sphinx_101.html" class="btn btn-neutral" title="Sphinx 101" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>

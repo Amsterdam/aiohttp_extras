@@ -3,8 +3,13 @@
 API Docs
 ========
 
+.. automodule:: aiohttp_extras
+
 .. toctree::
     :hidden:
 
-    api/config_loader
-    api/rest_utils
+    api/content_negotiation
+    api/conditional
+    api/hal_json
+    api/json
+    api/view

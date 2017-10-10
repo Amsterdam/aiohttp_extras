@@ -4,21 +4,21 @@ import typing as T
 
 from aiohttp import web
 
-import rest_utils
+import aiohttp_extras
 from . import authorization
 
 _logger = logging.getLogger(__name__)
 
 
-class OAuth2View(rest_utils.View, metaclass=abc.ABCMeta):
+class OAuth2View(aiohttp_extras.View, metaclass=abc.ABCMeta):
     """Default Query Parameters Mixin."""
 
     @property
-    def default_query_params(self: rest_utils.View) -> T.Dict[str, str]:
+    def default_query_params(self: aiohttp_extras.View) -> T.Dict[str, str]:
         # language=rst
         """
 
-        See :func:`rest_utils.View.default_query_params`.
+        See :func:`aiohttp_extras.View.default_query_params`.
 
         """
         method = self.request.method.lower()

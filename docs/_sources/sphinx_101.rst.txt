@@ -126,6 +126,49 @@ See :doc:`markup/para` for documentation of many handy directives, such as:
     .. hlist::
 
 
+Google-style docstrings
+-----------------------
+
+Example::
+
+    Args:
+        path (str): The path of the file to wrap
+        field_storage (FileStorage): The :class:`FileStorage` instance to wrap
+        temporary (bool): Whether or not to delete the file when the File
+           instance is destructed
+
+    Returns:
+        BufferedFileStorage: A buffered writable file descriptor
+
+The following section headers are supported:
+
+*   **Args** (alias of **Parameters**)
+*   **Arguments** (alias of **Parameters**)
+*   **Attributes**
+*   **Example**
+*   **Examples**
+*   **Keyword Args** (alias of **Keyword Arguments**)
+*   **Keyword Arguments**
+*   **Methods**
+*   **Note**
+*   **Notes**
+*   **Other Parameters**
+*   **Parameters**
+*   **Return** (alias of **Returns**)
+*   **Returns**
+*   **Raises**
+*   **References**
+*   **See Also**
+*   **Todo** (doesn't work together with `sphinx.ext.todo
+    <http://www.sphinx-doc.org/en/stable/ext/todo.html>`_: items won't show up
+    in the ``.. todolist::``)
+*   **Warning**
+*   **Warnings** (alias of **Warning**)
+*   **Warns**
+*   **Yield** (alias of **Yields**)
+*   **Yields**
+
+
 Autodoc
 -------
 
@@ -186,6 +229,5 @@ Intersphinx is configured with the following mappings::
     }
 
 For each of these external packages, a full list of available reference targets
-can be found in the corresponding :file:`*.inv.txt` file in the :file:`sphinx/`
-directory.
-
+can be found in the corresponding :file:`*.inv.txt` files in the :file:`sphinx/`
+directory (after the first build).

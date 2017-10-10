@@ -8,14 +8,14 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Config Loader &mdash; aiohttp_openapi_haljson 0.1 documentation</title>
+  <title>Overview: module code &mdash; aiohttp_extras 0.1 documentation</title>
   
 
   
   
   
   
-    <link rel="canonical" href="https://amsterdam.github.io/aiohttp_openapi_haljson/api/config_loader.html"/>
+    <link rel="canonical" href="https://amsterdam.github.io/aiohttp_openapi_haljson/_modules/index.html"/>
   
 
   
@@ -39,10 +39,7 @@
         <link rel="index" title="Index"
               href="../genindex.html"/>
         <link rel="search" title="Search" href="../search.html"/>
-    <link rel="top" title="aiohttp_openapi_haljson 0.1 documentation" href="../index.html"/>
-        <link rel="up" title="API Docs" href="../api_docs.html"/>
-        <link rel="next" title="Rest Utils" href="rest_utils.html"/>
-        <link rel="prev" title="API Docs" href="../api_docs.html"/> 
+    <link rel="top" title="aiohttp_extras 0.1 documentation" href="../index.html"/> 
 
   
   <script src="../_static/js/modernizr.min.js"></script>
@@ -61,12 +58,19 @@
           
 
           
-            <a href="../index.html" class="icon icon-home"> aiohttp_openapi_haljson
+            <a href="../index.html" class="icon icon-home"> aiohttp_extras
           
 
           
           </a>
 
+          
+            
+            
+              <div class="version">
+                0.1
+              </div>
+            
           
 
           
@@ -88,22 +92,42 @@
               
             
             
-              <ul class="current">
-<li class="toctree-l1 current"><a class="reference internal" href="../api_docs.html">API Docs</a><ul class="current">
-<li class="toctree-l2 current"><a class="current reference internal" href="#">Config Loader</a></li>
-<li class="toctree-l2"><a class="reference internal" href="rest_utils.html">Rest Utils</a></li>
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../api_docs.html">API Docs</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../api/content_negotiation.html">Content Negotiation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/conditional.html">Conditional Requests</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../api/conditional.html#overview">Overview</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../api/conditional.html#etagmixin">ETagMixin</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../api/conditional.html#helpers-for-etag-creation">Helpers for ETag creation</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../api/conditional.html#api-documentation">API documentation</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../api/hal_json.html">HAL+JSON</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/json.html">Async Streaming JSON</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../api/json.html#introduction">Introduction</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../api/json.html#streaming">1. Streaming</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../api/json.html#asynchronous-streaming">2. Asynchronous Streaming</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../api/json.html#take-home-message">3. Take home message</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../api/json.html#api-documentation">API documentation</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../api/view.html">View</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../sphinx_101.html">Sphinx 101</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../sphinx_101.html#rest-formatting">ReST formatting</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../sphinx_101.html#roles-added-by-sphinx">Roles added by Sphinx</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../sphinx_101.html#directives">Directives</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../sphinx_101.html#google-style-docstrings">Google-style docstrings</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../sphinx_101.html#autodoc">Autodoc</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../sphinx_101.html#intersphinx">Intersphinx</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../todo_list.html">Todo list</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../glossary.html">Glossary</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../license.html">License</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../license.html#definitions">1. Definitions</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="../license.html#contributor">1.1. “Contributor”</a></li>
@@ -171,7 +195,7 @@
       <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
         
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="../index.html">aiohttp_openapi_haljson</a>
+          <a href="../index.html">aiohttp_extras</a>
         
       </nav>
 
@@ -201,16 +225,12 @@
     
       <li><a href="../index.html">Docs</a> &raquo;</li>
         
-          <li><a href="../api_docs.html">API Docs</a> &raquo;</li>
-        
-      <li>Config Loader</li>
+      <li>Overview: module code</li>
     
     
       <li class="wy-breadcrumbs-aside">
         
             
-            <a href="../_sources/api/config_loader.rst.txt" rel="nofollow"> View page source</a>
-          
         
       </li>
     
@@ -222,10 +242,14 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="config-loader">
-<span id="id1"></span><h1>Config Loader<a class="headerlink" href="#config-loader" title="Permalink to this headline">¶</a></h1>
-</div>
-
+  <h1>All modules for which code is available</h1>
+<ul><li><a href="aiohttp_extras/_conditional.html">aiohttp_extras._conditional</a></li>
+<li><a href="aiohttp_extras/_content_negotiation.html">aiohttp_extras._content_negotiation</a></li>
+<li><a href="aiohttp_extras/_etags.html">aiohttp_extras._etags</a></li>
+<li><a href="aiohttp_extras/_hal_json.html">aiohttp_extras._hal_json</a></li>
+<li><a href="aiohttp_extras/_json.html">aiohttp_extras._json</a></li>
+<li><a href="aiohttp_extras/_view.html">aiohttp_extras._view</a></li>
+</ul>
 
            </div>
            <div class="articleComments">
@@ -233,15 +257,6 @@
            </div>
           </div>
           <footer>
-  
-    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-      
-        <a href="rest_utils.html" class="btn btn-neutral float-right" title="Rest Utils" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
-      
-      
-        <a href="../api_docs.html" class="btn btn-neutral" title="API Docs" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
-      
-    </div>
   
 
   <hr/>

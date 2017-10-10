@@ -8,20 +8,16 @@ BUILDDIR      = ../docs
 
 html:
 	$(SPHINXBUILD) -b html "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS)
+	touch $(BUILDDIR)/.nojekyll
 
 
-server:
+server: clean
 	@$(AUTOBUILD) "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) --watch ../src
 
 
 clean:
-	@$(RM) $(BUILDDIR)
+	@$(RM) $(BUILDDIR) .doctrees
 
 
 invclean:
 	@$(RM) *.inv *.inv.txt
-
-
-publish: html
-	cd gh-pages && $(RM) *
-	cd _build/html && cp -a * ../../gh-pages/

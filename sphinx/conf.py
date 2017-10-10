@@ -32,7 +32,7 @@ extensions = [
     'sphinx.ext.napoleon',
     'sphinx.ext.todo',
     'sphinx.ext.viewcode',
-    'sphinx_autodoc_typehints',
+    'sphinx_autodoc_typehints', # must be loaded _after_ napoleon.
 ]
 
 # The suffix(es) of source filenames.
@@ -44,7 +44,7 @@ source_suffix = '.rst'
 master_doc='index'
 
 # General information about the project.
-project = 'aiohttp_openapi_haljson'
+project = 'aiohttp_extras'
 # noinspection PyShadowingBuiltins
 copyright = '2017, Gemeente Amsterdam'
 author = 'Amsterdam City Data'
@@ -95,8 +95,6 @@ intersphinx_mapping = {
     'python': ('https://docs.python.org/3.6/', 'python.inv'),
     'sphinx': ('http://www.sphinx-doc.org/en/stable/', 'sphinx.inv'),
     'aiohttp': ('http://aiohttp.readthedocs.io/en/stable/', 'aiohttp.inv'),
-    'aiopg': ('https://aiopg.readthedocs.io/en/stable/', 'aiopg.inv'),
-    'sa': ('http://docs.sqlalchemy.org/en/latest/', 'sa.inv'),
     'jwt': ('https://pyjwt.readthedocs.io/en/latest/', 'jwt.inv'),
 }
 
@@ -140,12 +138,10 @@ extlinks = {
 
 #napoleon_google_docstring = True
 napoleon_numpy_docstring = False
-
 # True to list __init___ docstrings separately from the class docstring.  False
 # to fall back to Sphinx’s default behavior, which considers the __init___
 # docstring as part of the class documentation.  Defaults to False.
 napoleon_include_init_with_doc = True
-
 #napoleon_include_private_with_doc = False
 #napoleon_include_special_with_doc = True
 #napoleon_use_admonition_for_examples = False
@@ -178,7 +174,6 @@ html_theme_options = {
     #'collapse_navigation': True,
     'collapse_navigation': False,
     #'display_version': True,
-    'display_version': False,
     #'navigation_depth': 4,
     #'prev_next_buttons_location': 'bottom',
     'canonical_url': 'https://amsterdam.github.io/aiohttp_openapi_haljson/',
