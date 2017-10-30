@@ -41,8 +41,8 @@
         <link rel="search" title="Search" href="../search.html"/>
     <link rel="top" title="aiohttp_extras 0.1 documentation" href="../index.html"/>
         <link rel="up" title="API Docs" href="../api_docs.html"/>
-        <link rel="next" title="View" href="view.html"/>
-        <link rel="prev" title="ETags" href="etags.html"/> 
+        <link rel="next" title="Async Streaming JSON" href="json.html"/>
+        <link rel="prev" title="Conditional Requests" href="conditional.html"/> 
 
   
   <script src="../_static/js/modernizr.min.js"></script>
@@ -98,8 +98,26 @@
               <ul class="current">
 <li class="toctree-l1 current"><a class="reference internal" href="../api_docs.html">API Docs</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="content_negotiation.html">Content Negotiation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="etags.html">ETags</a></li>
+<li class="toctree-l2"><a class="reference internal" href="conditional.html">Conditional Requests</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="conditional.html#overview">Overview</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="conditional.html#etagmixin">ETagMixin</a></li>
+<li class="toctree-l4"><a class="reference internal" href="conditional.html#helpers-for-etag-creation">Helpers for ETag creation</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="conditional.html#api-documentation">API documentation</a></li>
+</ul>
+</li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">HAL+JSON</a></li>
+<li class="toctree-l2"><a class="reference internal" href="json.html">Async Streaming JSON</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="json.html#introduction">Introduction</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="json.html#streaming">1. Streaming</a></li>
+<li class="toctree-l4"><a class="reference internal" href="json.html#asynchronous-streaming">2. Asynchronous Streaming</a></li>
+<li class="toctree-l4"><a class="reference internal" href="json.html#take-home-message">3. Take home message</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="json.html#api-documentation">API documentation</a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="view.html">View</a></li>
 </ul>
 </li>
@@ -231,33 +249,107 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="module-aiohttp_extras._hal_json">
-<span id="hal-json"></span><span id="haljson"></span><h1>HAL+JSON<a class="headerlink" href="#module-aiohttp_extras._hal_json" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="module-aiohttp_extras.serializers.hal_json">
+<span id="hal-json"></span><span id="haljson"></span><h1>HAL+JSON<a class="headerlink" href="#module-aiohttp_extras.serializers.hal_json" title="Permalink to this headline">¶</a></h1>
 <dl class="class">
-<dt id="aiohttp_extras._hal_json.HALJSONMixin">
-<em class="property">class </em><code class="descname">HALJSONMixin</code><a class="reference internal" href="../_modules/aiohttp_extras/_hal_json.html#HALJSONMixin"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aiohttp_extras._hal_json.HALJSONMixin" title="Permalink to this definition">¶</a></dt>
+<dt id="aiohttp_extras.serializers.hal_json.HALJSONMixin">
+<em class="property">class </em><code class="descname">HALJSONMixin</code><a class="reference internal" href="../_modules/aiohttp_extras/serializers/hal_json.html#HALJSONMixin"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aiohttp_extras.serializers.hal_json.HALJSONMixin" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/3.6/library/functions.html#object" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
 <div class="admonition-todo admonition" id="index-0">
 <p class="first admonition-title">Todo</p>
 <p class="last">Documentation</p>
 </div>
 <dl class="method">
-<dt id="aiohttp_extras._hal_json.HALJSONMixin.attributes">
-<code class="descname">attributes</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aiohttp_extras/_hal_json.html#HALJSONMixin.attributes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aiohttp_extras._hal_json.HALJSONMixin.attributes" title="Permalink to this definition">¶</a></dt>
+<dt id="aiohttp_extras.serializers.hal_json.HALJSONMixin._links">
+<code class="descname">_links</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aiohttp_extras/serializers/hal_json.html#HALJSONMixin._links"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aiohttp_extras.serializers.hal_json.HALJSONMixin._links" title="Permalink to this definition">¶</a></dt>
+<dd><p>Called by <code class="xref py py-meth docutils literal"><span class="pre">links()</span></code> and <code class="xref py py-meth docutils literal"><span class="pre">embedded()</span></code>.  See the
+documentation of these methods for more info.</p>
+<p>Most subclasses should override this default implementation.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3.6/library/typing.html#typing.Dict" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">Dict</span></code></a>[<a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#str" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3.6/library/typing.html#typing.Any" title="(in Python v3.6)"><code class="xref py py-data docutils literal"><span class="pre">Any</span></code></a>]</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">This method must return a dict.  The values must have one of
+the following types:<ul class="simple">
+<li>asynchronous generator of <code class="xref py py-obj docutils literal"><span class="pre">View</span></code> objects</li>
+<li>generator of <code class="xref py py-obj docutils literal"><span class="pre">View</span></code> objects</li>
+<li>a <code class="xref py py-obj docutils literal"><span class="pre">View</span></code> object</li>
+<li>a <em>link object</em></li>
+<li>Iterable of <code class="xref py py-obj docutils literal"><span class="pre">View</span></code>s and/or <em>link objects</em> (may be mixed)</li>
+</ul>
+<p>where <em>link object</em> means a HALJSON link object, ie. a <a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#dict" title="(in Python v3.6)"><code class="xref py py-obj docutils literal"><span class="pre">dict</span></code></a> with
+at least a key <code class="docutils literal"><span class="pre">href</span></code>.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="aiohttp_extras.serializers.hal_json.HALJSONMixin.attributes">
+<code class="descname">attributes</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aiohttp_extras/serializers/hal_json.html#HALJSONMixin.attributes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aiohttp_extras.serializers.hal_json.HALJSONMixin.attributes" title="Permalink to this definition">¶</a></dt>
 <dd><p>This default implementation returns <em>no</em> attributes, ie. an empty
 <a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#dict" title="(in Python v3.6)"><code class="xref py py-obj docutils literal"><span class="pre">dict</span></code></a>.</p>
 <p>Most subclasses should override this default implementation.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt id="aiohttp_extras.serializers.hal_json.HALJSONMixin.link_name">
+<code class="descname">link_name</code><a class="headerlink" href="#aiohttp_extras.serializers.hal_json.HALJSONMixin.link_name" title="Permalink to this definition">¶</a></dt>
+<dd><p>A more or less unique name for the resource.</p>
+<p>This default implementation returns the last path segment of the url of
+this resource if that last path segment is templated.  Otherwise <a class="reference external" href="https://docs.python.org/3.6/library/constants.html#None" title="(in Python v3.6)"><code class="xref py py-obj docutils literal"><span class="pre">None</span></code></a>
+is returned (in which case there’s no <a class="reference external" href="http://www.sphinx-doc.org/en/stable/ext/autosummary.html#name" title="(in Sphinx v1.6.5+)"><code class="xref py py-obj docutils literal"><span class="pre">name</span></code></a> attribute in link objects
+for this resource).  See also <a class="reference internal" href="#aiohttp_extras.serializers.hal_json.HALJSONMixin.to_link" title="aiohttp_extras.serializers.hal_json.HALJSONMixin.to_link"><code class="xref py py-meth docutils literal"><span class="pre">to_link()</span></code></a>.</p>
+<p>Subclasses can override this default implementation.
+:rtype: <a class="reference external" href="https://docs.python.org/3.6/library/typing.html#typing.Optional" title="(in Python v3.6)"><code class="xref py py-data docutils literal"><span class="pre">Optional</span></code></a>[<a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#str" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">str</span></code></a>]</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="aiohttp_extras.serializers.hal_json.HALJSONMixin.link_title">
+<code class="descname">link_title</code><a class="headerlink" href="#aiohttp_extras.serializers.hal_json.HALJSONMixin.link_title" title="Permalink to this definition">¶</a></dt>
+<dd><p>The title of this resource, to be used in link objects.</p>
+<p>This default implementation returns <a class="reference external" href="https://docs.python.org/3.6/library/constants.html#None" title="(in Python v3.6)"><code class="xref py py-obj docutils literal"><span class="pre">None</span></code></a>, and there’s no <a class="reference external" href="http://www.sphinx-doc.org/en/stable/templating.html#title" title="(in Sphinx v1.6.5+)"><code class="xref py py-obj docutils literal"><span class="pre">title</span></code></a>
+attribute in HAL link objects.  See also <a class="reference internal" href="#aiohttp_extras.serializers.hal_json.HALJSONMixin.to_link" title="aiohttp_extras.serializers.hal_json.HALJSONMixin.to_link"><code class="xref py py-meth docutils literal"><span class="pre">to_link()</span></code></a>.</p>
+<p>Subclasses can override this default implementation.
+:rtype: <a class="reference external" href="https://docs.python.org/3.6/library/typing.html#typing.Optional" title="(in Python v3.6)"><code class="xref py py-data docutils literal"><span class="pre">Optional</span></code></a>[<a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#str" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">str</span></code></a>]</p>
+</dd></dl>
+
 <dl class="method">
-<dt id="aiohttp_extras._hal_json.HALJSONMixin.to_dict">
-<code class="descname">to_dict</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aiohttp_extras/_hal_json.html#HALJSONMixin.to_dict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aiohttp_extras._hal_json.HALJSONMixin.to_dict" title="Permalink to this definition">¶</a></dt>
+<dt id="aiohttp_extras.serializers.hal_json.HALJSONMixin.to_dict">
+<code class="descname">to_dict</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aiohttp_extras/serializers/hal_json.html#HALJSONMixin.to_dict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aiohttp_extras.serializers.hal_json.HALJSONMixin.to_dict" title="Permalink to this definition">¶</a></dt>
 <dd><div class="admonition-todo admonition" id="index-1">
 <p class="first admonition-title">Todo</p>
 <p class="last">Implementation. This method is not yet finished.</p>
 </div>
 </dd></dl>
 
+<dl class="attribute">
+<dt id="aiohttp_extras.serializers.hal_json.HALJSONMixin.to_link">
+<code class="descname">to_link</code><a class="headerlink" href="#aiohttp_extras.serializers.hal_json.HALJSONMixin.to_link" title="Permalink to this definition">¶</a></dt>
+<dd><p>The HAL JSON link object to this resource.
+:rtype: <a class="reference external" href="https://docs.python.org/3.6/library/typing.html#typing.Dict" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">Dict</span></code></a>[<a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#str" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#str" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">str</span></code></a>]</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="aiohttp_extras.serializers.hal_json._hal_json_serializer">
+<code class="descname">_hal_json_serializer</code><span class="sig-paren">(</span><em>view</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aiohttp_extras/serializers/hal_json.html#_hal_json_serializer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aiohttp_extras.serializers.hal_json._hal_json_serializer" title="Permalink to this definition">¶</a></dt>
+<dd><div class="admonition-todo admonition" id="index-2">
+<p class="first admonition-title">Todo</p>
+<p class="last">Documentation?</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3.6/library/collections.abc.html#collections.abc.AsyncIterable" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">AsyncIterable</span></code></a></td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 </div>
@@ -272,10 +364,10 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="view.html" class="btn btn-neutral float-right" title="View" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="json.html" class="btn btn-neutral float-right" title="Async Streaming JSON" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="etags.html" class="btn btn-neutral" title="ETags" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="conditional.html" class="btn btn-neutral" title="Conditional Requests" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

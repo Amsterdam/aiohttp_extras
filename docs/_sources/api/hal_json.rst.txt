@@ -4,4 +4,4 @@
 HAL+JSON
 ========
 
-.. automodule:: aiohttp_extras._hal_json
+.. automodule:: aiohttp_extras.serializers.hal_json

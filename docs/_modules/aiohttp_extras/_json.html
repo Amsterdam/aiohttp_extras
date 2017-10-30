@@ -256,10 +256,10 @@
 <span class="sd">1. Streaming</span>
 <span class="sd">------------</span>
 
-<span class="sd">Out of the box, aiohttp already facilitates JSON response bodies, using the</span>
-<span class="sd">:func:`aiohttp.web.json_response`.  Unfortunately, aiohttp&#39;s built-in JSON</span>
-<span class="sd">support requires that *all* the data to be serialized is held in memory, for as</span>
-<span class="sd">long as data is being sent to the client.  When serving large datasets to</span>
+<span class="sd">Out of the box, aiohttp already facilitates JSON response bodies, for example</span>
+<span class="sd">through :func:`aiohttp.web.json_response`.  Unfortunately, aiohttp&#39;s built-in</span>
+<span class="sd">JSON support requires that *all* the data to be serialized is held in memory,</span>
+<span class="sd">for as long as data is being sent to the client.  When serving large datasets to</span>
 <span class="sd">multiple clients over slow connections, this can be prohibitively resource</span>
 <span class="sd">intensive.</span>
 
@@ -342,11 +342,12 @@
 
 <span class="sd">If you use one of the built-in representations, you&#39;ll probably never call the</span>
 <span class="sd">:func:`encode` function yourself.  But in order to create asynchronous,</span>
-<span class="sd">streaming endpoints, you&#39;ll still have to understand, and provide:</span>
+<span class="sd">streaming endpoints, you&#39;ll still have to know:</span>
 
-<span class="sd">-   *asynchronous generators* in order to stream *JSON arrays*, and</span>
-<span class="sd">-   understand how to stream *JSON objects* by yielding :const:`IM_A_DICT`</span>
-<span class="sd">    followed by ``(key, value)`` pairs.</span>
+<span class="sd">-   you must implement *asynchronous generators* in order to stream *JSON</span>
+<span class="sd">    arrays*, and</span>
+<span class="sd">-   you can produce *JSON objects* by yielding :const:`IM_A_DICT`, followed by</span>
+<span class="sd">    ``(key, value)`` pairs.</span>
 
 
 <span class="sd">API documentation</span>
@@ -386,7 +387,7 @@
 <span class="sd">:term:`iterable`, with each key being a unique string::</span>
 
 <span class="sd">    from aiohttp_extras import IM_A_DICT</span>
-<span class="sd">    </span>
+
 <span class="sd">This would be serialized as ``{&quot;Hello&quot;:&quot;world!&quot;}``</span>
 
 <span class="sd">Warning:</span>
@@ -396,13 +397,13 @@
 <span class="sd">    :func:`encode` checks *object identity*, not *object value equality*.  This</span>
 <span class="sd">    to allow a generator to produce a JSON array with an empty object as its</span>
 <span class="sd">    first item.  That is::</span>
-<span class="sd">    </span>
+
 <span class="sd">        async def my_buggy_dict_generator():</span>
 <span class="sd">            yield {}</span>
 <span class="sd">            yield &quot;Hello&quot;, &quot;world!&quot;</span>
-<span class="sd">    </span>
+
 <span class="sd">    would be serialized as ``[ {}, [&quot;Hello&quot;, &quot;world!&quot;] ]``.</span>
-<span class="sd">    </span>
+
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="n">_JSON_DEFAULT_CHUNK_SIZE</span> <span class="o">=</span> <span class="mi">1024</span> <span class="o">*</span> <span class="mi">1024</span>
 <span class="n">_INFINITY</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="s1">&#39;inf&#39;</span><span class="p">)</span>
@@ -457,18 +458,30 @@
     <span class="n">stack</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="nb">id</span><span class="p">(</span><span class="n">obj</span><span class="p">))</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="n">first</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="n">is_dict</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">obj</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">first</span><span class="p">:</span>
-                <span class="k">yield</span> <span class="s1">&#39;[&#39;</span>
+                <span class="k">if</span> <span class="n">item</span> <span class="ow">is</span> <span class="n">IM_A_DICT</span><span class="p">:</span>
+                    <span class="n">is_dict</span> <span class="o">=</span> <span class="kc">True</span>
+                    <span class="k">continue</span>
+                <span class="k">yield</span> <span class="s1">&#39;{&#39;</span> <span class="k">if</span> <span class="n">is_dict</span> <span class="k">else</span> <span class="s1">&#39;[&#39;</span>
                 <span class="n">first</span> <span class="o">=</span> <span class="kc">False</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="k">yield</span> <span class="s1">&#39;,&#39;</span>
-            <span class="k">async</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">_encode</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="n">stack</span><span class="p">):</span>
-                <span class="k">yield</span> <span class="n">s</span>
+            <span class="k">if</span> <span class="n">is_dict</span><span class="p">:</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">item</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="nb">str</span><span class="p">):</span>
+                    <span class="n">message</span> <span class="o">=</span> <span class="s2">&quot;Dictionary key is not a string: &#39;</span><span class="si">%r</span><span class="s2">&#39;&quot;</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">message</span> <span class="o">%</span> <span class="n">item</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+                <span class="k">yield</span> <span class="n">_encode_string</span><span class="p">(</span><span class="n">item</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">+</span> <span class="s1">&#39;:&#39;</span>
+                <span class="k">async</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">_encode</span><span class="p">(</span><span class="n">item</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">stack</span><span class="p">):</span>
+                    <span class="k">yield</span> <span class="n">s</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">async</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">_encode</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="n">stack</span><span class="p">):</span>
+                    <span class="k">yield</span> <span class="n">s</span>
         <span class="k">if</span> <span class="n">first</span><span class="p">:</span>
-            <span class="k">yield</span> <span class="s1">&#39;[]&#39;</span>
+            <span class="k">yield</span> <span class="s1">&#39;</span><span class="si">{}</span><span class="s1">&#39;</span> <span class="k">if</span> <span class="n">is_dict</span> <span class="k">else</span> <span class="s1">&#39;[]&#39;</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">yield</span> <span class="s1">&#39;]&#39;</span>
+            <span class="k">yield</span> <span class="s1">&#39;}&#39;</span> <span class="k">if</span> <span class="n">is_dict</span> <span class="k">else</span> <span class="s1">&#39;]&#39;</span>
     <span class="k">finally</span><span class="p">:</span>
         <span class="n">stack</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="nb">id</span><span class="p">(</span><span class="n">obj</span><span class="p">))</span>
 
@@ -500,7 +513,7 @@
                 <span class="k">async</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">_encode</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="n">stack</span><span class="p">):</span>
                     <span class="k">yield</span> <span class="n">s</span>
         <span class="k">if</span> <span class="n">first</span><span class="p">:</span>
-            <span class="k">yield</span> <span class="s1">&#39;[]&#39;</span>
+            <span class="k">yield</span> <span class="s1">&#39;</span><span class="si">{}</span><span class="s1">&#39;</span> <span class="k">if</span> <span class="n">is_dict</span> <span class="k">else</span> <span class="s1">&#39;[]&#39;</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">yield</span> <span class="s1">&#39;}&#39;</span> <span class="k">if</span> <span class="n">is_dict</span> <span class="k">else</span> <span class="s1">&#39;]&#39;</span>
     <span class="k">finally</span><span class="p">:</span>
@@ -581,7 +594,8 @@
         <span class="k">yield</span> <span class="s1">&#39;null&#39;</span>
 
 
-<div class="viewcode-block" id="encode"><a class="viewcode-back" href="../../api/json.html#aiohttp_extras._json.encode">[docs]</a><span class="k">async</span> <span class="k">def</span> <span class="nf">encode</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">chunk_size</span><span class="o">=</span><span class="n">_JSON_DEFAULT_CHUNK_SIZE</span><span class="p">):</span>
+<div class="viewcode-block" id="encode"><a class="viewcode-back" href="../../api/json.html#aiohttp_extras._json.encode">[docs]</a><span class="k">async</span> <span class="k">def</span> <span class="nf">encode</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">chunk_size</span><span class="o">=</span><span class="n">_JSON_DEFAULT_CHUNK_SIZE</span><span class="p">)</span> <span class="o">-&gt;</span> \
+        <span class="n">collections</span><span class="o">.</span><span class="n">AsyncIterable</span><span class="p">:</span>
     <span class="c1"># language=rst</span>
     <span class="sd">&quot;&quot;&quot;Asynchronous JSON serializer.&quot;&quot;&quot;</span>
     <span class="n">buffer</span> <span class="o">=</span> <span class="nb">bytearray</span><span class="p">()</span>

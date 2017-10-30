@@ -8,10 +8,10 @@ Introduction
 1. Streaming
 ------------
 
-Out of the box, aiohttp already facilitates JSON response bodies, using the
-:func:`aiohttp.web.json_response`.  Unfortunately, aiohttp's built-in JSON
-support requires that *all* the data to be serialized is held in memory, for as
-long as data is being sent to the client.  When serving large datasets to
+Out of the box, aiohttp already facilitates JSON response bodies, for example
+through :func:`aiohttp.web.json_response`.  Unfortunately, aiohttp's built-in
+JSON support requires that *all* the data to be serialized is held in memory,
+for as long as data is being sent to the client.  When serving large datasets to
 multiple clients over slow connections, this can be prohibitively resource
 intensive.
 
@@ -94,11 +94,12 @@ Which could produce the following JSON body:
 
 If you use one of the built-in representations, you'll probably never call the
 :func:`encode` function yourself.  But in order to create asynchronous,
-streaming endpoints, you'll still have to understand, and provide:
+streaming endpoints, you'll still have to know:
 
--   *asynchronous generators* in order to stream *JSON arrays*, and
--   understand how to stream *JSON objects* by yielding :const:`IM_A_DICT`
-    followed by ``(key, value)`` pairs.
+-   you must implement *asynchronous generators* in order to stream *JSON
+    arrays*, and
+-   you can produce *JSON objects* by yielding :const:`IM_A_DICT`, followed by
+    ``(key, value)`` pairs.
 
 
 API documentation
@@ -138,7 +139,7 @@ followed by zero or more ``(key, value)`` pairs in the form of a 2-item
 :term:`iterable`, with each key being a unique string::
 
     from aiohttp_extras import IM_A_DICT
-    
+
 This would be serialized as ``{"Hello":"world!"}``
 
 Warning:
@@ -148,13 +149,13 @@ Warning:
     :func:`encode` checks *object identity*, not *object value equality*.  This
     to allow a generator to produce a JSON array with an empty object as its
     first item.  That is::
-    
+
         async def my_buggy_dict_generator():
             yield {}
             yield "Hello", "world!"
-    
+
     would be serialized as ``[ {}, ["Hello", "world!"] ]``.
-    
+
 """
 _JSON_DEFAULT_CHUNK_SIZE = 1024 * 1024
 _INFINITY = float('inf')
@@ -209,18 +210,30 @@ async def _encode_list(obj, stack):
     stack.add(id(obj))
     try:
         first = True
+        is_dict = False
         for item in obj:
             if first:
-                yield '['
+                if item is IM_A_DICT:
+                    is_dict = True
+                    continue
+                yield '{' if is_dict else '['
                 first = False
             else:
                 yield ','
-            async for s in _encode(item, stack):
-                yield s
+            if is_dict:
+                if not isinstance(item[0], str):
+                    message = "Dictionary key is not a string: '%r'"
+                    raise ValueError(message % item[0])
+                yield _encode_string(item[0]) + ':'
+                async for s in _encode(item[1], stack):
+                    yield s
+            else:
+                async for s in _encode(item, stack):
+                    yield s
         if first:
-            yield '[]'
+            yield '{}' if is_dict else '[]'
         else:
-            yield ']'
+            yield '}' if is_dict else ']'
     finally:
         stack.remove(id(obj))
 
@@ -252,7 +265,7 @@ async def _encode_async_generator(obj, stack):
                 async for s in _encode(item, stack):
                     yield s
         if first:
-            yield '[]'
+            yield '{}' if is_dict else '[]'
         else:
             yield '}' if is_dict else ']'
     finally:
@@ -333,7 +346,8 @@ async def _encode(obj: T.Any, stack: T.Set) -> T.Union[str, T.Any]:
         yield 'null'
 
 
-async def encode(obj, chunk_size=_JSON_DEFAULT_CHUNK_SIZE):
+async def encode(obj, chunk_size=_JSON_DEFAULT_CHUNK_SIZE) -> \
+        collections.AsyncIterable:
     # language=rst
     """Asynchronous JSON serializer."""
     buffer = bytearray()

@@ -3,7 +3,8 @@
 
 To support *content type negotiation* in GET requests, this package provides
 method :meth:`best_content_type`.  Additionally, it provides a mixin
-:class:`ContentNegotiationMixin` to be used when inheriting from :class:`aiohttp.web.View`.
+:class:`ContentNegotiationMixin` to be used when inheriting from
+:class:`aiohttp.web.View` .
 
 """
 import logging
@@ -33,7 +34,8 @@ def best_content_type(
         ``request`` and a list of ``available_content_types``.
 
     Parameters:
-        request (aiohttp.web.Request): the request from which to extract an ``Accept:`` header.
+        request (aiohttp.web.Request): the request from which to extract an
+            ``Accept:`` header.
         available_content_types: an ordered list of available content types,
             ordered by quality, best quality first.
 
@@ -101,7 +103,6 @@ class ContentNegotiationMixin(abc.ABC):
                 ...
                 response.content_type = self.best_content_type
 
-
     """
 
     def __init_subclass__(cls):
@@ -113,7 +114,7 @@ class ContentNegotiationMixin(abc.ABC):
         """The best content type to represent this resource.
 
         This property is a shortcut for function :func:`best_content_type`.
-        Ie. the following to lines of code are equivalent::
+        Ie. the following two lines of code are equivalent::
 
             bct = my_view.best_content_type
             bct = best_content_type(my_view.request, my_view.AVAILABLE_CONTENT_TYPES)

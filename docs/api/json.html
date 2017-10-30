@@ -255,10 +255,10 @@
 <h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="streaming">
 <h3>1. Streaming<a class="headerlink" href="#streaming" title="Permalink to this headline">¶</a></h3>
-<p>Out of the box, aiohttp already facilitates JSON response bodies, using the
-<a class="reference external" href="http://aiohttp.readthedocs.io/en/stable/web_reference.html#aiohttp.web.json_response" title="(in aiohttp v2.2)"><code class="xref py py-func docutils literal"><span class="pre">aiohttp.web.json_response()</span></code></a>.  Unfortunately, aiohttp’s built-in JSON
-support requires that <em>all</em> the data to be serialized is held in memory, for as
-long as data is being sent to the client.  When serving large datasets to
+<p>Out of the box, aiohttp already facilitates JSON response bodies, for example
+through <a class="reference external" href="http://aiohttp.readthedocs.io/en/stable/web_reference.html#aiohttp.web.json_response" title="(in aiohttp v2.2)"><code class="xref py py-func docutils literal"><span class="pre">aiohttp.web.json_response()</span></code></a>.  Unfortunately, aiohttp’s built-in
+JSON support requires that <em>all</em> the data to be serialized is held in memory,
+for as long as data is being sent to the client.  When serving large datasets to
 multiple clients over slow connections, this can be prohibitively resource
 intensive.</p>
 <p>This module provides a <strong>streaming</strong> JSON serializer, which can serialize
@@ -330,11 +330,12 @@ version&nbsp;3.6.)</p>
 <h3>3. Take home message<a class="headerlink" href="#take-home-message" title="Permalink to this headline">¶</a></h3>
 <p>If you use one of the built-in representations, you’ll probably never call the
 <a class="reference internal" href="#aiohttp_extras._json.encode" title="aiohttp_extras._json.encode"><code class="xref py py-func docutils literal"><span class="pre">encode()</span></code></a> function yourself.  But in order to create asynchronous,
-streaming endpoints, you’ll still have to understand, and provide:</p>
+streaming endpoints, you’ll still have to know:</p>
 <ul class="simple">
-<li><em>asynchronous generators</em> in order to stream <em>JSON arrays</em>, and</li>
-<li>understand how to stream <em>JSON objects</em> by yielding <a class="reference internal" href="#aiohttp_extras._json.IM_A_DICT" title="aiohttp_extras._json.IM_A_DICT"><code class="xref py py-const docutils literal"><span class="pre">IM_A_DICT</span></code></a>
-followed by <code class="docutils literal"><span class="pre">(key,</span> <span class="pre">value)</span></code> pairs.</li>
+<li>you must implement <em>asynchronous generators</em> in order to stream <em>JSON
+arrays</em>, and</li>
+<li>you can produce <em>JSON objects</em> by yielding <a class="reference internal" href="#aiohttp_extras._json.IM_A_DICT" title="aiohttp_extras._json.IM_A_DICT"><code class="xref py py-const docutils literal"><span class="pre">IM_A_DICT</span></code></a>, followed by
+<code class="docutils literal"><span class="pre">(key,</span> <span class="pre">value)</span></code> pairs.</li>
 </ul>
 </div>
 </div>
@@ -379,6 +380,14 @@ first item.  That is:</p>
 <dt id="aiohttp_extras._json.encode">
 <code class="descname">encode</code><span class="sig-paren">(</span><em>obj</em>, <em>chunk_size=1048576</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aiohttp_extras/_json.html#encode"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aiohttp_extras._json.encode" title="Permalink to this definition">¶</a></dt>
 <dd><p>Asynchronous JSON serializer.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3.6/library/collections.abc.html#collections.abc.AsyncIterable" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">AsyncIterable</span></code></a></td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 </div>

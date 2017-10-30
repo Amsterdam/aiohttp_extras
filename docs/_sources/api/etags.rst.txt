@@ -1,7 +1,0 @@
-.. _etags:
-
-
-ETags
-=====
-
-.. automodule:: aiohttp_extras._etags

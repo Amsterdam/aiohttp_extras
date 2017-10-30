@@ -3,7 +3,7 @@
 /.eggs/
 
 # Created by `setup.py test`:
-/src/datapunt_config_loader.egg-info/
+/src/*.egg-info/
 
 # Created by `setup.py dist`:
 /dist/

@@ -210,6 +210,12 @@ def _assert_if_none_match(request: web.Request,
     # language=rst
     """
 
+    Todo:
+        Evert lammerts schreef: Documenteren. Ik vind _assert_if_none_match niet
+        makkelijk te lezen zonder docs voor de parameters. Bv: etag heeft als
+        type None, bool, of str. En if etag is True: PreconditionFailed. Die
+        semantiek is vast logisch in context maar niet op zichzelf.
+
     The If-None-Match: header is used in two scenarios:
 
     1.   GET requests by a caching client. In this case, the client will
@@ -380,6 +386,9 @@ class ETagGenerator:
             ETagGenerator: self
 
         """
+        # Option "sort_keys=True" is here to make the JSON serialization
+        # deterministic. This guarantees that you'll get the same ETag every
+        # time you use ETagGenerator en the same dictionary.
         self._hash.update(
             json.dumps(v, ensure_ascii=False, sort_keys=True, default=_json_dumps_default).encode()
         )
@@ -431,6 +440,7 @@ class ETagMixin(abc.ABC):
             -   Class :class:`ETagGenerator` can help you generate unique ETags.
             -   Function :func:`etaggify` can help you generate syntactically
                 valid ETags.
+
         """
 
     async def assert_preconditions(self,

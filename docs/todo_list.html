@@ -97,8 +97,26 @@
               <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="api_docs.html">API Docs</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="api/content_negotiation.html">Content Negotiation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="api/etags.html">ETags</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/conditional.html">Conditional Requests</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api/conditional.html#overview">Overview</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api/conditional.html#etagmixin">ETagMixin</a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/conditional.html#helpers-for-etag-creation">Helpers for ETag creation</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="api/conditional.html#api-documentation">API documentation</a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="api/hal_json.html">HAL+JSON</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/json.html">Async Streaming JSON</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api/json.html#introduction">Introduction</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api/json.html#streaming">1. Streaming</a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/json.html#asynchronous-streaming">2. Asynchronous Streaming</a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/json.html#take-home-message">3. Take home message</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="api/json.html#api-documentation">API documentation</a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="api/view.html">View</a></li>
 </ul>
 </li>
@@ -234,28 +252,7 @@
 <p class="first admonition-title">Todo</p>
 <p class="last">Add support for conditional request handling based on the <code class="docutils literal"><span class="pre">Last-Modified:</span></code></p>
 </div>
-<p class="todo-source">(The <a class="reference internal" href="api/etags.html#index-1"><em>original entry</em></a> is located in /Users/pieterb/020/aiohttp_extras/src/aiohttp_extras/_etags.py:docstring of aiohttp_extras._etags, line 21.)</p>
-<div class="admonition-todo admonition">
-<p class="first admonition-title">Todo</p>
-<p class="last">Investigate what the semantics of Weak ETags are.  Maybe there’s a
-sensible default value for parameter <code class="docutils literal"><span class="pre">weak</span></code>.</p>
-</div>
-<p class="todo-source">(The <a class="reference internal" href="api/etags.html#index-3"><em>original entry</em></a> is located in /Users/pieterb/020/aiohttp_extras/src/aiohttp_extras/_etags.py:docstring of aiohttp_extras._etags.etaggify, line 8.)</p>
-<div class="admonition-todo admonition">
-<p class="first admonition-title">Todo</p>
-<p class="last">Documentation</p>
-</div>
-<p class="todo-source">(The <a class="reference internal" href="api/hal_json.html#index-0"><em>original entry</em></a> is located in /Users/pieterb/020/aiohttp_extras/src/aiohttp_extras/_hal_json.py:docstring of aiohttp_extras._hal_json.HALJSONMixin, line 1.)</p>
-<div class="admonition-todo admonition">
-<p class="first admonition-title">Todo</p>
-<p class="last">Implementation. This method is not yet finished.</p>
-</div>
-<p class="todo-source">(The <a class="reference internal" href="api/hal_json.html#index-1"><em>original entry</em></a> is located in /Users/pieterb/020/aiohttp_extras/src/aiohttp_extras/_hal_json.py:docstring of aiohttp_extras._hal_json.HALJSONMixin.to_dict, line 1.)</p>
-<div class="admonition-todo admonition">
-<p class="first admonition-title">Todo</p>
-<p class="last">Documentation</p>
-</div>
-<p class="todo-source">(The <a class="reference internal" href="api/view.html#index-0"><em>original entry</em></a> is located in /Users/pieterb/020/aiohttp_extras/src/aiohttp_extras/_view.py:docstring of aiohttp_extras._view.View, line 1.)</p>
+<p class="todo-source">(The <a class="reference internal" href="api/conditional.html#index-1"><em>original entry</em></a> is located in /Users/pieterb/020/aiohttp_extras/src/aiohttp_extras/_conditional.py:docstring of aiohttp_extras._conditional, line 33.)</p>
 <div class="admonition-todo admonition">
 <p class="first admonition-title">Todo</p>
 <p class="last">Publish the documentation somewhere (ReadTheDocs?) and insert a link in the

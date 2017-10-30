@@ -251,7 +251,8 @@
 
 <span class="sd">To support *content type negotiation* in GET requests, this package provides</span>
 <span class="sd">method :meth:`best_content_type`.  Additionally, it provides a mixin</span>
-<span class="sd">:class:`ContentNegotiationMixin` to be used when inheriting from :class:`aiohttp.web.View`.</span>
+<span class="sd">:class:`ContentNegotiationMixin` to be used when inheriting from</span>
+<span class="sd">:class:`aiohttp.web.View` .</span>
 
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="kn">import</span> <span class="nn">logging</span>
@@ -281,7 +282,8 @@
 <span class="sd">        ``request`` and a list of ``available_content_types``.</span>
 
 <span class="sd">    Parameters:</span>
-<span class="sd">        request (aiohttp.web.Request): the request from which to extract an ``Accept:`` header.</span>
+<span class="sd">        request (aiohttp.web.Request): the request from which to extract an</span>
+<span class="sd">            ``Accept:`` header.</span>
 <span class="sd">        available_content_types: an ordered list of available content types,</span>
 <span class="sd">            ordered by quality, best quality first.</span>
 
@@ -349,7 +351,6 @@
 <span class="sd">                ...</span>
 <span class="sd">                response.content_type = self.best_content_type</span>
 
-
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="nf">__init_subclass__</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
@@ -361,7 +362,7 @@
         <span class="sd">&quot;&quot;&quot;The best content type to represent this resource.</span>
 
 <span class="sd">        This property is a shortcut for function :func:`best_content_type`.</span>
-<span class="sd">        Ie. the following to lines of code are equivalent::</span>
+<span class="sd">        Ie. the following two lines of code are equivalent::</span>
 
 <span class="sd">            bct = my_view.best_content_type</span>
 <span class="sd">            bct = best_content_type(my_view.request, my_view.AVAILABLE_CONTENT_TYPES)</span>
