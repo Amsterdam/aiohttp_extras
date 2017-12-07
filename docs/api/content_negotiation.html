@@ -41,8 +41,8 @@
         <link rel="search" title="Search" href="../search.html"/>
     <link rel="top" title="aiohttp_extras 0.1 documentation" href="../index.html"/>
         <link rel="up" title="API Docs" href="../api_docs.html"/>
-        <link rel="next" title="Conditional Requests" href="conditional.html"/>
-        <link rel="prev" title="API Docs" href="../api_docs.html"/> 
+        <link rel="next" title="Async Streaming JSON" href="json.html"/>
+        <link rel="prev" title="Conditional Requests" href="conditional.html"/> 
 
   
   <script src="../_static/js/modernizr.min.js"></script>
@@ -97,7 +97,6 @@
             
               <ul class="current">
 <li class="toctree-l1 current"><a class="reference internal" href="../api_docs.html">API Docs</a><ul class="current">
-<li class="toctree-l2 current"><a class="current reference internal" href="#">Content Negotiation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="conditional.html">Conditional Requests</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="conditional.html#overview">Overview</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="conditional.html#etagmixin">ETagMixin</a></li>
@@ -107,7 +106,7 @@
 <li class="toctree-l3"><a class="reference internal" href="conditional.html#api-documentation">API documentation</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="hal_json.html">HAL+JSON</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Content Negotiation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="json.html">Async Streaming JSON</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="json.html#introduction">Introduction</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="json.html#streaming">1. Streaming</a></li>
@@ -250,55 +249,12 @@
            <div itemprop="articleBody">
             
   <div class="section" id="module-aiohttp_extras._content_negotiation">
-<span id="content-negotiation"></span><span id="best-content-types"></span><h1>Content Negotiation<a class="headerlink" href="#module-aiohttp_extras._content_negotiation" title="Permalink to this headline">¶</a></h1>
-<p>To support <em>content type negotiation</em> in GET requests, this package provides
-method <a class="reference internal" href="#aiohttp_extras._content_negotiation.best_content_type" title="aiohttp_extras._content_negotiation.best_content_type"><code class="xref py py-meth docutils literal"><span class="pre">best_content_type()</span></code></a>.  Additionally, it provides a mixin
-<a class="reference internal" href="#aiohttp_extras._content_negotiation.ContentNegotiationMixin" title="aiohttp_extras._content_negotiation.ContentNegotiationMixin"><code class="xref py py-class docutils literal"><span class="pre">ContentNegotiationMixin</span></code></a> to be used when inheriting from
-<a class="reference external" href="http://aiohttp.readthedocs.io/en/stable/web_reference.html#aiohttp.web.View" title="(in aiohttp v2.2)"><code class="xref py py-class docutils literal"><span class="pre">aiohttp.web.View</span></code></a> .</p>
-<dl class="class">
-<dt id="aiohttp_extras._content_negotiation.ContentNegotiationMixin">
-<em class="property">class </em><code class="descname">ContentNegotiationMixin</code><a class="reference internal" href="../_modules/aiohttp_extras/_content_negotiation.html#ContentNegotiationMixin"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aiohttp_extras._content_negotiation.ContentNegotiationMixin" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3.6/library/abc.html#abc.ABC" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">abc.ABC</span></code></a></p>
-<p><a class="reference external" href="http://aiohttp.readthedocs.io/en/stable/web_reference.html#aiohttp.web.View" title="(in aiohttp v2.2)"><code class="xref py py-obj docutils literal"><span class="pre">View</span></code></a> mixin that helps with content negotiation.</p>
-<p>This mixin provides a property <a class="reference internal" href="#aiohttp_extras._content_negotiation.best_content_type" title="aiohttp_extras._content_negotiation.best_content_type"><code class="xref py py-attr docutils literal"><span class="pre">best_content_type</span></code></a>.</p>
-<p>Classes that use this mixin <em>must</em> provide a class attribute
-<code class="docutils literal"><span class="pre">AVAILABLE_CONTENT_TYPES</span></code>, or an AssertionError will be raised on subclass
-definition.  This attribute must contain a list of content types that
-instances of this class are able to produce.</p>
-<p>Example:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">MyView</span><span class="p">(</span><span class="n">aiohttp_extras</span><span class="o">.</span><span class="n">View</span><span class="p">,</span> <span class="n">aiohttp_extras</span><span class="o">.</span><span class="n">ContentNegatiationMixin</span><span class="p">):</span>
-    <span class="n">AVAILABLE_CONTENT_TYPES</span> <span class="o">=</span> <span class="o">...</span>
-
-    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="o">...</span>
-        <span class="n">response</span><span class="o">.</span><span class="n">content_type</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">best_content_type</span>
-</pre></div>
-</div>
-<dl class="attribute">
-<dt id="aiohttp_extras._content_negotiation.ContentNegotiationMixin.best_content_type">
-<code class="descname">best_content_type</code><a class="headerlink" href="#aiohttp_extras._content_negotiation.ContentNegotiationMixin.best_content_type" title="Permalink to this definition">¶</a></dt>
-<dd><p>The best content type to represent this resource.</p>
-<p>This property is a shortcut for function <a class="reference internal" href="#aiohttp_extras._content_negotiation.best_content_type" title="aiohttp_extras._content_negotiation.best_content_type"><code class="xref py py-func docutils literal"><span class="pre">best_content_type()</span></code></a>.
-Ie. the following two lines of code are equivalent:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">bct</span> <span class="o">=</span> <span class="n">my_view</span><span class="o">.</span><span class="n">best_content_type</span>
-<span class="n">bct</span> <span class="o">=</span> <span class="n">best_content_type</span><span class="p">(</span><span class="n">my_view</span><span class="o">.</span><span class="n">request</span><span class="p">,</span> <span class="n">my_view</span><span class="o">.</span><span class="n">AVAILABLE_CONTENT_TYPES</span><span class="p">)</span>
-</pre></div>
-</div>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#str" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">str</span></code></a></td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-</dd></dl>
-
+<span id="id1"></span><span id="content-negotiation"></span><h1>Content Negotiation<a class="headerlink" href="#module-aiohttp_extras._content_negotiation" title="Permalink to this headline">¶</a></h1>
+<p>To support <em>content type negotiation</em> in GET requests, this package provides the
+<a class="reference internal" href="#aiohttp_extras._content_negotiation.produces_content_types" title="aiohttp_extras._content_negotiation.produces_content_types"><code class="xref py py-meth docutils literal"><span class="pre">&#64;produces_content_types</span></code></a> decorator.</p>
 <dl class="function">
-<dt id="aiohttp_extras._content_negotiation.best_content_type">
-<code class="descname">best_content_type</code><span class="sig-paren">(</span><em>request</em>, <em>available_content_types</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aiohttp_extras/_content_negotiation.html#best_content_type"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aiohttp_extras._content_negotiation.best_content_type" title="Permalink to this definition">¶</a></dt>
+<dt id="aiohttp_extras._content_negotiation._best_content_type">
+<code class="descname">_best_content_type</code><span class="sig-paren">(</span><em>request</em>, <em>available_content_types</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aiohttp_extras/_content_negotiation.html#_best_content_type"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aiohttp_extras._content_negotiation._best_content_type" title="Permalink to this definition">¶</a></dt>
 <dd><p>The best matching content type.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -312,8 +268,7 @@ Ie. the following two lines of code are equivalent:</p>
 </td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>request</strong> (<a class="reference external" href="http://aiohttp.readthedocs.io/en/stable/web_reference.html#aiohttp.web.Request" title="(in aiohttp v2.2)"><em>aiohttp.web.Request</em></a>) – the request from which to extract an
-<code class="docutils literal"><span class="pre">Accept:</span></code> header.</li>
+<li><strong>request</strong> (<a class="reference external" href="http://aiohttp.readthedocs.io/en/stable/web_reference.html#aiohttp.web.Request" title="(in aiohttp v2.2)"><em>aiohttp.web.Request</em></a>) – the current request</li>
 <li><strong>available_content_types</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/typing.html#typing.List" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">List</span></code></a>[<a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#str" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">str</span></code></a>]) – an ordered list of available content types,
 ordered by quality, best quality first.</li>
 </ul>
@@ -336,6 +291,37 @@ acceptable by the client. See <a class="reference external" href="http://aiohttp
 </div>
 </dd></dl>
 
+<dl class="function">
+<dt id="aiohttp_extras._content_negotiation.produces_content_types">
+<code class="descname">produces_content_types</code><span class="sig-paren">(</span><em>f</em>, <em>*content_types</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aiohttp_extras/_content_negotiation.html#produces_content_types"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aiohttp_extras._content_negotiation.produces_content_types" title="Permalink to this definition">¶</a></dt>
+<dd><p>Decorator for <a class="reference external" href="http://aiohttp.readthedocs.io/en/stable/web_reference.html#aiohttp.web.View" title="(in aiohttp v2.2)"><code class="xref py py-class docutils literal"><span class="pre">View</span></code></a> request handler methods.</p>
+<p>This method sets <code class="docutils literal"><span class="pre">self.request['best_content_type']</span></code> to one of the
+provided content types.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>content_types</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#str" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">str</span></code></a>) – all content types this handler can produce, best quality
+first.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><code class="xref py py-exc docutils literal"><span class="pre">web.HTTPNotAcceptable</span></code> – if none of the available content types are
+acceptable by the client. See <a class="reference external" href="http://aiohttp.readthedocs.io/en/stable/web.html#aiohttp-web-exceptions" title="(in aiohttp v2.2)"><span class="xref std std-ref">aiohttp web exceptions</span></a>.</td>
+</tr>
+</tbody>
+</table>
+<p>Example:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">MyView</span><span class="p">(</span><span class="n">aiohttp</span><span class="o">.</span><span class="n">web</span><span class="o">.</span><span class="n">View</span><span class="p">):</span>
+    <span class="nd">@produces_content_types</span><span class="p">(</span><span class="s1">&#39;foo/bar&#39;</span><span class="p">,</span>
+                            <span class="s1">&#39;text/baz; charset=&quot;utf-8&quot;&#39;</span><span class="p">)</span>
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="n">aiohttp</span><span class="o">.</span><span class="n">web</span><span class="o">.</span><span class="n">Response</span><span class="p">()</span>
+        <span class="n">response</span><span class="o">.</span><span class="n">content_type</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">request</span><span class="p">[</span><span class="s1">&#39;best_content_type&#39;</span><span class="p">]</span>
+        <span class="o">...</span>
+        <span class="k">return</span> <span class="n">response</span>
+</pre></div>
+</div>
+</dd></dl>
+
 </div>
 
 
@@ -348,10 +334,10 @@ acceptable by the client. See <a class="reference external" href="http://aiohttp
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="conditional.html" class="btn btn-neutral float-right" title="Conditional Requests" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="json.html" class="btn btn-neutral float-right" title="Async Streaming JSON" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="../api_docs.html" class="btn btn-neutral" title="API Docs" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="conditional.html" class="btn btn-neutral" title="Conditional Requests" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

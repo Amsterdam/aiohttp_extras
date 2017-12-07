@@ -10,3 +10,6 @@
     overflow: visible !important;
   }
 }
+div[class^='highlight'] pre {
+  font-family: "Lucida Sans Typewriter",Consolas,"Andale Mono WT","Andale Mono","Lucida Console","DejaVu Sans Mono","Bitstream Vera Sans Mono","Liberation Mono","Nimbus Mono L",Monaco,"Courier New",Courier,monospace;
+}

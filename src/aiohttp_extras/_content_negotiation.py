@@ -1,31 +1,23 @@
 # language=rst
 """
 
-To support *content type negotiation* in GET requests, this package provides
-method :meth:`best_content_type`.  Additionally, it provides a mixin
-:class:`ContentNegotiationMixin` to be used when inheriting from
-:class:`aiohttp.web.View` .
+To support *content type negotiation* in GET requests, this package provides the
+:meth:`@produces_content_types <produces_content_types>` decorator.
 
 """
 import logging
+import functools
 import typing as T
-import abc
 
-from aiohttp import web
+from aiohttp import web, hdrs
 
 _logger = logging.getLogger(__name__)
 
 _BCT_CACHED_VALUE_KEY = 'aiohttp_extras.best_content_type'
 
 
-# ┏━━━━━━━━━━━━━━━━━━━━━┓
-# ┃ Content Negotiation ┃
-# ┗━━━━━━━━━━━━━━━━━━━━━┛
-
-def best_content_type(
-    request: web.Request,
-    available_content_types: T.List[str]
-) -> str:
+def _best_content_type(request: web.Request,
+                       available_content_types: T.List[str]) -> str:
     # language=rst
     """The best matching content type.
 
@@ -34,8 +26,7 @@ def best_content_type(
         ``request`` and a list of ``available_content_types``.
 
     Parameters:
-        request (aiohttp.web.Request): the request from which to extract an
-            ``Accept:`` header.
+        request (aiohttp.web.Request): the current request
         available_content_types: an ordered list of available content types,
             ordered by quality, best quality first.
 
@@ -54,9 +45,9 @@ def best_content_type(
             bct = best_content_type(request, AVAILABLE)
 
     """
-    if 'ACCEPT' not in request.headers:
+    if hdrs.ACCEPT not in request.headers:
         return available_content_types[0]
-    accept = ','.join(request.headers.getall('ACCEPT'))
+    accept = ','.join(request.headers.getall(hdrs.ACCEPT))
     acceptable_content_types = dict()
     for acceptable in accept.split(','):
         try:
@@ -83,45 +74,39 @@ def best_content_type(
     )
 
 
-class ContentNegotiationMixin(abc.ABC):
+def produces_content_types(f: T.Callable,
+                           *content_types: str):
     # language=rst
-    """`View <aiohttp.web.View>` mixin that helps with content negotiation.
+    """Decorator for :class:`View <aiohttp.web.View>` request handler methods.
 
-    This mixin provides a property :attr:`best_content_type`.
+    This method sets ``self.request['best_content_type']`` to one of the
+    provided content types.
 
-    Classes that use this mixin *must* provide a class attribute
-    ``AVAILABLE_CONTENT_TYPES``, or an AssertionError will be raised on subclass
-    definition.  This attribute must contain a list of content types that
-    instances of this class are able to produce.
+    Parameters:
+        content_types: all content types this handler can produce, best quality
+            first.
+
+    Raises:
+        web.HTTPNotAcceptable: if none of the available content types are
+            acceptable by the client. See :ref:`aiohttp web exceptions
+            <aiohttp-web-exceptions>`.
 
     Example::
 
-        class MyView(aiohttp_extras.View, aiohttp_extras.ContentNegatiationMixin):
-            AVAILABLE_CONTENT_TYPES = ...
-
-            def get(self):
+        class MyView(aiohttp.web.View):
+            @produces_content_types('foo/bar',
+                                    'text/baz; charset="utf-8"')
+            async def get(self):
+                response = aiohttp.web.Response()
+                response.content_type = self.request['best_content_type']
                 ...
-                response.content_type = self.best_content_type
+                return response
 
     """
-
-    def __init_subclass__(cls):
-        assert hasattr(cls, 'AVAILABLE_CONTENT_TYPES')
-
-    @property
-    def best_content_type(self) -> str:
-        # language=rst
-        """The best content type to represent this resource.
-
-        This property is a shortcut for function :func:`best_content_type`.
-        Ie. the following two lines of code are equivalent::
-
-            bct = my_view.best_content_type
-            bct = best_content_type(my_view.request, my_view.AVAILABLE_CONTENT_TYPES)
-
-        """
-        if _BCT_CACHED_VALUE_KEY not in self.request:
-            self.request[_BCT_CACHED_VALUE_KEY] = best_content_type(
-                self.request, self.AVAILABLE_CONTENT_TYPES
-            )
-        return self.request[_BCT_CACHED_VALUE_KEY]
+    @functools.wraps(f)
+    async def wrapper(self, *args, **kwargs):
+        request = self.request
+        request['best_content_type'] = \
+            _best_content_type(request, content_types)
+        return await f(self, *args, **kwargs)
+    return wrapper

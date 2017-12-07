@@ -1,4 +1,4 @@
-.. _best_content_types:
+.. _content_negotiation:
 
 
 Content Negotiation

@@ -95,7 +95,6 @@
             
               <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="api_docs.html">API Docs</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="api/content_negotiation.html">Content Negotiation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="api/conditional.html">Conditional Requests</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="api/conditional.html#overview">Overview</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="api/conditional.html#etagmixin">ETagMixin</a></li>
@@ -105,7 +104,7 @@
 <li class="toctree-l3"><a class="reference internal" href="api/conditional.html#api-documentation">API documentation</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="api/hal_json.html">HAL+JSON</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/content_negotiation.html">Content Negotiation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="api/json.html">Async Streaming JSON</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="api/json.html#introduction">Introduction</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="api/json.html#streaming">1. Streaming</a></li>
@@ -249,15 +248,10 @@
 <div class="genindex-jumpbox">
  <a href="#_"><strong>_</strong></a>
  | <a href="#A"><strong>A</strong></a>
- | <a href="#B"><strong>B</strong></a>
- | <a href="#C"><strong>C</strong></a>
  | <a href="#E"><strong>E</strong></a>
- | <a href="#H"><strong>H</strong></a>
  | <a href="#I"><strong>I</strong></a>
- | <a href="#L"><strong>L</strong></a>
  | <a href="#P"><strong>P</strong></a>
  | <a href="#R"><strong>R</strong></a>
- | <a href="#T"><strong>T</strong></a>
  | <a href="#U"><strong>U</strong></a>
  
 </div>
@@ -268,11 +262,11 @@
 </li>
       <li><a href="api/conditional.html#aiohttp_extras._conditional._assert_if_none_match">_assert_if_none_match() (in module aiohttp_extras._conditional)</a>
 </li>
-      <li><a href="api/hal_json.html#aiohttp_extras.serializers.hal_json._hal_json_serializer">_hal_json_serializer() (in module aiohttp_extras.serializers.hal_json)</a>
+      <li><a href="api/content_negotiation.html#aiohttp_extras._content_negotiation._best_content_type">_best_content_type() (in module aiohttp_extras._content_negotiation)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api/hal_json.html#aiohttp_extras.serializers.hal_json.HALJSONMixin._links">_links() (HALJSONMixin method)</a>
+      <li><a href="api/conditional.html#aiohttp_extras._conditional._etaggify">_etaggify() (in module aiohttp_extras._conditional)</a>
 </li>
       <li><a href="api/conditional.html#aiohttp_extras._conditional._match_etags">_match_etags() (in module aiohttp_extras._conditional)</a>
 </li>
@@ -290,41 +284,13 @@
 </li>
       <li><a href="api/content_negotiation.html#module-aiohttp_extras._content_negotiation">aiohttp_extras._content_negotiation (module)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/json.html#module-aiohttp_extras._json">aiohttp_extras._json (module)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/view.html#module-aiohttp_extras._view">aiohttp_extras._view (module)</a>
 </li>
-      <li><a href="api/hal_json.html#module-aiohttp_extras.serializers.hal_json">aiohttp_extras.serializers.hal_json (module)</a>
-</li>
-      <li><a href="api/conditional.html#aiohttp_extras._conditional.ETagMixin.assert_preconditions">assert_preconditions() (ETagMixin method)</a>
-
-      <ul>
-        <li><a href="api/conditional.html#aiohttp_extras._conditional.assert_preconditions">(in module aiohttp_extras._conditional)</a>
-</li>
-      </ul></li>
-      <li><a href="api/hal_json.html#aiohttp_extras.serializers.hal_json.HALJSONMixin.attributes">attributes() (HALJSONMixin method)</a>
-</li>
-  </ul></td>
-</tr></table>
-
-<h2 id="B">B</h2>
-<table style="width: 100%" class="indextable genindextable"><tr>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api/content_negotiation.html#aiohttp_extras._content_negotiation.ContentNegotiationMixin.best_content_type">best_content_type (ContentNegotiationMixin attribute)</a>
-</li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api/content_negotiation.html#aiohttp_extras._content_negotiation.best_content_type">best_content_type() (in module aiohttp_extras._content_negotiation)</a>
-</li>
-  </ul></td>
-</tr></table>
-
-<h2 id="C">C</h2>
-<table style="width: 100%" class="indextable genindextable"><tr>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api/content_negotiation.html#aiohttp_extras._content_negotiation.ContentNegotiationMixin">ContentNegotiationMixin (class in aiohttp_extras._content_negotiation)</a>
+      <li><a href="api/conditional.html#aiohttp_extras._conditional.assert_preconditions">assert_preconditions() (in module aiohttp_extras._conditional)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -338,25 +304,15 @@
 </li>
       <li><a href="api/conditional.html#aiohttp_extras._conditional.ETagMixin.etag">etag() (ETagMixin method)</a>
 </li>
-      <li><a href="api/conditional.html#aiohttp_extras._conditional.etag_from_float">etag_from_float() (in module aiohttp_extras._conditional)</a>
-</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/conditional.html#aiohttp_extras._conditional.etag_from_float">etag_from_float() (in module aiohttp_extras._conditional)</a>
+</li>
       <li><a href="api/conditional.html#aiohttp_extras._conditional.etag_from_int">etag_from_int() (in module aiohttp_extras._conditional)</a>
 </li>
       <li><a href="api/conditional.html#aiohttp_extras._conditional.ETagGenerator">ETagGenerator (class in aiohttp_extras._conditional)</a>
 </li>
-      <li><a href="api/conditional.html#aiohttp_extras._conditional.etaggify">etaggify() (in module aiohttp_extras._conditional)</a>
-</li>
       <li><a href="api/conditional.html#aiohttp_extras._conditional.ETagMixin">ETagMixin (class in aiohttp_extras._conditional)</a>
-</li>
-  </ul></td>
-</tr></table>
-
-<h2 id="H">H</h2>
-<table style="width: 100%" class="indextable genindextable"><tr>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api/hal_json.html#aiohttp_extras.serializers.hal_json.HALJSONMixin">HALJSONMixin (class in aiohttp_extras.serializers.hal_json)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -369,20 +325,12 @@
   </ul></td>
 </tr></table>
 
-<h2 id="L">L</h2>
-<table style="width: 100%" class="indextable genindextable"><tr>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api/hal_json.html#aiohttp_extras.serializers.hal_json.HALJSONMixin.link_name">link_name (HALJSONMixin attribute)</a>
-</li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api/hal_json.html#aiohttp_extras.serializers.hal_json.HALJSONMixin.link_title">link_title (HALJSONMixin attribute)</a>
-</li>
-  </ul></td>
-</tr></table>
-
 <h2 id="P">P</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/content_negotiation.html#aiohttp_extras._content_negotiation.produces_content_types">produces_content_types() (in module aiohttp_extras._content_negotiation)</a>
+</li>
+  </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li>
     Python Enhancement Proposals
@@ -403,23 +351,11 @@
       <ul>
         <li><a href="api/conditional.html#index-2">RFC 2616</a>
 </li>
-        <li><a href="api/conditional.html#index-0">RFC 7232</a>, <a href="api/conditional.html#index-3">[1]</a>, <a href="api/conditional.html#index-5">[2]</a>
+        <li><a href="api/conditional.html#index-0">RFC 7232</a>, <a href="api/conditional.html#index-4">[1]</a>, <a href="api/conditional.html#index-6">[2]</a>
 </li>
-        <li><a href="api/conditional.html#index-4">RFC 7232#section-2.3.2</a>
+        <li><a href="api/conditional.html#index-5">RFC 7232#section-2.3.2</a>
 </li>
       </ul></li>
-  </ul></td>
-</tr></table>
-
-<h2 id="T">T</h2>
-<table style="width: 100%" class="indextable genindextable"><tr>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api/hal_json.html#aiohttp_extras.serializers.hal_json.HALJSONMixin.to_dict">to_dict() (HALJSONMixin method)</a>
-</li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api/hal_json.html#aiohttp_extras.serializers.hal_json.HALJSONMixin.to_link">to_link (HALJSONMixin attribute)</a>
-</li>
   </ul></td>
 </tr></table>
 

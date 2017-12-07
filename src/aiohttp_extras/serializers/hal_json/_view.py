@@ -20,16 +20,17 @@ def _slashify(s):
 class View(web.View):
 
     def __init__(
-        self,
-        request: web.Request,
-        match_dict: T.Optional[T.Mapping[str, str]]=None,
-        *args, **kwargs
+            self, request: web.Request,
+            match_dict: T.Optional[T.Mapping[str, str]]=None,
+            embed=None
     ):
-        super().__init__()
+        super().__init__(request)
         if match_dict is None:
             rel_url = request.rel_url
         else:
             rel_url = self.aiohttp_resource().url_for(**match_dict)
+        if embed is not None:
+            rel_url = rel_url.update_query(embed=embed)
         self.__rel_url = rel_url
         self.__embed = None
         self.__query = None
@@ -56,11 +57,7 @@ class View(web.View):
             :attr:`self.request.match_info <aiohttp.web.Request.match_info>`.
 
         """
-        return self.__match_dict if self.__match_dict is not None else self.request.match_info
-
-    @match_dict.setter
-    def match_dict(self, value):
-        self.__match_dict = dict(value)
+        return self.__match_dict
 
     @property
     def rel_url(self) -> web.URL:

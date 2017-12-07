@@ -95,7 +95,6 @@
             
               <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../api_docs.html">API Docs</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../../api/content_negotiation.html">Content Negotiation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/conditional.html">Conditional Requests</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/conditional.html#overview">Overview</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="../../../api/conditional.html#etagmixin">ETagMixin</a></li>
@@ -105,7 +104,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../../../api/conditional.html#api-documentation">API documentation</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="../../../api/hal_json.html">HAL+JSON</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/content_negotiation.html">Content Negotiation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/json.html">Async Streaming JSON</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/json.html#introduction">Introduction</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="../../../api/json.html#streaming">1. Streaming</a></li>
@@ -338,8 +337,10 @@
         <span class="c1"># language=rst</span>
         <span class="sd">&quot;&quot;&quot;The title of this resource, to be used in link objects.</span>
 
-<span class="sd">        This default implementation returns `None`, and there&#39;s no `title`</span>
-<span class="sd">        attribute in HAL link objects.  See also :meth:`to_link`.</span>
+<span class="sd">        Returns:</span>
+<span class="sd">            The title of this resource, or ``None``, in which case the `title`</span>
+<span class="sd">            attribute is omitted from the HAL link object.  See also</span>
+<span class="sd">            :meth:`to_link`.</span>
 
 <span class="sd">        Subclasses can override this default implementation.</span>
 

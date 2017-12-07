@@ -74,6 +74,7 @@ setup(
             'Sphinx',
             'sphinx-autobuild',
             'sphinx-autodoc-typehints',
+            'sphinx-autodoc-napoleon-typehints',
             'sphinx_rtd_theme',
         ],
         'test': tests_require,

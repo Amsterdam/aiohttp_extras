@@ -9,15 +9,15 @@ def follow_path(o, *args):
 
     Example usage::
 
-        o = {
-            'foo': {
-                'bar': "baz"
-            }
-        }
-        follow_path(o, 'foo', 'bar')
-        >>> "baz"
-        follow_path(o, 'not_existing')
-        >>> raises AssertionError
+        >>> o = {
+        >>>     'foo': {
+        >>>         'bar': "baz"
+        >>>     }
+        >>> }
+        >>> follow_path(o, 'foo', 'bar')
+        "baz"
+        >>> # raises AssertionError
+        >>> follow_path(o, 'not_existing')
 
     """
     seen = deque()

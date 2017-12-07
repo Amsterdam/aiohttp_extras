@@ -8,8 +8,7 @@ API Docs
 .. toctree::
     :hidden:
 
-    api/content_negotiation
     api/conditional
-    api/hal_json
+    api/content_negotiation
     api/json
     api/view

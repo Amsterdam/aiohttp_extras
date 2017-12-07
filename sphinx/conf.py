@@ -32,7 +32,7 @@ extensions = [
     'sphinx.ext.napoleon',
     'sphinx.ext.todo',
     'sphinx.ext.viewcode',
-    'sphinx_autodoc_typehints', # must be loaded _after_ napoleon.
+    'sphinx_autodoc_typehints',  # must be loaded _after_ napoleon.
 ]
 
 # The suffix(es) of source filenames.

@@ -32,10 +32,10 @@ string.
 
 Knowing all this, you might expect the following code to work::
 
-    ##############################
-    # DON'T COPY THIS EXAMPLE!!! #
-    #   instructional use only   #
-    ##############################
+    # ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+    # ┃ DON'T COPY THIS EXAMPLE!!! ┃
+    # ┃   instructional use only   ┃
+    # ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
     def read_lines_from_file(file):
         yield IM_A_DICT
         line_number, line = 1, file.readline()

@@ -1,4 +1,4 @@
-.. _haljson:
+.. _hal_json:
 
 
 HAL+JSON

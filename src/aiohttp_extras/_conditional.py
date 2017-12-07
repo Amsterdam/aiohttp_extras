@@ -14,9 +14,9 @@ There are two use cases for conditional requests:
     — to download the resource representation only if it has changed since the
     cached version.  In this case, the client adds an ``If-None-Match:`` header
     and includes the ETag(s) of the cached representation(s).
-2.  For unsafe methods (ie. ``DELETE``, ``PATCH``, ``POST``, and ``PUT``),
-    conditional requests can be used to avoid *lost updates*.  For this use
-    case, there are two scenarios:
+2.  For unsafe methods (ie. ``DELETE``, ``PATCH``, ``PUT``, and optionally
+        ``POST``), conditional requests can be used to avoid *lost updates*.
+        For this use case, there are two scenarios:
 
     a.  When performing an unsafe request, the client adds an ``If-Match:``
         header with the ETag of the resource as last seen by the client.  This
@@ -39,13 +39,18 @@ Todo:
 ETagMixin
 ---------
 
-If you want conditional request handling for one of your views, use
-:class:`ETagMixin`, and implement abstract method :meth:`etag <ETagMixin.etag>`.
-The mixin provides a method :meth:`assert_preconditions
-<ETagMixin.assert_preconditions>`, which gets called automatically by the
-framework for ``GET`` and ``HEAD`` requests. For other requests, you need to
-call this method yourself at some appropriate moment during request handling.
+If you want conditional request handling for one of your views, it must
+implement method :meth:`etag <ETagMixin.etag>`. You can use the
+:class:`ETagMixin` mixin class to assert this requirement is met.
 
+This module provides a decorator :func:`assert_preconditions`, which can
+decorate :class:`View <aiohttp.web.View>`-based handler methods. For example::
+
+    class MyView(aiohttp.web.View):
+
+        @assert_preconditions(force_precondition=True)
+        async def get(self, request):
+            ...
 
 Helpers for ETag creation
 -------------------------
@@ -72,9 +77,12 @@ import base64
 import struct
 import json
 import hashlib
+import functools
 from collections.abc import Mapping
 
-from aiohttp import web
+from aiohttp import web, hdrs
+
+from . import _view
 
 _logger = logging.getLogger(__name__)
 
@@ -86,7 +94,8 @@ _ETAG_ITER_PATTERN = re.compile(
 )
 _STAR = '*'
 _STAR_TYPE = str
-_HTTP_UNSAFE_METHODS = {'DELETE', 'PATCH', 'POST', 'PUT'}
+_HTTP_UNSAFE_METHODS_EXCL_POST = {'DELETE', 'PATCH', 'PUT'}
+_HTTP_UNSAFE_METHODS_INCL_POST = {'DELETE', 'PATCH', 'POST', 'PUT'}
 _VALID_ETAG_CHARS = re.compile(r'[\x21\x23-\x7e\x80-\xff]+')
 _IF_MATCH = 'If-Match'
 _IF_NONE_MATCH = 'If-None-Match'
@@ -152,13 +161,15 @@ def _match_etags(etag: str, etags: T.Iterable[str], allow_weak: bool) -> bool:
     return etag in etags or ('W/' + etag) in etags
 
 
-def _assert_if_match(request: web.Request,
-                     etag: T.Union[None, bool, str],
-                     require: bool,
-                     deny_star: bool,
-                     allow_weak: bool):
+def _assert_if_match(request:      web.Request,
+                     etag:         T.Union[None, bool, str],
+                     deny_star:    bool,
+                     allow_weak:   bool) -> bool:
     # language=rst
-    """
+    """Assert ETag validity in the ``If-Match`` header.
+
+    Returns:
+        bool: indicates if an ``If-Match`` header was provided.
 
     Raises:
         web.HTTPPreconditionRequired:
@@ -175,19 +186,19 @@ def _assert_if_match(request: web.Request,
     etags = _parse_if_header(request, _IF_MATCH)
 
     if etags is None:
-        if require:
-            raise web.HTTPPreconditionRequired(
-                text=_IF_MATCH
-            )
-        return
+        # if require and request.method in unsafe_methods:
+        #     raise web.HTTPPreconditionRequired(
+        #         text=_IF_MATCH
+        #     )
+        return False
     if etags is _STAR:
         if deny_star:
             raise web.HTTPBadRequest(
-                text='If-Match: requires a valid ETag for this request.'
+                text="If-Match: * is not allowed for this request. Use a specific ETag instead."
             )
         if etag is None or etag is False:
             raise web.HTTPPreconditionFailed(text=_IF_MATCH)
-        return
+        return False
     # From here on, `etags` can only be a set().
     if etag is True:
         raise web.HTTPPreconditionFailed(
@@ -201,12 +212,12 @@ def _assert_if_match(request: web.Request,
         or not _match_etags(etag, etags, allow_weak)
     ):
         raise web.HTTPPreconditionFailed(text=_IF_MATCH)
+    return True
 
 
-def _assert_if_none_match(request: web.Request,
-                          etag: T.Union[None, bool, str],
-                          require: bool,
-                          allow_weak: bool):
+def _assert_if_none_match(request:      web.Request,
+                          etag:         T.Union[None, bool, str],
+                          allow_weak:   bool) -> bool:
     # language=rst
     """
 
@@ -224,6 +235,9 @@ def _assert_if_none_match(request: web.Request,
          wants to avoid overwriting an existing resource. In this case, the
          client will normally provide only the asterisk "*" character.
 
+    Returns:
+        bool: indicates if an ``If-None-Match`` header was provided.
+
     Raises:
         web.HTTPBadRequest:
             If the request header is syntactically incorrect.
@@ -238,10 +252,12 @@ def _assert_if_none_match(request: web.Request,
     """
     etags = _parse_if_header(request, _IF_NONE_MATCH)
 
-    if require and etags is None:
-        raise web.HTTPPreconditionRequired(text=_IF_NONE_MATCH)
-    if etags is None or etag is False or etag is None:
-        return
+    if etags is None:
+        # if require and request.method in unsafe_methods:
+        #     raise web.HTTPPreconditionRequired(text=_IF_NONE_MATCH)
+        return False
+    if etag is False or etag is None:
+        return True
     if etags is _STAR:
         raise web.HTTPPreconditionFailed(text=_IF_NONE_MATCH)
     # From here on, we know that etags is a set of strings.
@@ -251,52 +267,61 @@ def _assert_if_none_match(request: web.Request,
         )
     # From here on, we know that etag is a string:
     if _match_etags(etag, etags, allow_weak):
-        if request.method in {'GET', 'HEAD'}:
+        if request.method in {hdrs.METH_GET, hdrs.METH_HEAD}:
             raise web.HTTPNotModified()
         else:
             raise web.HTTPPreconditionFailed(text=_IF_NONE_MATCH)
+    return True
 
 
-def assert_preconditions(request: web.Request,
-                         etag: T.Union[None, bool, str],
-                         require_if_match:      bool=False,
-                         deny_if_match_star:    bool=False,
-                         require_if_none_match: bool=False,
-                         allow_weak:            bool=False):
+def assert_preconditions(f: T.Callable,
+                         force_precondition:    bool=False,
+                         allow_weak:            bool=False,
+                         post_is_safe:          bool=False):
     # language=rst
     """
 
     Parameters:
-        request:
-            the current HTTP request
-        etag:
-            any value produced by :meth:`ETagMixin.etag`
-        require_if_match:
+        f:
+            The :class:`View <aiohttp.web.View>` instance method to decorate.
+        force_precondition:
             set ``True`` to assert the presence of an ``If-Match:`` request
-            header
-        deny_if_match_star:
-            if ``True``, raises :exc:`web.HTTPBadRequest` if the client sends an
-            ``If-Match: *`` request header.  This forces the client to send a
-            specific valid ETag.
-        require_if_none_match:
-            set ``True`` to assert the presence of an ``If-None-Match:`` request
             header
         allow_weak:
             set ``True`` to allow weak ETag comporisons.
+        post_is_safe:
+            consider the HTTP POST method safe for the current resource.
 
     Raises:
         see :func:`_assert_if_match` and :func:`_assert_if_none_match`
 
-    Warning:
-        Parameter `allow_weak` is not yet implemented.  If set to ``True``, a
-        :exc:`ValueError` is raised.
-
     """
-    _assert_if_match(request, etag, require_if_match, deny_if_match_star, allow_weak)
-    _assert_if_none_match(request, etag, require_if_none_match, allow_weak)
+    @functools.wraps(f)
+    async def wrapper(self, *args, **kwargs):
+        etag = await self.etag()
+        request = self.request
+        if_match = _assert_if_match(
+            request=request,
+            etag=etag,
+            deny_star=force_precondition,
+            allow_weak=allow_weak
+        )
+        if_none_match = _assert_if_none_match(
+            request=request,
+            etag=etag,
+            allow_weak=allow_weak
+        )
+        unsafe_methods = (
+            _HTTP_UNSAFE_METHODS_EXCL_POST if post_is_safe
+            else _HTTP_UNSAFE_METHODS_INCL_POST
+        )
+        if request.method in unsafe_methods and not if_match and not if_none_match:
+            raise web.HTTPPreconditionRequired()
+        return await f(self, *args, **kwargs)
+    return wrapper
 
 
-def etaggify(v: str, weak: bool=False) -> str:
+def _etaggify(v: str, weak: bool=False) -> str:
     # language=rst
     """Generates a syntactically valid ETag.
 
@@ -327,7 +352,7 @@ def etag_from_int(value: int, weak: bool=False) -> str:
         format = 'l'
     else:
         format = 'q'
-    return etaggify(
+    return _etaggify(
         base64.urlsafe_b64encode(struct.pack(format, value)).decode(),
         weak
     )
@@ -336,7 +361,7 @@ def etag_from_int(value: int, weak: bool=False) -> str:
 def etag_from_float(value: float, weak=False) -> str:
     # language=rst
     """Translates a float to an ETag string."""
-    return etaggify(
+    return _etaggify(
         base64.urlsafe_b64encode(struct.pack('d', value)).decode(),
         weak
     )
@@ -363,11 +388,17 @@ class ETagGenerator:
 
         etag = etag_generator.etag
 
-    The same, but shorter:
+    The same, but shorter::
 
         some_internal_state = ...
         some_other_internal_state = ...
         etag = ETagGenerator(some_internal_state, some_other_internal_state).etag
+
+    Note:
+        If you want to create an ETag based on only an integer or floating point
+        value (including time-stamps!), you could use :func:`etag_from_int` or
+        :func:`etag_from_float` instead. These methods create much more compact
+        ETags.
 
     """
     def __init__(self, *args):
@@ -406,7 +437,7 @@ class ETagGenerator:
             str: A valid ETag, that can be put into an ``ETag:`` header.
 
         """
-        return etaggify(
+        return _etaggify(
             base64.urlsafe_b64encode(self._hash.digest()).decode(),
             weak
         )
@@ -416,7 +447,10 @@ class ETagMixin(abc.ABC):
     # language=rst
     """
 
-    This View mixin provides support for conditional request handling based on ETags.
+    This View mixin provides support for conditional request handling based on
+    ETags.
+
+    Users of this mixin *must* implement abstract method :meth:`etag`.
 
     """
 
@@ -442,48 +476,3 @@ class ETagMixin(abc.ABC):
                 valid ETags.
 
         """
-
-    async def assert_preconditions(self,
-                                   require_if_match:      bool=False,
-                                   deny_if_match_star:    bool=False,
-                                   require_if_none_match: bool=False,
-                                   allow_weak:            bool=False):
-        # language=rst
-        """
-
-        Parameters:
-            require_if_match:
-                set ``True`` to assert the presence of an ``If-Match:`` request
-                header
-            deny_if_match_star:
-                if ``True``, raises :exc:`web.HTTPBadRequest` if the client sends an
-                ``If-Match: *`` request header.  This forces the client to send a
-                specific valid ETag.
-            require_if_none_match:
-                set ``True`` to assert the presence of an ``If-None-Match:`` request
-                header
-            allow_weak:
-                set ``True`` to allow weak ETag comporisons.
-
-        Raises:
-            see :func:`_assert_if_match` and :func:`_assert_if_none_match`
-
-        Warning:
-            Parameter `allow_weak` is not yet implemented.  If set to ``True``, a
-            :exc:`ValueError` is raised.
-
-        """
-        etag = await self.etag()
-        _assert_if_match(
-            self.request,
-            etag,
-            require_if_match,
-            deny_if_match_star,
-            allow_weak
-        )
-        _assert_if_none_match(
-            self.request,
-            etag,
-            require_if_none_match,
-            allow_weak
-        )

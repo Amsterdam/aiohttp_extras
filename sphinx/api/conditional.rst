@@ -1,4 +1,4 @@
-.. _etags:
+.. _conditional_requests:
 
 
 Conditional Requests

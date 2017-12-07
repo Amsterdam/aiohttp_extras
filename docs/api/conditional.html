@@ -41,8 +41,8 @@
         <link rel="search" title="Search" href="../search.html"/>
     <link rel="top" title="aiohttp_extras 0.1 documentation" href="../index.html"/>
         <link rel="up" title="API Docs" href="../api_docs.html"/>
-        <link rel="next" title="HAL+JSON" href="hal_json.html"/>
-        <link rel="prev" title="Content Negotiation" href="content_negotiation.html"/> 
+        <link rel="next" title="Content Negotiation" href="content_negotiation.html"/>
+        <link rel="prev" title="API Docs" href="../api_docs.html"/> 
 
   
   <script src="../_static/js/modernizr.min.js"></script>
@@ -97,7 +97,6 @@
             
               <ul class="current">
 <li class="toctree-l1 current"><a class="reference internal" href="../api_docs.html">API Docs</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="content_negotiation.html">Content Negotiation</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Conditional Requests</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#overview">Overview</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#etagmixin">ETagMixin</a></li>
@@ -107,7 +106,7 @@
 <li class="toctree-l3"><a class="reference internal" href="#api-documentation">API documentation</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="hal_json.html">HAL+JSON</a></li>
+<li class="toctree-l2"><a class="reference internal" href="content_negotiation.html">Content Negotiation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="json.html">Async Streaming JSON</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="json.html#introduction">Introduction</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="json.html#streaming">1. Streaming</a></li>
@@ -250,21 +249,26 @@
            <div itemprop="articleBody">
             
   <div class="section" id="module-aiohttp_extras._conditional">
-<span id="conditional-requests"></span><span id="etags"></span><h1>Conditional Requests<a class="headerlink" href="#module-aiohttp_extras._conditional" title="Permalink to this headline">¶</a></h1>
+<span id="id1"></span><span id="conditional-requests"></span><h1>Conditional Requests<a class="headerlink" href="#module-aiohttp_extras._conditional" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="overview">
 <h2>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
 <p>This module provides support for conditional request handling, based on ETags,
 as defined in <span class="target" id="index-0"></span><a class="rfc reference external" href="https://tools.ietf.org/html/rfc7232.html"><strong>RFC 7232</strong></a>.</p>
 <p>There are two use cases for conditional requests:</p>
-<ol class="arabic simple">
-<li>For safe methods (ie. <code class="docutils literal"><span class="pre">OPTIONS</span></code>, <code class="docutils literal"><span class="pre">GET</span></code>, and <code class="docutils literal"><span class="pre">HEAD</span></code>), conditional
+<ol class="arabic">
+<li><p class="first">For safe methods (ie. <code class="docutils literal"><span class="pre">OPTIONS</span></code>, <code class="docutils literal"><span class="pre">GET</span></code>, and <code class="docutils literal"><span class="pre">HEAD</span></code>), conditional
 requests can be used by caching clients — including caching forward proxies
 — to download the resource representation only if it has changed since the
 cached version.  In this case, the client adds an <code class="docutils literal"><span class="pre">If-None-Match:</span></code> header
-and includes the ETag(s) of the cached representation(s).</li>
-<li>For unsafe methods (ie. <code class="docutils literal"><span class="pre">DELETE</span></code>, <code class="docutils literal"><span class="pre">PATCH</span></code>, <code class="docutils literal"><span class="pre">POST</span></code>, and <code class="docutils literal"><span class="pre">PUT</span></code>),
-conditional requests can be used to avoid <em>lost updates</em>.  For this use
-case, there are two scenarios:<ol class="loweralpha">
+and includes the ETag(s) of the cached representation(s).</p>
+</li>
+<li><dl class="first docutils">
+<dt>For unsafe methods (ie. <code class="docutils literal"><span class="pre">DELETE</span></code>, <code class="docutils literal"><span class="pre">PATCH</span></code>, <code class="docutils literal"><span class="pre">PUT</span></code>, and optionally</dt>
+<dd><p class="first last"><code class="docutils literal"><span class="pre">POST</span></code>), conditional requests can be used to avoid <em>lost updates</em>.
+For this use case, there are two scenarios:</p>
+</dd>
+</dl>
+<ol class="loweralpha simple">
 <li>When performing an unsafe request, the client adds an <code class="docutils literal"><span class="pre">If-Match:</span></code>
 header with the ETag of the resource as last seen by the client.  This
 guarantees that the client doesn’t accidentally delete or overwrite a
@@ -288,17 +292,24 @@ supported.</p>
 </div>
 <div class="section" id="etagmixin">
 <h3>ETagMixin<a class="headerlink" href="#etagmixin" title="Permalink to this headline">¶</a></h3>
-<p>If you want conditional request handling for one of your views, use
-<a class="reference internal" href="#aiohttp_extras._conditional.ETagMixin" title="aiohttp_extras._conditional.ETagMixin"><code class="xref py py-class docutils literal"><span class="pre">ETagMixin</span></code></a>, and implement abstract method <a class="reference internal" href="#aiohttp_extras._conditional.ETagMixin.etag" title="aiohttp_extras._conditional.ETagMixin.etag"><code class="xref py py-meth docutils literal"><span class="pre">etag</span></code></a>.
-The mixin provides a method <a class="reference internal" href="#aiohttp_extras._conditional.ETagMixin.assert_preconditions" title="aiohttp_extras._conditional.ETagMixin.assert_preconditions"><code class="xref py py-meth docutils literal"><span class="pre">assert_preconditions</span></code></a>, which gets called automatically by the
-framework for <code class="docutils literal"><span class="pre">GET</span></code> and <code class="docutils literal"><span class="pre">HEAD</span></code> requests. For other requests, you need to
-call this method yourself at some appropriate moment during request handling.</p>
+<p>If you want conditional request handling for one of your views, it must
+implement method <a class="reference internal" href="#aiohttp_extras._conditional.ETagMixin.etag" title="aiohttp_extras._conditional.ETagMixin.etag"><code class="xref py py-meth docutils literal"><span class="pre">etag</span></code></a>. You can use the
+<a class="reference internal" href="#aiohttp_extras._conditional.ETagMixin" title="aiohttp_extras._conditional.ETagMixin"><code class="xref py py-class docutils literal"><span class="pre">ETagMixin</span></code></a> mixin class to assert this requirement is met.</p>
+<p>This module provides a decorator <a class="reference internal" href="#aiohttp_extras._conditional.assert_preconditions" title="aiohttp_extras._conditional.assert_preconditions"><code class="xref py py-func docutils literal"><span class="pre">assert_preconditions()</span></code></a>, which can
+decorate <a class="reference external" href="http://aiohttp.readthedocs.io/en/stable/web_reference.html#aiohttp.web.View" title="(in aiohttp v2.2)"><code class="xref py py-class docutils literal"><span class="pre">View</span></code></a>-based handler methods. For example:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">MyView</span><span class="p">(</span><span class="n">aiohttp</span><span class="o">.</span><span class="n">web</span><span class="o">.</span><span class="n">View</span><span class="p">):</span>
+
+    <span class="nd">@assert_preconditions</span><span class="p">(</span><span class="n">force_precondition</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">):</span>
+        <span class="o">...</span>
+</pre></div>
+</div>
 </div>
 <div class="section" id="helpers-for-etag-creation">
 <h3>Helpers for ETag creation<a class="headerlink" href="#helpers-for-etag-creation" title="Permalink to this headline">¶</a></h3>
 <p>To facilitate the creation of valid ETags for your resources, this library provides the following helpers:</p>
 <ul class="simple">
-<li><a class="reference internal" href="#aiohttp_extras._conditional.etaggify" title="aiohttp_extras._conditional.etaggify"><code class="xref py py-func docutils literal"><span class="pre">etaggify()</span></code></a> converts a string to a syntactically valid ETag.</li>
+<li><code class="xref py py-func docutils literal"><span class="pre">etaggify()</span></code> converts a string to a syntactically valid ETag.</li>
 <li><a class="reference internal" href="#aiohttp_extras._conditional.etag_from_int" title="aiohttp_extras._conditional.etag_from_int"><code class="xref py py-func docutils literal"><span class="pre">etag_from_int()</span></code></a> and <a class="reference internal" href="#aiohttp_extras._conditional.etag_from_float" title="aiohttp_extras._conditional.etag_from_float"><code class="xref py py-func docutils literal"><span class="pre">etag_from_float()</span></code></a> convert integers and
 floating point values to very compact ETags.</li>
 <li><a class="reference internal" href="#aiohttp_extras._conditional.ETagGenerator" title="aiohttp_extras._conditional.ETagGenerator"><code class="xref py py-class docutils literal"><span class="pre">ETagGenerator</span></code></a> can create a unique ETag from any (complex) value,
@@ -325,10 +336,18 @@ using canonical JSON encoding and SHA3_224 hashing.</li>
 </pre></div>
 </div>
 <p>The same, but shorter:</p>
-<blockquote>
-<div>some_internal_state = …
-some_other_internal_state = …
-etag = ETagGenerator(some_internal_state, some_other_internal_state).etag</div></blockquote>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">some_internal_state</span> <span class="o">=</span> <span class="o">...</span>
+<span class="n">some_other_internal_state</span> <span class="o">=</span> <span class="o">...</span>
+<span class="n">etag</span> <span class="o">=</span> <span class="n">ETagGenerator</span><span class="p">(</span><span class="n">some_internal_state</span><span class="p">,</span> <span class="n">some_other_internal_state</span><span class="p">)</span><span class="o">.</span><span class="n">etag</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">If you want to create an ETag based on only an integer or floating point
+value (including time-stamps!), you could use <a class="reference internal" href="#aiohttp_extras._conditional.etag_from_int" title="aiohttp_extras._conditional.etag_from_int"><code class="xref py py-func docutils literal"><span class="pre">etag_from_int()</span></code></a> or
+<a class="reference internal" href="#aiohttp_extras._conditional.etag_from_float" title="aiohttp_extras._conditional.etag_from_float"><code class="xref py py-func docutils literal"><span class="pre">etag_from_float()</span></code></a> instead. These methods create much more compact
+ETags.</p>
+</div>
 <dl class="attribute">
 <dt id="aiohttp_extras._conditional.ETagGenerator.etag">
 <code class="descname">etag</code><a class="headerlink" href="#aiohttp_extras._conditional.ETagGenerator.etag" title="Permalink to this definition">¶</a></dt>
@@ -371,38 +390,9 @@ etag = ETagGenerator(some_internal_state, some_other_internal_state).etag</div><
 <dt id="aiohttp_extras._conditional.ETagMixin">
 <em class="property">class </em><code class="descname">ETagMixin</code><a class="reference internal" href="../_modules/aiohttp_extras/_conditional.html#ETagMixin"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aiohttp_extras._conditional.ETagMixin" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/3.6/library/abc.html#abc.ABC" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">abc.ABC</span></code></a></p>
-<p>This View mixin provides support for conditional request handling based on ETags.</p>
-<dl class="method">
-<dt id="aiohttp_extras._conditional.ETagMixin.assert_preconditions">
-<code class="descname">assert_preconditions</code><span class="sig-paren">(</span><em>require_if_match=False</em>, <em>deny_if_match_star=False</em>, <em>require_if_none_match=False</em>, <em>allow_weak=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aiohttp_extras/_conditional.html#ETagMixin.assert_preconditions"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aiohttp_extras._conditional.ETagMixin.assert_preconditions" title="Permalink to this definition">¶</a></dt>
-<dd><table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>require_if_match</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/functions.html#bool" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">bool</span></code></a>) – set <code class="docutils literal"><span class="pre">True</span></code> to assert the presence of an <code class="docutils literal"><span class="pre">If-Match:</span></code> request
-header</li>
-<li><strong>deny_if_match_star</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/functions.html#bool" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">bool</span></code></a>) – if <code class="docutils literal"><span class="pre">True</span></code>, raises <code class="xref py py-exc docutils literal"><span class="pre">web.HTTPBadRequest</span></code> if the client sends an
-<code class="docutils literal"><span class="pre">If-Match:</span> <span class="pre">*</span></code> request header.  This forces the client to send a
-specific valid ETag.</li>
-<li><strong>require_if_none_match</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/functions.html#bool" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">bool</span></code></a>) – set <code class="docutils literal"><span class="pre">True</span></code> to assert the presence of an <code class="docutils literal"><span class="pre">If-None-Match:</span></code> request
-header</li>
-<li><strong>allow_weak</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/functions.html#bool" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">bool</span></code></a>) – set <code class="docutils literal"><span class="pre">True</span></code> to allow weak ETag comporisons.</li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last">see <a class="reference internal" href="#aiohttp_extras._conditional._assert_if_match" title="aiohttp_extras._conditional._assert_if_match"><code class="xref py py-func docutils literal"><span class="pre">_assert_if_match()</span></code></a> and <a class="reference internal" href="#aiohttp_extras._conditional._assert_if_none_match" title="aiohttp_extras._conditional._assert_if_none_match"><code class="xref py py-func docutils literal"><span class="pre">_assert_if_none_match()</span></code></a></p>
-</td>
-</tr>
-</tbody>
-</table>
-<div class="admonition warning">
-<p class="first admonition-title">Warning</p>
-<p class="last">Parameter <code class="xref py py-obj docutils literal"><span class="pre">allow_weak</span></code> is not yet implemented.  If set to <code class="docutils literal"><span class="pre">True</span></code>, a
-<a class="reference external" href="https://docs.python.org/3.6/library/exceptions.html#ValueError" title="(in Python v3.6)"><code class="xref py py-exc docutils literal"><span class="pre">ValueError</span></code></a> is raised.</p>
-</div>
-</dd></dl>
-
+<p>This View mixin provides support for conditional request handling based on
+ETags.</p>
+<p>Users of this mixin <em>must</em> implement abstract method <a class="reference internal" href="#aiohttp_extras._conditional.ETagMixin.etag" title="aiohttp_extras._conditional.ETagMixin.etag"><code class="xref py py-meth docutils literal"><span class="pre">etag()</span></code></a>.</p>
 <dl class="method">
 <dt id="aiohttp_extras._conditional.ETagMixin.etag">
 <code class="descname">etag</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aiohttp_extras/_conditional.html#ETagMixin.etag"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aiohttp_extras._conditional.ETagMixin.etag" title="Permalink to this definition">¶</a></dt>
@@ -421,7 +411,7 @@ header</li>
 <p class="first admonition-title">See also</p>
 <ul class="last simple">
 <li>Class <a class="reference internal" href="#aiohttp_extras._conditional.ETagGenerator" title="aiohttp_extras._conditional.ETagGenerator"><code class="xref py py-class docutils literal"><span class="pre">ETagGenerator</span></code></a> can help you generate unique ETags.</li>
-<li>Function <a class="reference internal" href="#aiohttp_extras._conditional.etaggify" title="aiohttp_extras._conditional.etaggify"><code class="xref py py-func docutils literal"><span class="pre">etaggify()</span></code></a> can help you generate syntactically
+<li>Function <code class="xref py py-func docutils literal"><span class="pre">etaggify()</span></code> can help you generate syntactically
 valid ETags.</li>
 </ul>
 </div>
@@ -439,12 +429,22 @@ valid ETags.</li>
 
 <dl class="function">
 <dt id="aiohttp_extras._conditional._assert_if_match">
-<code class="descname">_assert_if_match</code><span class="sig-paren">(</span><em>request</em>, <em>etag</em>, <em>require</em>, <em>deny_star</em>, <em>allow_weak</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aiohttp_extras/_conditional.html#_assert_if_match"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aiohttp_extras._conditional._assert_if_match" title="Permalink to this definition">¶</a></dt>
-<dd><table class="docutils field-list" frame="void" rules="none">
+<code class="descname">_assert_if_match</code><span class="sig-paren">(</span><em>request</em>, <em>etag</em>, <em>deny_star</em>, <em>allow_weak</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aiohttp_extras/_conditional.html#_assert_if_match"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aiohttp_extras._conditional._assert_if_match" title="Permalink to this definition">¶</a></dt>
+<dd><p>Assert ETag validity in the <code class="docutils literal"><span class="pre">If-Match</span></code> header.</p>
+<table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference external" href="https://docs.python.org/3.6/library/functions.html#bool" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">bool</span></code></a></p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">indicates if an <code class="docutils literal"><span class="pre">If-Match</span></code> header was provided.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference external" href="https://docs.python.org/3.6/library/functions.html#bool" title="(in Python v3.6)">bool</a></p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
 <li><code class="xref py py-exc docutils literal"><span class="pre">web.HTTPPreconditionRequired</span></code> – If parameter <code class="xref py py-obj docutils literal"><span class="pre">require</span></code> is <code class="docutils literal"><span class="pre">True</span></code> and no precondition was provided
 by the client.</li>
 <li><code class="xref py py-exc docutils literal"><span class="pre">web.HTTPBadRequest</span></code> – Either<ul>
@@ -463,8 +463,15 @@ asterisk instead of a valid ETag.</li>
 
 <dl class="function">
 <dt id="aiohttp_extras._conditional._assert_if_none_match">
-<code class="descname">_assert_if_none_match</code><span class="sig-paren">(</span><em>request</em>, <em>etag</em>, <em>require</em>, <em>allow_weak</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aiohttp_extras/_conditional.html#_assert_if_none_match"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aiohttp_extras._conditional._assert_if_none_match" title="Permalink to this definition">¶</a></dt>
-<dd><p>The If-None-Match: header is used in two scenarios:</p>
+<code class="descname">_assert_if_none_match</code><span class="sig-paren">(</span><em>request</em>, <em>etag</em>, <em>allow_weak</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aiohttp_extras/_conditional.html#_assert_if_none_match"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aiohttp_extras._conditional._assert_if_none_match" title="Permalink to this definition">¶</a></dt>
+<dd><div class="admonition-todo admonition" id="index-3">
+<p class="first admonition-title">Todo</p>
+<p class="last">Evert lammerts schreef: Documenteren. Ik vind _assert_if_none_match niet
+makkelijk te lezen zonder docs voor de parameters. Bv: etag heeft als
+type None, bool, of str. En if etag is True: PreconditionFailed. Die
+semantiek is vast logisch in context maar niet op zichzelf.</p>
+</div>
+<p>The If-None-Match: header is used in two scenarios:</p>
 <ol class="arabic simple">
 <li>GET requests by a caching client. In this case, the client will
 normally provide a list of (cached) ETags.</li>
@@ -476,7 +483,16 @@ client will normally provide only the asterisk “*” character.</li>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference external" href="https://docs.python.org/3.6/library/functions.html#bool" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">bool</span></code></a></p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">indicates if an <code class="docutils literal"><span class="pre">If-None-Match</span></code> header was provided.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference external" href="https://docs.python.org/3.6/library/functions.html#bool" title="(in Python v3.6)">bool</a></p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
 <li><code class="xref py py-exc docutils literal"><span class="pre">web.HTTPBadRequest</span></code> – If the request header is syntactically incorrect.</li>
 <li><code class="xref py py-exc docutils literal"><span class="pre">web.HTTPPreconditionRequired</span></code> – If parameter <code class="xref py py-obj docutils literal"><span class="pre">require</span></code> is <code class="docutils literal"><span class="pre">True</span></code> and no precondition was provided
 by the client.</li>
@@ -490,10 +506,43 @@ by the client.</li>
 </dd></dl>
 
 <dl class="function">
+<dt id="aiohttp_extras._conditional._etaggify">
+<code class="descname">_etaggify</code><span class="sig-paren">(</span><em>v</em>, <em>weak=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aiohttp_extras/_conditional.html#_etaggify"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aiohttp_extras._conditional._etaggify" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates a syntactically valid ETag.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>v</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#str" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">str</span></code></a>) – The string to use inside the ETag.</li>
+<li><strong>weak</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/functions.html#bool" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">bool</span></code></a>) – if <code class="docutils literal"><span class="pre">True</span></code>, a weak ETag is created, ie. an ETag that starts with
+<code class="docutils literal"><span class="pre">W/</span></code>.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">etaggify</span><span class="p">(</span><span class="s1">&#39;foo&#39;</span><span class="p">)</span>
+<span class="go">&#39;&quot;foo&quot;&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">etaggify</span><span class="p">(</span><span class="s1">&#39;bar&#39;</span><span class="p">,</span> <span class="n">weak</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="go">&#39;W/&quot;bar&quot;&#39;</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#str" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">str</span></code></a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
 <dt id="aiohttp_extras._conditional._match_etags">
 <code class="descname">_match_etags</code><span class="sig-paren">(</span><em>etag</em>, <em>etags</em>, <em>allow_weak</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aiohttp_extras/_conditional.html#_match_etags"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aiohttp_extras._conditional._match_etags" title="Permalink to this definition">¶</a></dt>
-<dd><p>ETag comparison according to <span class="target" id="index-3"></span><a class="rfc reference external" href="https://tools.ietf.org/html/rfc7232.html"><strong>RFC 7232</strong></a>.</p>
-<p>See <span class="target" id="index-4"></span><a class="rfc reference external" href="https://tools.ietf.org/html/rfc7232.html#section-2.3.2"><strong>section 2.3.2</strong></a> for a detailed explanation of
+<dd><p>ETag comparison according to <span class="target" id="index-4"></span><a class="rfc reference external" href="https://tools.ietf.org/html/rfc7232.html"><strong>RFC 7232</strong></a>.</p>
+<p>See <span class="target" id="index-5"></span><a class="rfc reference external" href="https://tools.ietf.org/html/rfc7232.html#section-2.3.2"><strong>section 2.3.2</strong></a> for a detailed explanation of
 <em>weak</em> vs. <em>strong comparison</em>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -550,29 +599,24 @@ in the request.  Otherwise a <a class="reference external" href="https://docs.py
 <div class="admonition warning">
 <p class="first admonition-title">Warning</p>
 <p class="last">This parser allows an <code class="docutils literal"><span class="pre">If-(None-)Match:</span></code> request header with an empty
-value.  This is not <span class="target" id="index-5"></span><a class="rfc reference external" href="https://tools.ietf.org/html/rfc7232.html"><strong>RFC 7232</strong></a> compliant, and a work-around for a bug
+value.  This is not <span class="target" id="index-6"></span><a class="rfc reference external" href="https://tools.ietf.org/html/rfc7232.html"><strong>RFC 7232</strong></a> compliant, and a work-around for a bug
 in Swagger-UI.</p>
 </div>
 </dd></dl>
 
 <dl class="function">
 <dt id="aiohttp_extras._conditional.assert_preconditions">
-<code class="descname">assert_preconditions</code><span class="sig-paren">(</span><em>request</em>, <em>etag</em>, <em>require_if_match=False</em>, <em>deny_if_match_star=False</em>, <em>require_if_none_match=False</em>, <em>allow_weak=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aiohttp_extras/_conditional.html#assert_preconditions"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aiohttp_extras._conditional.assert_preconditions" title="Permalink to this definition">¶</a></dt>
+<code class="descname">assert_preconditions</code><span class="sig-paren">(</span><em>f</em>, <em>force_precondition=False</em>, <em>allow_weak=False</em>, <em>post_is_safe=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aiohttp_extras/_conditional.html#assert_preconditions"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aiohttp_extras._conditional.assert_preconditions" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>request</strong> (<code class="xref py py-class docutils literal"><span class="pre">Request</span></code>) – the current HTTP request</li>
-<li><strong>etag</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/typing.html#typing.Union" title="(in Python v3.6)"><code class="xref py py-data docutils literal"><span class="pre">Union</span></code></a>[<code class="docutils literal"><span class="pre">None</span></code>, <a class="reference external" href="https://docs.python.org/3.6/library/functions.html#bool" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">bool</span></code></a>, <a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#str" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">str</span></code></a>]) – any value produced by <a class="reference internal" href="#aiohttp_extras._conditional.ETagMixin.etag" title="aiohttp_extras._conditional.ETagMixin.etag"><code class="xref py py-meth docutils literal"><span class="pre">ETagMixin.etag()</span></code></a></li>
-<li><strong>require_if_match</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/functions.html#bool" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">bool</span></code></a>) – set <code class="docutils literal"><span class="pre">True</span></code> to assert the presence of an <code class="docutils literal"><span class="pre">If-Match:</span></code> request
-header</li>
-<li><strong>deny_if_match_star</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/functions.html#bool" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">bool</span></code></a>) – if <code class="docutils literal"><span class="pre">True</span></code>, raises <code class="xref py py-exc docutils literal"><span class="pre">web.HTTPBadRequest</span></code> if the client sends an
-<code class="docutils literal"><span class="pre">If-Match:</span> <span class="pre">*</span></code> request header.  This forces the client to send a
-specific valid ETag.</li>
-<li><strong>require_if_none_match</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/functions.html#bool" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">bool</span></code></a>) – set <code class="docutils literal"><span class="pre">True</span></code> to assert the presence of an <code class="docutils literal"><span class="pre">If-None-Match:</span></code> request
+<li><strong>f</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/typing.html#typing.Callable" title="(in Python v3.6)"><code class="xref py py-data docutils literal"><span class="pre">Callable</span></code></a>) – The <a class="reference external" href="http://aiohttp.readthedocs.io/en/stable/web_reference.html#aiohttp.web.View" title="(in aiohttp v2.2)"><code class="xref py py-class docutils literal"><span class="pre">View</span></code></a> instance method to decorate.</li>
+<li><strong>force_precondition</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/functions.html#bool" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">bool</span></code></a>) – set <code class="docutils literal"><span class="pre">True</span></code> to assert the presence of an <code class="docutils literal"><span class="pre">If-Match:</span></code> request
 header</li>
 <li><strong>allow_weak</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/functions.html#bool" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">bool</span></code></a>) – set <code class="docutils literal"><span class="pre">True</span></code> to allow weak ETag comporisons.</li>
+<li><strong>post_is_safe</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/functions.html#bool" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">bool</span></code></a>) – consider the HTTP POST method safe for the current resource.</li>
 </ul>
 </td>
 </tr>
@@ -581,11 +625,6 @@ header</li>
 </tr>
 </tbody>
 </table>
-<div class="admonition warning">
-<p class="first admonition-title">Warning</p>
-<p class="last">Parameter <code class="xref py py-obj docutils literal"><span class="pre">allow_weak</span></code> is not yet implemented.  If set to <code class="docutils literal"><span class="pre">True</span></code>, a
-<a class="reference external" href="https://docs.python.org/3.6/library/exceptions.html#ValueError" title="(in Python v3.6)"><code class="xref py py-exc docutils literal"><span class="pre">ValueError</span></code></a> is raised.</p>
-</div>
 </dd></dl>
 
 <dl class="function">
@@ -616,39 +655,6 @@ header</li>
 </table>
 </dd></dl>
 
-<dl class="function">
-<dt id="aiohttp_extras._conditional.etaggify">
-<code class="descname">etaggify</code><span class="sig-paren">(</span><em>v</em>, <em>weak=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aiohttp_extras/_conditional.html#etaggify"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aiohttp_extras._conditional.etaggify" title="Permalink to this definition">¶</a></dt>
-<dd><p>Generates a syntactically valid ETag.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>v</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#str" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">str</span></code></a>) – The string to use inside the ETag.</li>
-<li><strong>weak</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/functions.html#bool" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">bool</span></code></a>) – if <code class="docutils literal"><span class="pre">True</span></code>, a weak ETag is created, ie. an ETag that starts with
-<code class="docutils literal"><span class="pre">W/</span></code>.</li>
-</ul>
-</td>
-</tr>
-</tbody>
-</table>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">etaggify</span><span class="p">(</span><span class="s1">&#39;foo&#39;</span><span class="p">)</span>
-<span class="go">&#39;&quot;foo&quot;&#39;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">etaggify</span><span class="p">(</span><span class="s1">&#39;bar&#39;</span><span class="p">,</span> <span class="n">weak</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="go">&#39;W/&quot;bar&quot;&#39;</span>
-</pre></div>
-</div>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#str" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">str</span></code></a></td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
 </div>
 </div>
 
@@ -662,10 +668,10 @@ header</li>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="hal_json.html" class="btn btn-neutral float-right" title="HAL+JSON" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="content_negotiation.html" class="btn btn-neutral float-right" title="Content Negotiation" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="content_negotiation.html" class="btn btn-neutral" title="Content Negotiation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="../api_docs.html" class="btn btn-neutral" title="API Docs" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

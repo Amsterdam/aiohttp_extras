@@ -34,8 +34,8 @@ def _tokenize_embed(s: str):
 
     Example::
 
-        list(_tokenize_embed('foo(bar,baz)'))
-        >>> [('foo', 0), ('(', 3), ('bar', 4), ('baz', 8), (')', 11)]
+        >>> list(_tokenize_embed('foo(bar,baz)'))
+        [('foo', 0), ('(', 3), ('bar', 4), ('baz', 8), (')', 11)]
 
     Yields:
         tuple(token: str, pos: int)
@@ -182,10 +182,10 @@ def to_string(embed: T.Dict[str, dict]) -> str:
     """Serializer for the ``embed`` query parameter.
 
     Given the output of :func:`parse_embed`, this method serializes back to the
-    query parameter string:
+    query parameter string::
 
-    >>> parse_embed(to_string(some_embed_dict)) == some_embed_dict
-    True
+        >>> parse_embed(to_string(some_embed_dict)) == some_embed_dict
+        True
 
     """
     def to_string_recursive(embed):
