@@ -46,8 +46,8 @@ Getting Started
 .. code-block:: bash
 
     # Clone the repository:
-    git clone git@github.com:DatapuntAmsterdam/oauth2.git
-    cd oauth2
+    git clone git@github.com:Amsterdam/aiohttp_extras.git
+    cd aiohttp_extras
     # Create a virtual environment:
     python3.6 -m venv --copies --prompt oauth2 .venv
     pip install -e .[docs,test]
@@ -56,43 +56,3 @@ Getting Started
 
     # To start a documentation server:
     make -C docs server
-
-
-Starting the services
----------------------
-
-To be able to start up the services, you’ll need to set some environment
-variables. The services will complain if they’re missing.
-
-This repository hosts 3 distinct services:
-
-*   `oauth2.authz_service`
-*   `oauth2.authz_admin`
-*   `oauth2.client_admin_service`
-
-Each of these services can be started in at least 3 ways:
-
-1.  Directly, like this:
-
-    .. code-block:: shell
-
-        python -m oauth2.authz_admin.main
-
-2.  Through setuptools console script. This is functionally identical to the
-    previous method, and only provided as a shortcut:
-
-    .. code-block:: shell
-
-        authz_admin
-
-3.  Through the aiohttp command line client:
-
-    .. code-block:: shell
-
-        python -m aiohttp.web -H localhost -P 8080 oauth2.authz_admin.main:application
-
-
-About Scopes
-============
-
-.. todo:: write about the semantics of scopes in our implementation.

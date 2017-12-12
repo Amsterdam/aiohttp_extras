@@ -15,7 +15,7 @@ setup(
     # ┏━━━━━━━━━━━━━━━━━━━━━━┓
     # ┃ Publication Metadata ┃
     # ┗━━━━━━━━━━━━━━━━━━━━━━┛
-    version='0.1.0',
+    version='1.0.0',
     name='datapunt_aiohttp_extras',
     description="Stack for developing HTTP web services in Python",
     long_description="""

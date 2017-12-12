@@ -1,5 +1,3 @@
-from . import middlewares
-
 from ._conditional import (
     etag_from_float,
     etag_from_int,

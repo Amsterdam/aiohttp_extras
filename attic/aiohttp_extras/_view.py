@@ -128,12 +128,14 @@ class View(web.View):
             raise AssertionError
 
     async def get(self) -> web.StreamResponse:
-        if _GET_IN_PROGRESS in self.request:
-            raise web.HTTPInternalServerError()
+        # Assert we're not calling `get()` recursively within a single request:
+        assert _GET_IN_PROGRESS not in self.request
         self.request[_GET_IN_PROGRESS] = True
 
+        if isinstance(self, _conditional.ETagMixin):
+            await self.assert_preconditions()
         if self.request.method == 'GET':
-            data = await self.to_json()
+            data = await self.to_dict()
         response = web.StreamResponse()
         if isinstance(await self.etag(), str):
             response.headers.add('ETag', await self.etag())

@@ -74,8 +74,7 @@ def _best_content_type(request: web.Request,
     )
 
 
-def produces_content_types(f: T.Callable,
-                           *content_types: str):
+def produces_content_types(*content_types):
     # language=rst
     """Decorator for :class:`View <aiohttp.web.View>` request handler methods.
 
@@ -103,10 +102,16 @@ def produces_content_types(f: T.Callable,
                 return response
 
     """
-    @functools.wraps(f)
-    async def wrapper(self, *args, **kwargs):
-        request = self.request
-        request['best_content_type'] = \
-            _best_content_type(request, content_types)
-        return await f(self, *args, **kwargs)
-    return wrapper
+    if len(content_types) == 1 and not isinstance(content_types[0], str):
+        content_types = content_types[0]
+
+    def decorator(f: T.Callable):
+        @functools.wraps(f)
+        async def wrapper(self, *args, **kwargs):
+            request = self.request
+            request['best_content_type'] = \
+                _best_content_type(request, content_types)
+            return await f(self, *args, **kwargs)
+        return wrapper
+
+    return decorator

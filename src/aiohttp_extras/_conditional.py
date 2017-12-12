@@ -82,9 +82,8 @@ from collections.abc import Mapping
 
 from aiohttp import web, hdrs
 
-from . import _view
-
 _logger = logging.getLogger(__name__)
+
 
 _ETAGS_PATTERN = re.compile(
     r'\s*(?:W/)?"[\x21\x23-\x7e\x80-\xff]+"(?:\s*,\s*(?:W/)?"[\x21\x23-\x7e\x80-\xff]+")*'
@@ -95,13 +94,14 @@ _ETAG_ITER_PATTERN = re.compile(
 _STAR = '*'
 _STAR_TYPE = str
 _HTTP_UNSAFE_METHODS_EXCL_POST = {'DELETE', 'PATCH', 'PUT'}
-_HTTP_UNSAFE_METHODS_INCL_POST = {'DELETE', 'PATCH', 'POST', 'PUT'}
+_HTTP_UNSAFE_METHODS_INCL_POST = {'DELETE', 'PATCH', 'PUT', 'POST'}
 _VALID_ETAG_CHARS = re.compile(r'[\x21\x23-\x7e\x80-\xff]+')
 _IF_MATCH = 'If-Match'
 _IF_NONE_MATCH = 'If-None-Match'
 
 
-def _parse_if_header(request: web.Request, header_name: str) -> T.Union[None, T.Set[str], _STAR_TYPE]:
+def _parse_if_header(request: web.Request, header_name: str) \
+        -> T.Union[None, T.Set[str], _STAR_TYPE]:
     # language=rst
     """Parses ``If-(None-)Match:`` request headers.
 
@@ -134,7 +134,7 @@ def _parse_if_header(request: web.Request, header_name: str) -> T.Union[None, T.
         raise web.HTTPBadRequest(
             text="Syntax error in request header If-Match: %s" % header
         )
-    return { match[1] for match in _ETAG_ITER_PATTERN.finditer(header) }
+    return {match[1] for match in _ETAG_ITER_PATTERN.finditer(header)}
 
 
 def _match_etags(etag: str, etags: T.Iterable[str], allow_weak: bool) -> bool:
@@ -274,16 +274,13 @@ def _assert_if_none_match(request:      web.Request,
     return True
 
 
-def assert_preconditions(f: T.Callable,
-                         force_precondition:    bool=False,
+def assert_preconditions(force_precondition:    bool=False,
                          allow_weak:            bool=False,
-                         post_is_safe:          bool=False):
+                         post_is_safe:          bool=False) -> T.Callable:
     # language=rst
     """
 
     Parameters:
-        f:
-            The :class:`View <aiohttp.web.View>` instance method to decorate.
         force_precondition:
             set ``True`` to assert the presence of an ``If-Match:`` request
             header
@@ -295,30 +292,44 @@ def assert_preconditions(f: T.Callable,
     Raises:
         see :func:`_assert_if_match` and :func:`_assert_if_none_match`
 
+    Example:
+        class MyView(aiohttp.web.View, aiohttp_extras.View):
+            @aiohttp_extras.assert_preconditions(force_precondition: True)
+            async def put(self, request):
+                ...
+
     """
-    @functools.wraps(f)
-    async def wrapper(self, *args, **kwargs):
-        etag = await self.etag()
-        request = self.request
-        if_match = _assert_if_match(
-            request=request,
-            etag=etag,
-            deny_star=force_precondition,
-            allow_weak=allow_weak
-        )
-        if_none_match = _assert_if_none_match(
-            request=request,
-            etag=etag,
-            allow_weak=allow_weak
-        )
-        unsafe_methods = (
-            _HTTP_UNSAFE_METHODS_EXCL_POST if post_is_safe
-            else _HTTP_UNSAFE_METHODS_INCL_POST
-        )
-        if request.method in unsafe_methods and not if_match and not if_none_match:
-            raise web.HTTPPreconditionRequired()
-        return await f(self, *args, **kwargs)
-    return wrapper
+    def decorator(f: T.Callable) -> T.Callable:
+        @functools.wraps(f)
+        async def wrapper(self, *args, **kwargs):
+            etag = await self.etag()
+            request = self.request
+            if_match = _assert_if_match(
+                request=request,
+                etag=etag,
+                deny_star=force_precondition,
+                allow_weak=allow_weak
+            )
+            if_none_match = _assert_if_none_match(
+                request=request,
+                etag=etag,
+                allow_weak=allow_weak
+            )
+            unsafe_methods = (
+                _HTTP_UNSAFE_METHODS_EXCL_POST if post_is_safe
+                else _HTTP_UNSAFE_METHODS_INCL_POST
+            )
+            if request.method in unsafe_methods and not if_match and not if_none_match:
+                raise web.HTTPPreconditionRequired()
+            return await f(self, *args, **kwargs)
+        return wrapper
+
+    # Allow assert_preconditions to be called without parameters _and_ without
+    # parentheses "()":
+    if callable(force_precondition):
+        return decorator(force_precondition)
+
+    return decorator
 
 
 def _etaggify(v: str, weak: bool=False) -> str:

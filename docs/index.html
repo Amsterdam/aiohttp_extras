@@ -95,15 +95,7 @@
             
               <ul>
 <li class="toctree-l1"><a class="reference internal" href="api_docs.html">API Docs</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="api/conditional.html">Conditional Requests</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="api/conditional.html#overview">Overview</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="api/conditional.html#etagmixin">ETagMixin</a></li>
-<li class="toctree-l4"><a class="reference internal" href="api/conditional.html#helpers-for-etag-creation">Helpers for ETag creation</a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="api/conditional.html#api-documentation">API documentation</a></li>
-</ul>
-</li>
+<li class="toctree-l2"><a class="reference internal" href="api/conditional.html">Conditional Requests</a></li>
 <li class="toctree-l2"><a class="reference internal" href="api/content_negotiation.html">Content Negotiation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="api/json.html">Async Streaming JSON</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="api/json.html#introduction">Introduction</a><ul>
@@ -287,8 +279,8 @@ are in <code class="file docutils literal"><span class="pre">Makefile</span></co
 <div class="section" id="getting-started">
 <h1>Getting Started<a class="headerlink" href="#getting-started" title="Permalink to this headline">¶</a></h1>
 <div class="highlight-bash"><div class="highlight"><pre><span></span><span class="c1"># Clone the repository:</span>
-git clone git@github.com:DatapuntAmsterdam/oauth2.git
-<span class="nb">cd</span> oauth2
+git clone git@github.com:Amsterdam/aiohttp_extras.git
+<span class="nb">cd</span> aiohttp_extras
 <span class="c1"># Create a virtual environment:</span>
 python3.6 -m venv --copies --prompt oauth2 .venv
 pip install -e .<span class="o">[</span>docs,test<span class="o">]</span>
@@ -298,43 +290,6 @@ docker-compose up -d database
 <span class="c1"># To start a documentation server:</span>
 make -C docs server
 </pre></div>
-</div>
-<div class="section" id="starting-the-services">
-<h2>Starting the services<a class="headerlink" href="#starting-the-services" title="Permalink to this headline">¶</a></h2>
-<p>To be able to start up the services, you’ll need to set some environment
-variables. The services will complain if they’re missing.</p>
-<p>This repository hosts 3 distinct services:</p>
-<ul class="simple">
-<li><code class="xref py py-obj docutils literal"><span class="pre">oauth2.authz_service</span></code></li>
-<li><code class="xref py py-obj docutils literal"><span class="pre">oauth2.authz_admin</span></code></li>
-<li><code class="xref py py-obj docutils literal"><span class="pre">oauth2.client_admin_service</span></code></li>
-</ul>
-<p>Each of these services can be started in at least 3 ways:</p>
-<ol class="arabic">
-<li><p class="first">Directly, like this:</p>
-<div class="highlight-shell"><div class="highlight"><pre><span></span>python -m oauth2.authz_admin.main
-</pre></div>
-</div>
-</li>
-<li><p class="first">Through setuptools console script. This is functionally identical to the
-previous method, and only provided as a shortcut:</p>
-<div class="highlight-shell"><div class="highlight"><pre><span></span>authz_admin
-</pre></div>
-</div>
-</li>
-<li><p class="first">Through the aiohttp command line client:</p>
-<div class="highlight-shell"><div class="highlight"><pre><span></span>python -m aiohttp.web -H localhost -P <span class="m">8080</span> oauth2.authz_admin.main:application
-</pre></div>
-</div>
-</li>
-</ol>
-</div>
-</div>
-<div class="section" id="about-scopes">
-<h1>About Scopes<a class="headerlink" href="#about-scopes" title="Permalink to this headline">¶</a></h1>
-<div class="admonition-todo admonition" id="index-1">
-<p class="first admonition-title">Todo</p>
-<p class="last">write about the semantics of scopes in our implementation.</p>
 </div>
 <div class="toctree-wrapper compound">
 </div>
