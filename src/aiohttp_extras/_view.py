@@ -4,6 +4,7 @@ import typing as T
 
 from aiohttp import web
 from multidict import MultiDict
+from yarl import URL
 
 from . import _conditional
 
@@ -25,7 +26,7 @@ class View(web.View):
         match_dict: T.Optional[T.Mapping[str, str]]=None,
         *args, **kwargs
     ):
-        super().__init__()
+        super().__init__(request)
         if match_dict is None:
             rel_url = request.rel_url
         else:
@@ -63,13 +64,13 @@ class View(web.View):
         self.__match_dict = dict(value)
 
     @property
-    def rel_url(self) -> web.URL:
+    def rel_url(self) -> URL:
         # language=rst
         """The relative URL as passed to the constructor."""
         return self.__rel_url
 
     @property
-    def canonical_rel_url(self) -> web.URL:
+    def canonical_rel_url(self) -> URL:
         # language=rst
         """Like :meth:`rel_url`, but with all default query parameters explicitly listed."""
         if self.__canonical_rel_url is None:
