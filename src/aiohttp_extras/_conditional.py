@@ -93,8 +93,8 @@ _ETAG_ITER_PATTERN = re.compile(
 )
 _STAR = '*'
 _STAR_TYPE = str
-_HTTP_UNSAFE_METHODS_EXCL_POST = {'DELETE', 'PATCH', 'PUT'}
-_HTTP_UNSAFE_METHODS_INCL_POST = {'DELETE', 'PATCH', 'PUT', 'POST'}
+_HTTP_SAFE_METHODS_EXCL_POST = {'GET', 'HEAD', 'OPTIONS'}
+_HTTP_SAFE_METHODS_INCL_POST = {'GET', 'HEAD', 'OPTIONS', 'POST'}
 _VALID_ETAG_CHARS = re.compile(r'[\x21\x23-\x7e\x80-\xff]+')
 _IF_MATCH = 'If-Match'
 _IF_NONE_MATCH = 'If-None-Match'
@@ -161,15 +161,16 @@ def _match_etags(etag: str, etags: T.Iterable[str], allow_weak: bool) -> bool:
     return etag in etags or ('W/' + etag) in etags
 
 
-def _assert_if_match(request:      web.Request,
-                     etag:         T.Union[None, bool, str],
-                     deny_star:    bool,
-                     allow_weak:   bool) -> bool:
+def _assert_if_match(request:       web.Request,
+                     etag:          T.Union[None, bool, str],
+                     deny_asterisk: bool,
+                     allow_weak:    bool) -> bool:
     # language=rst
     """Assert ETag validity in the ``If-Match`` header.
 
     Returns:
-        bool: indicates if an ``If-Match`` header was provided.
+        bool: indicates if an ``If-Match`` header with at least one ETag was
+              provided.
 
     Raises:
         web.HTTPPreconditionRequired:
@@ -192,7 +193,7 @@ def _assert_if_match(request:      web.Request,
         #     )
         return False
     if etags is _STAR:
-        if deny_star:
+        if deny_asterisk:
             raise web.HTTPBadRequest(
                 text="If-Match: * is not allowed for this request. Use a specific ETag instead."
             )
@@ -274,16 +275,16 @@ def _assert_if_none_match(request:      web.Request,
     return True
 
 
-def assert_preconditions(force_precondition:    bool=False,
-                         allow_weak:            bool=False,
-                         post_is_safe:          bool=False) -> T.Callable:
+def assert_preconditions(required:       bool = False,
+                         allow_weak:     bool = False,
+                         post_is_safe:   bool = False) -> T.Callable:
     # language=rst
     """
 
     Parameters:
-        force_precondition:
-            set ``True`` to assert the presence of an ``If-Match:`` request
-            header
+        required:
+            Only relevant to unsafe methods. Set ``True`` to assert the presence
+            of either an ``If-Match:`` or ``If-None-Match`` request header.
         allow_weak:
             set ``True`` to allow weak ETag comporisons.
         post_is_safe:
@@ -307,7 +308,7 @@ def assert_preconditions(force_precondition:    bool=False,
             if_match = _assert_if_match(
                 request=request,
                 etag=etag,
-                deny_star=force_precondition,
+                deny_asterisk=required,
                 allow_weak=allow_weak
             )
             if_none_match = _assert_if_none_match(
@@ -315,19 +316,20 @@ def assert_preconditions(force_precondition:    bool=False,
                 etag=etag,
                 allow_weak=allow_weak
             )
-            unsafe_methods = (
-                _HTTP_UNSAFE_METHODS_EXCL_POST if post_is_safe
-                else _HTTP_UNSAFE_METHODS_INCL_POST
+            safe_methods = (
+                _HTTP_SAFE_METHODS_INCL_POST if post_is_safe
+                else _HTTP_SAFE_METHODS_EXCL_POST
             )
-            if request.method in unsafe_methods and not if_match and not if_none_match:
+            if request.method not in safe_methods and required and \
+               not if_match and not if_none_match:
                 raise web.HTTPPreconditionRequired()
             return await f(self, *args, **kwargs)
         return wrapper
 
     # Allow assert_preconditions to be called without parameters _and_ without
     # parentheses "()":
-    if callable(force_precondition):
-        return decorator(force_precondition)
+    if callable(required):
+        return decorator(required)
 
     return decorator
 

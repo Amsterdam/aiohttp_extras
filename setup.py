@@ -15,13 +15,12 @@ setup(
     # ┏━━━━━━━━━━━━━━━━━━━━━━┓
     # ┃ Publication Metadata ┃
     # ┗━━━━━━━━━━━━━━━━━━━━━━┛
-    version='1.0.0',
-    name='datapunt_aiohttp_extras',
+    version='1.0.2',
+    name='datapunt-aiohttp-extras',
     description="Stack for developing HTTP web services in Python",
     long_description="""
         This package integrates:
 
-        -   HAL+JSON rendering of resources
         -   an asynchronous JSON encoder
         -   some extras for aiohttp (an asynchronous HTTP client and server) to
             facilitate building ReSTful services:
@@ -59,11 +58,12 @@ setup(
     # ┃ Requirements ┃
     # ┗━━━━━━━━━━━━━━┛
     python_requires='~=3.6',
-    setup_requires=[
-        'pytest-runner'
-    ],
+    # setup_requires=[
+    #     'pytest-runner'
+    # ],
     install_requires=[
         'aiohttp',
+        'multidict',
         'PyYaml',
         'PyJWT',
         'swagger-parser',
@@ -77,7 +77,11 @@ setup(
             'sphinx-autodoc-napoleon-typehints',
             'sphinx_rtd_theme',
         ],
-        'test': tests_require,
+        'test': [
+            'pytest',
+            'pytest-cov',
+            'pytest-aiohttp',
+        ],
         'dev': [
             'aiohttp-devtools',
 
@@ -87,5 +91,4 @@ setup(
             'uvloop',   # optional fast eventloop for asyncio
         ],
     },
-    tests_require=tests_require,
 )

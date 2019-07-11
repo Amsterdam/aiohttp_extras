@@ -1,5 +1,10 @@
 .PHONY: test testcov release dist clean
 
+# The ?= operator below assigns only if the variable isn't defined yet. This
+# allows the caller to override them:
+#
+#     TESTS=other_tests make test
+
 PYTHON = python3
 RM = rm -rf
 
@@ -8,17 +13,11 @@ RM = rm -rf
 # to test against the _installed_ package(s), not against any python sources
 # that are (accidentally) in our CWD.
 PYTEST = pytest
-SETUPTEST = $(PYTHON) setup.py test
 
 
-# The ?= operator below assigns only if the variable isn't defined yet. This
-# allows the caller to override them:
-#
-#     TESTS=other_tests make test
-#
 #PYTEST_OPTS    ?= --verbose -p no:cacheprovider --exitfirst --capture=no
 PYTEST_OPTS     ?= --verbose -p no:cacheprovider --exitfirst
-PYTEST_OPTS_COV ?= --verbose -p no:cacheprovider --exitfirst --cov=src --cov-report=term --no-cov-on-fail
+PYTEST_OPTS_COV ?= $(PYTEST_OPTS) --cov=src --cov-report=term --no-cov-on-fail
 TESTS ?= tests
 
 
@@ -31,18 +30,10 @@ release: test clean
 
 
 test:
-	$(SETUPTEST) --addopts "$(PYTEST_OPTS)     $(TESTS)"
-
-
-testcov:
-	$(SETUPTEST) --addopts "$(PYTEST_OPTS_COV) $(TESTS)"
-
-
-pytest:
 	$(PYTEST) $(PYTEST_OPTS)     $(TESTS)
 
 
-pytestcov:
+testcov:
 	$(PYTEST) $(PYTEST_OPTS_COV) $(TESTS)
 
 
