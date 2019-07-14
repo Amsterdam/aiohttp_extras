@@ -13,3 +13,5 @@ from ._json import (
 )
 
 from ._view import View
+
+VERSION = '1.0.2'
