@@ -222,7 +222,8 @@ def _assert_if_none_match(request:      web.Request,
     # language=rst
     """
 
-    Todo:
+    .. todo::
+
         Evert lammerts schreef: Documenteren. Ik vind _assert_if_none_match niet
         makkelijk te lezen zonder docs voor de parameters. Bv: etag heeft als
         type None, bool, of str. En if etag is True: PreconditionFailed. Die
